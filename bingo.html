@@ -738,9 +738,14 @@
           <div style="font-size: 0.75rem; color: #cbd5e1; font-weight: 800; text-transform: uppercase;">Lobby-Code</div>
           <div id="host-room-display" style="font-family: monospace; font-size: 1.8rem; font-weight: 900; color: #38bdf8;">JACK</div>
         </div>
-        <div style="text-align: right;">
-          <div style="font-size: 0.75rem; color: #cbd5e1; font-weight: 800; text-transform: uppercase;">Mitspieler</div>
-          <div id="host-player-count" style="font-size: 1.3rem; font-weight: 900; color: #fff;">1 Spieler</div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button id="btn-toggle-qr" class="btn-apple-secondary" onclick="toggleHostQRCard()" style="width: auto; padding: 6px 12px; font-size: 0.82rem; font-weight: 800;">
+            📱 QR-Code
+          </button>
+          <div style="text-align: right;">
+            <div style="font-size: 0.75rem; color: #cbd5e1; font-weight: 800; text-transform: uppercase;">Mitspieler</div>
+            <div id="host-player-count" style="font-size: 1.3rem; font-weight: 900; color: #fff;">1 Spieler</div>
+          </div>
         </div>
       </div>
 
@@ -780,12 +785,17 @@
         </div>
 
         <!-- AUDIO CONTROL -->
-        <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 1.2rem;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 0.8rem;">
           <button class="btn-apple-secondary" onclick="toggleHostAudio()" style="width: auto; padding: 10px 18px; font-weight: 800;">
             <span id="btn-audio-icon">⏸️</span> Musik Pause/Play
           </button>
           <button class="btn-apple-secondary" onclick="restartHostAudio()" style="width: auto; padding: 10px 18px; font-weight: 800;">
             ⏮️ Von vorne (Timer Reset)
+          </button>
+        </div>
+        <div id="host-audio-tap-start-container" style="display: none; margin-bottom: 1rem;">
+          <button id="host-audio-tap-start" class="btn-apple" onclick="manuallyStartHostAudio()" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-weight: 900;">
+            ▶️ Musik manuell starten (Autoplay freigeben)
           </button>
         </div>
 
@@ -805,12 +815,15 @@
 
       <!-- REVEALED SONG SOLUTION (HIDDEN DURING BLIND GUESSING) -->
       <div id="host-solution-card" class="glass-card" style="display: none; animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
-        <div style="display: flex; gap: 16px; align-items: center;">
-          <img id="host-sol-cover" src="" alt="Album Cover" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-          <div>
-            <div id="host-sol-year" style="display: inline-block; background: var(--cat-green); color: #000; font-weight: 900; font-size: 0.85rem; padding: 2px 8px; border-radius: 6px; margin-bottom: 4px;">2019</div>
-            <div id="host-sol-title" style="font-size: 1.25rem; font-weight: 800; color: #fff;">Roller</div>
-            <div id="host-sol-artist" style="font-size: 1rem; color: #cbd5e1;">Apache 207</div>
+        <div style="display: flex; gap: 20px; align-items: center;">
+          <img id="host-sol-cover" src="" alt="Album Cover" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; box-shadow: 0 8px 25px rgba(0,0,0,0.6); flex-shrink: 0;">
+          <div style="flex: 1; min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+              <span id="host-sol-year" style="display: inline-block; background: #fbbf24; color: #000; font-weight: 900; font-size: 1.35rem; padding: 4px 14px; border-radius: 10px; box-shadow: 0 2px 10px rgba(251, 191, 36, 0.4);">2019</span>
+              <span style="font-size: 0.85rem; font-weight: 800; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.05em;">Erscheinungsjahr</span>
+            </div>
+            <div id="host-sol-title" style="font-size: 2rem; font-weight: 900; color: #fff; line-height: 1.15; margin-bottom: 4px; word-break: break-word;">Roller</div>
+            <div id="host-sol-artist" style="font-size: 1.45rem; font-weight: 800; color: #38bdf8; word-break: break-word;">Apache 207</div>
           </div>
         </div>
       </div>
@@ -862,6 +875,12 @@
             <div style="font-size: 0.78rem; font-weight: 700; color: #cbd5e1;">
               Fehlversuche: <span id="host-streak-counter" style="color: #f87171;">0/3</span>
             </div>
+          </div>
+
+          <!-- CATEGORY CHOICE FOR HOST (IF 2 CATEGORIES) -->
+          <div id="host-category-choice-box" style="display: none; margin-bottom: 0.8rem;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">Wähle deine Host-Kategorie:</div>
+            <div id="host-category-choice-buttons" style="display: flex; gap: 8px; flex-direction: column;"></div>
           </div>
 
           <!-- Choices container for host -->
@@ -1111,8 +1130,10 @@
         color: 'gruen',
         type: 'text',
         evalText: (song, ans) => {
-          const a = (song.artist || '').toLowerCase();
-          const g = (ans || '').toLowerCase().trim();
+          if (!ans) return false;
+          const g = String(ans).toLowerCase().trim();
+          if (g.length < 2) return false;
+          const a = (song.artist || '').toLowerCase().trim();
           return a.includes(g) || g.includes(a);
         }
       },
@@ -1122,14 +1143,23 @@
         color: 'pink',
         type: 'choice',
         choices: ['⏮️ Vor 2015', '⏭️ 2015 oder neuer'],
-        eval: (song) => song.year < 2015 ? '⏮️ Vor 2015' : '⏭️ 2015 oder neuer'
+        eval: (song) => {
+          const y = parseInt(song.year, 10);
+          return y < 2015 ? '⏮️ Vor 2015' : '⏭️ 2015 oder neuer';
+        }
       },
       {
         id: 'gelb_year_pm4',
         name: '🟡 Erscheinungsjahr (± 4 Jahre Toleranz)',
         color: 'gelb',
         type: 'number',
-        evalNum: (song, guess) => Math.abs(parseInt(guess, 10) - song.year) <= 4
+        evalNum: (song, guess) => {
+          if (guess === null || guess === undefined || String(guess).trim() === '') return false;
+          const parsed = parseInt(String(guess).trim(), 10);
+          const songYear = parseInt(song.year, 10);
+          if (isNaN(parsed) || isNaN(songYear)) return false;
+          return Math.abs(parsed - songYear) <= 4;
+        }
       },
       {
         id: 'lila_decade',
@@ -1138,11 +1168,12 @@
         type: 'choice',
         choices: ['70er & älter', '80er Jahre', '90er Jahre', '2000er Jahre', '2010er Jahre', '2020er Hits'],
         eval: (song) => {
-          if (song.year < 1980) return '70er & älter';
-          if (song.year < 1990) return '80er Jahre';
-          if (song.year < 2000) return '90er Jahre';
-          if (song.year < 2010) return '2000er Jahre';
-          if (song.year < 2020) return '2010er Jahre';
+          const y = parseInt(song.year, 10);
+          if (y < 1980) return '70er & älter';
+          if (y < 1990) return '80er Jahre';
+          if (y < 2000) return '90er Jahre';
+          if (y < 2010) return '2000er Jahre';
+          if (y < 2020) return '2010er Jahre';
           return '2020er Hits';
         }
       },
@@ -1151,7 +1182,13 @@
         name: '🔵 Erscheinungsjahr (± 2 Jahre Toleranz)',
         color: 'blau',
         type: 'number',
-        evalNum: (song, guess) => Math.abs(parseInt(guess, 10) - song.year) <= 2
+        evalNum: (song, guess) => {
+          if (guess === null || guess === undefined || String(guess).trim() === '') return false;
+          const parsed = parseInt(String(guess).trim(), 10);
+          const songYear = parseInt(song.year, 10);
+          if (isNaN(parsed) || isNaN(songYear)) return false;
+          return Math.abs(parsed - songYear) <= 2;
+        }
       }
     ];
 
@@ -1163,8 +1200,10 @@
         color: 'gruen',
         type: 'text',
         evalText: (song, ans) => {
-          const t = (song.title || '').toLowerCase();
-          const g = (ans || '').toLowerCase().trim();
+          if (!ans) return false;
+          const g = String(ans).toLowerCase().trim();
+          if (g.length < 2) return false;
+          const t = (song.title || '').toLowerCase().trim();
           return t.includes(g) || g.includes(t);
         }
       },
@@ -1173,7 +1212,13 @@
         name: '🌸 Genaues Erscheinungsjahr',
         color: 'pink',
         type: 'number',
-        evalNum: (song, guess) => parseInt(guess, 10) === song.year
+        evalNum: (song, guess) => {
+          if (guess === null || guess === undefined || String(guess).trim() === '') return false;
+          const parsed = parseInt(String(guess).trim(), 10);
+          const songYear = parseInt(song.year, 10);
+          if (isNaN(parsed) || isNaN(songYear)) return false;
+          return parsed === songYear;
+        }
       },
       {
         id: 'gelb_artist_name',
@@ -1181,8 +1226,10 @@
         color: 'gelb',
         type: 'text',
         evalText: (song, ans) => {
-          const a = (song.artist || '').toLowerCase();
-          const g = (ans || '').toLowerCase().trim();
+          if (!ans) return false;
+          const g = String(ans).toLowerCase().trim();
+          if (g.length < 2) return false;
+          const a = (song.artist || '').toLowerCase().trim();
           return a.includes(g) || g.includes(a);
         }
       },
@@ -1193,11 +1240,12 @@
         type: 'choice',
         choices: ['70er & älter', '80er Jahre', '90er Jahre', '2000er Jahre', '2010er Jahre', '2020er Hits'],
         eval: (song) => {
-          if (song.year < 1980) return '70er & älter';
-          if (song.year < 1990) return '80er Jahre';
-          if (song.year < 2000) return '90er Jahre';
-          if (song.year < 2010) return '2000er Jahre';
-          if (song.year < 2020) return '2010er Jahre';
+          const y = parseInt(song.year, 10);
+          if (y < 1980) return '70er & älter';
+          if (y < 1990) return '80er Jahre';
+          if (y < 2000) return '90er Jahre';
+          if (y < 2010) return '2000er Jahre';
+          if (y < 2020) return '2010er Jahre';
           return '2020er Hits';
         }
       },
@@ -1206,9 +1254,22 @@
         name: '🔵 Erscheinungsjahr (± 3 Jahre Toleranz)',
         color: 'blau',
         type: 'number',
-        evalNum: (song, guess) => Math.abs(parseInt(guess, 10) - song.year) <= 3
+        evalNum: (song, guess) => {
+          if (guess === null || guess === undefined || String(guess).trim() === '') return false;
+          const parsed = parseInt(String(guess).trim(), 10);
+          const songYear = parseInt(song.year, 10);
+          if (isNaN(parsed) || isNaN(songYear)) return false;
+          return Math.abs(parsed - songYear) <= 3;
+        }
       }
     ];
+
+    function getCategoryDef(catOrId) {
+      if (!catOrId) return null;
+      const catId = typeof catOrId === 'string' ? catOrId : catOrId.id;
+      const allCats = [...CATEGORIES_A, ...CATEGORIES_B];
+      return allCats.find(c => c.id === catId) || catOrId;
+    }
 
     /* ========================================================
        INITIALIZATION
@@ -1623,6 +1684,8 @@
           if (isRevealed) {
             const song = deckSongs[(currentSongIndex - 1 + deckSongs.length) % deckSongs.length];
             renderHostAnswersList(song);
+          } else {
+            renderHostAnswersListDuringGuessing();
           }
           broadcastHostState();
         } else if (msg.action === 'mark_cell') {
@@ -1809,6 +1872,40 @@
       const submittedCount = players.filter(p => p.answer).length;
       const countEl = document.getElementById('host-answers-count');
       if (countEl) countEl.textContent = `${submittedCount} / ${players.length} abgegeben`;
+
+      if (!isRevealed) {
+        renderHostAnswersListDuringGuessing();
+      }
+    }
+
+    function renderHostAnswersListDuringGuessing() {
+      const container = document.getElementById('host-answers-list');
+      if (!container || isRevealed) return;
+      if (currentRound === 0) {
+        container.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem; text-align: center; padding: 1rem;">Warte auf den Start der Spielrunde...</div>';
+        return;
+      }
+      container.innerHTML = '';
+      players.forEach(p => {
+        const row = document.createElement('div');
+        row.className = 'player-answer-row';
+        const hasSub = !!p.answer;
+        const catName = p.answer && p.answer.category ? p.answer.category.name : '';
+        const catCol = p.answer && p.answer.category ? p.answer.category.color : 'gruen';
+        row.innerHTML = `
+          <div style="font-weight: 800; color: #fff; font-size: 0.95rem;">${escapeHtml(p.name)}</div>
+          <div style="font-weight: 700; font-size: 0.88rem; color: ${hasSub ? '#4ade80' : '#f59e0b'};">
+            ${hasSub ? `✅ Eingeloggt ${catName ? `<span style="color: var(--cat-${catCol}); font-size: 0.82rem; font-weight: 800;">(${escapeHtml(catName)})</span>` : ''}` : '⏳ Tippt noch...'}
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function toggleHostQRCard() {
+      const qrCard = document.getElementById('host-qr-card');
+      if (!qrCard) return;
+      qrCard.style.display = (qrCard.style.display === 'none') ? 'block' : 'none';
     }
 
     /* ========================================================
@@ -1875,28 +1972,64 @@
       document.getElementById('intro-modal').classList.remove('show');
       document.getElementById('btn-host-start-intro').style.display = 'none';
       document.getElementById('btn-host-action').style.display = 'inline-flex';
+      const qrCard = document.getElementById('host-qr-card');
+      if (qrCard) qrCard.style.display = 'none';
       hostNextRound();
     }
 
     /* ========================================================
        ROUND FLOW & RANDOM 1 OR 2 CATEGORIES DRAW
        ======================================================== */
+    let selectedHostCategory = null;
+
     function hostNextRound() {
       if (deckSongs.length === 0) {
         alert("Keine Songs im Deck geladen!");
         return;
       }
 
+      // Hide QR code card on round start
+      const qrCard = document.getElementById('host-qr-card');
+      if (qrCard) qrCard.style.display = 'none';
+
       currentRound++;
       isRevealed = false;
       hasAnswered = false;
+
+      // Clear all players' answers from previous round
+      players.forEach(p => {
+        p.answer = null;
+      });
+
+      // Clear Host UI inputs
+      const hostInput = document.getElementById('host-interactive-text-input');
+      if (hostInput) hostInput.value = '';
+      document.getElementById('host-own-locked-status').style.display = 'none';
+      document.getElementById('host-own-mark-instruction').style.display = 'none';
+      document.querySelectorAll('#host-bingo-board-grid .bingo-cell').forEach(el => el.classList.remove('pulsing-target'));
+
       document.getElementById('host-solution-card').style.display = 'none';
       document.getElementById('btn-host-reveal').style.display = 'inline-flex';
       document.getElementById('btn-host-action').style.display = 'none';
 
+      renderHostAnswersListDuringGuessing();
+      const countEl = document.getElementById('host-answers-count');
+      if (countEl) countEl.textContent = `0 / ${players.length} abgegeben`;
+
       // Pick next song
       const song = deckSongs[currentSongIndex % deckSongs.length];
       currentSongIndex++;
+
+      // Warm up audio directly on user click gesture
+      const audio = document.getElementById('host-game-audio');
+      if (audio && song && song.previewUrl) {
+        audio.src = song.previewUrl;
+        audio.load();
+        const p = audio.play();
+        if (p !== undefined) {
+          p.catch(() => {});
+        }
+      }
 
       // Spin 3D Discoball
       const ball = document.getElementById('discoball');
@@ -1923,6 +2056,8 @@
         activeCategories = [pool[0]];
       }
 
+      selectedHostCategory = activeCategories[0];
+
       // Display on Host screen
       const pill = document.getElementById('host-category-pill');
       if (activeCategories.length === 1) {
@@ -1935,7 +2070,7 @@
         pill.style.color = '#fff';
       }
 
-      // Reset Host interaction
+      // Render Host interactive play
       renderHostInteractivePlay();
 
       // Reset Player interaction
@@ -1954,12 +2089,49 @@
       document.getElementById('host-interactive-mc').style.display = 'none';
       document.getElementById('host-interactive-text').style.display = 'none';
 
-      const cat = activeCategories[0];
+      const choiceBox = document.getElementById('host-category-choice-box');
+      const choiceBtns = document.getElementById('host-category-choice-buttons');
+
+      if (activeCategories.length === 2) {
+        choiceBox.style.display = 'block';
+        choiceBtns.innerHTML = '';
+        activeCategories.forEach((cat, idx) => {
+          const btn = document.createElement('button');
+          btn.className = `btn-choice ${idx === 0 ? 'selected' : ''}`;
+          btn.style.fontSize = '0.92rem';
+          btn.style.padding = '8px 12px';
+          btn.textContent = cat.name;
+          btn.onclick = () => selectCategoryForHost(cat, btn);
+          choiceBtns.appendChild(btn);
+        });
+        selectedHostCategory = activeCategories[0];
+      } else {
+        choiceBox.style.display = 'none';
+        selectedHostCategory = activeCategories[0];
+      }
+
+      displayHostActiveQuestion();
+    }
+
+    function selectCategoryForHost(cat, btn) {
+      selectedHostCategory = cat;
+      document.querySelectorAll('#host-category-choice-buttons .btn-choice').forEach(b => b.classList.remove('selected'));
+      if (btn) btn.classList.add('selected');
+      displayHostActiveQuestion();
+    }
+
+    function displayHostActiveQuestion() {
+      const cat = selectedHostCategory || activeCategories[0];
+      if (!cat) return;
+
       document.getElementById('host-interaction-title').innerHTML = `Deine Host-Aufgabe: <strong style="color: var(--cat-${cat.color});">${cat.name}</strong>`;
 
+      const mc = document.getElementById('host-interactive-mc');
+      const tb = document.getElementById('host-interactive-text');
+
       if (cat.type === 'choice') {
-        const mc = document.getElementById('host-interactive-mc');
         mc.style.display = 'flex';
+        tb.style.display = 'none';
         mc.innerHTML = '';
         cat.choices.forEach(ch => {
           const btn = document.createElement('button');
@@ -1971,7 +2143,7 @@
           mc.appendChild(btn);
         });
       } else {
-        const tb = document.getElementById('host-interactive-text');
+        mc.style.display = 'none';
         tb.style.display = 'block';
         const input = document.getElementById('host-interactive-text-input');
         input.value = '';
@@ -1998,7 +2170,7 @@
         alert("Bitte gib eine Antwort ein.");
         return;
       }
-      const cat = activeCategories[0];
+      const cat = selectedHostCategory || activeCategories[0];
       players[0].answer = {
         category: cat,
         answer: val,
@@ -2013,11 +2185,25 @@
        ======================================================== */
     function startHostRoundTimer(song) {
       const audio = document.getElementById('host-game-audio');
-      if (song.previewUrl) {
-        audio.src = song.previewUrl;
+      const tapStartCont = document.getElementById('host-audio-tap-start-container');
+      if (tapStartCont) tapStartCont.style.display = 'none';
+
+      if (song && song.previewUrl) {
+        if (audio.src !== song.previewUrl) {
+          audio.src = song.previewUrl;
+        }
         audio.currentTime = 0;
-        audio.play().catch(() => {});
-        document.getElementById('btn-audio-icon').textContent = '⏸️';
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            document.getElementById('btn-audio-icon').textContent = '⏸️';
+            if (tapStartCont) tapStartCont.style.display = 'none';
+          }).catch(err => {
+            console.warn("Autoplay blocked by browser:", err);
+            document.getElementById('btn-audio-icon').textContent = '▶️';
+            if (tapStartCont) tapStartCont.style.display = 'block';
+          });
+        }
       }
 
       // Automatically reveal & pause music if audio ends
@@ -2047,11 +2233,26 @@
       }, 1000);
     }
 
+    function manuallyStartHostAudio() {
+      const audio = document.getElementById('host-game-audio');
+      if (audio) {
+        audio.play().then(() => {
+          const tapStartCont = document.getElementById('host-audio-tap-start-container');
+          if (tapStartCont) tapStartCont.style.display = 'none';
+          document.getElementById('btn-audio-icon').textContent = '⏸️';
+        }).catch(e => {
+          console.warn("Manual audio start failed:", e);
+        });
+      }
+    }
+
     function toggleHostAudio() {
       const audio = document.getElementById('host-game-audio');
       if (audio.paused) {
         audio.play();
         document.getElementById('btn-audio-icon').textContent = '⏸️';
+        const tapStartCont = document.getElementById('host-audio-tap-start-container');
+        if (tapStartCont) tapStartCont.style.display = 'none';
         // RESUME TIMER!
         if (!isRevealed && roundTimer > 0 && !timerInterval) {
           timerInterval = setInterval(() => {
@@ -2080,6 +2281,8 @@
       audio.currentTime = 0;
       audio.play().catch(() => {});
       document.getElementById('btn-audio-icon').textContent = '⏸️';
+      const tapStartCont = document.getElementById('host-audio-tap-start-container');
+      if (tapStartCont) tapStartCont.style.display = 'none';
 
       // RESET TIMER BACK TO 30 SECONDS!
       roundTimer = 30;
@@ -2132,9 +2335,9 @@
       const sol = document.getElementById('host-solution-card');
       sol.style.display = 'block';
       document.getElementById('host-sol-cover').src = song.coverUrl || 'logo.svg';
-      document.getElementById('host-sol-year').textContent = song.year;
-      document.getElementById('host-sol-title').textContent = song.title;
-      document.getElementById('host-sol-artist').textContent = song.artist;
+      document.getElementById('host-sol-year').textContent = song.year || '----';
+      document.getElementById('host-sol-title').textContent = song.title || 'Unbekannt';
+      document.getElementById('host-sol-artist').textContent = song.artist || 'Unbekannt';
 
       playSynthSound('reveal');
 
@@ -2149,7 +2352,7 @@
           document.getElementById('host-own-mark-instruction').style.display = 'block';
           playSynthSound('correct');
 
-          const col = hostP.answer.category.color;
+          const col = (hostP.answer.category && hostP.answer.category.color) || 'gruen';
           document.querySelectorAll(`#host-bingo-board-grid .bingo-cell.col-${col}:not(.marked)`).forEach(el => {
             el.classList.add('pulsing-target');
           });
@@ -2170,6 +2373,7 @@
 
     function renderHostAnswersList(song) {
       const container = document.getElementById('host-answers-list');
+      if (!container) return;
       container.innerHTML = '';
 
       players.forEach(p => {
@@ -2177,39 +2381,47 @@
         row.className = 'player-answer-row';
 
         const ansObj = p.answer || { category: activeCategories[0], answer: 'Keine Antwort', approved: false };
+        const rawCat = ansObj.category || activeCategories[0];
+        const catDef = getCategoryDef(rawCat);
+
         let isCorrect = false;
 
-        // Auto-Check
-        if (ansObj.category && ansObj.category.type === 'choice' && ansObj.category.eval) {
-          isCorrect = (ansObj.answer === ansObj.category.eval(song));
-          if (ansObj.approved === null) ansObj.approved = isCorrect;
-        } else if (ansObj.category && ansObj.category.type === 'number' && ansObj.category.evalNum) {
-          isCorrect = ansObj.category.evalNum(song, ansObj.answer);
-          if (ansObj.approved === null) ansObj.approved = isCorrect;
-        } else if (ansObj.approved !== null) {
+        if (ansObj.approved !== null && ansObj.approved !== undefined) {
           isCorrect = ansObj.approved;
         } else {
-          if (ansObj.category && ansObj.category.evalText) {
-            isCorrect = ansObj.category.evalText(song, ansObj.answer);
-            if (ansObj.approved === null) ansObj.approved = isCorrect;
+          if (!p.answer || !ansObj.answer || String(ansObj.answer).trim() === '') {
+            isCorrect = false;
+            ansObj.approved = false;
+          } else if (catDef && catDef.type === 'choice' && typeof catDef.eval === 'function') {
+            isCorrect = (String(ansObj.answer).trim() === catDef.eval(song));
+            ansObj.approved = isCorrect;
+          } else if (catDef && catDef.type === 'number' && typeof catDef.evalNum === 'function') {
+            isCorrect = catDef.evalNum(song, ansObj.answer);
+            ansObj.approved = isCorrect;
+          } else if (catDef && typeof catDef.evalText === 'function') {
+            isCorrect = catDef.evalText(song, ansObj.answer);
+            ansObj.approved = isCorrect;
+          } else {
+            isCorrect = false;
+            ansObj.approved = false;
           }
         }
 
-        const catCol = ansObj.category ? ansObj.category.color : 'gruen';
-        const catName = ansObj.category ? ansObj.category.name : '';
+        const catCol = catDef ? catDef.color : 'gruen';
+        const catName = catDef ? catDef.name : '';
 
         row.innerHTML = `
-          <div>
-            <div style="font-weight: 800; color: #fff;">${escapeHtml(p.name)}</div>
-            <div style="font-size: 0.85rem; color: var(--cat-${catCol}); font-weight: 700;">
-              [${catName}] <strong>${escapeHtml(String(ansObj.answer))}</strong>
+          <div style="flex: 1; min-width: 0; padding-right: 8px;">
+            <div style="font-weight: 800; color: #fff; font-size: 0.95rem;">${escapeHtml(p.name)}</div>
+            <div style="font-size: 0.85rem; color: var(--cat-${catCol}); font-weight: 700; word-break: break-word;">
+              [${escapeHtml(catName)}] <strong>"${escapeHtml(String(ansObj.answer))}"</strong>
             </div>
           </div>
-          <div style="display: flex; gap: 6px; align-items: center;">
-            <button class="btn-apple-secondary" onclick="hostSetAnswerApproval('${p.id}', true)" style="width: auto; padding: 6px 12px; font-size: 0.85rem; border-color: ${ansObj.approved === true ? 'var(--cat-green)' : 'transparent'}; background: ${ansObj.approved === true ? 'rgba(16,185,129,0.35)' : 'rgba(255,255,255,0.08)'};">
+          <div style="display: flex; gap: 6px; align-items: center; flex-shrink: 0;">
+            <button class="btn-apple-secondary" onclick="hostSetAnswerApproval('${p.id}', true)" style="width: auto; padding: 6px 12px; font-size: 0.85rem; font-weight: 800; border-color: ${ansObj.approved === true ? 'var(--cat-green)' : 'transparent'}; background: ${ansObj.approved === true ? 'rgba(16,185,129,0.45)' : 'rgba(255,255,255,0.08)'}; color: ${ansObj.approved === true ? '#fff' : '#cbd5e1'};">
               ✅ Richtig
             </button>
-            <button class="btn-apple-secondary" onclick="hostSetAnswerApproval('${p.id}', false)" style="width: auto; padding: 6px 12px; font-size: 0.85rem; border-color: ${ansObj.approved === false ? '#ef4444' : 'transparent'}; background: ${ansObj.approved === false ? 'rgba(239,68,68,0.35)' : 'rgba(255,255,255,0.08)'};">
+            <button class="btn-apple-secondary" onclick="hostSetAnswerApproval('${p.id}', false)" style="width: auto; padding: 6px 12px; font-size: 0.85rem; font-weight: 800; border-color: ${ansObj.approved === false ? '#ef4444' : 'transparent'}; background: ${ansObj.approved === false ? 'rgba(239,68,68,0.45)' : 'rgba(255,255,255,0.08)'}; color: ${ansObj.approved === false ? '#fff' : '#cbd5e1'};">
               ❌ Falsch
             </button>
           </div>
@@ -2217,13 +2429,19 @@
         container.appendChild(row);
       });
 
-      updateHostPlayerList();
+      const submittedCount = players.filter(p => p.answer).length;
+      const countEl = document.getElementById('host-answers-count');
+      if (countEl) countEl.textContent = `${submittedCount} / ${players.length} abgegeben`;
     }
 
     function hostSetAnswerApproval(playerId, approved) {
       const p = players.find(x => x.id === playerId);
-      if (p && p.answer) {
-        p.answer.approved = approved;
+      if (p) {
+        if (!p.answer) {
+          p.answer = { category: activeCategories[0], answer: 'Keine Antwort', approved: approved };
+        } else {
+          p.answer.approved = approved;
+        }
         const song = deckSongs[(currentSongIndex - 1 + deckSongs.length) % deckSongs.length];
         renderHostAnswersList(song);
         broadcastHostState();
@@ -2341,15 +2559,37 @@
       const markInstruction = document.getElementById('player-mark-instruction');
       const targetCol = (selectedPlayerCategory && selectedPlayerCategory.color) || (myAnswer && myAnswer.category && myAnswer.category.color) || 'gruen';
 
+      const sTitle = escapeHtml(song.title || 'Unbekannter Titel');
+      const sArtist = escapeHtml(song.artist || 'Unbekannter Interpret');
+      const sYear = song.year || '----';
+
       if (!myAnswer) {
-        qText.innerHTML = `⏳ <span style="color:#cbd5e1;">Song aufgelöst:</span> <strong>${escapeHtml(song.artist || '')} - ${escapeHtml(song.title || '')} (${song.year || ''})</strong><br><span style="font-size:0.9rem; color:#94a3b8;">Du hattest in dieser Runde keinen Tipp abgegeben.</span>`;
+        qText.innerHTML = `
+          <div style="margin-bottom: 8px;">
+            <span style="display: inline-block; background: rgba(255,255,255,0.15); color: #cbd5e1; font-weight: 800; font-size: 1rem; padding: 4px 14px; border-radius: 20px;">⏳ Kein Tipp abgegeben</span>
+          </div>
+          <div style="font-size: 1.5rem; font-weight: 900; color: #fff; margin-top: 6px; line-height: 1.2;">${sTitle}</div>
+          <div style="font-size: 1.2rem; font-weight: 800; color: #38bdf8; margin-top: 3px;">${sArtist}</div>
+          <div style="margin-top: 8px;">
+            <span style="display: inline-block; background: #fbbf24; color: #000; font-weight: 900; font-size: 1.15rem; padding: 3px 12px; border-radius: 8px;">Jahr: ${sYear}</span>
+          </div>
+        `;
         if (markInstruction) markInstruction.style.display = 'none';
         return;
       }
 
       if (myAnswer.approved === true) {
         // RICHTIG!
-        qText.innerHTML = `🎉 <strong style="color: var(--cat-green); font-size: 1.25rem;">RICHTIG!</strong><br><span style="color: #e2e8f0; font-size: 0.95rem;">${escapeHtml(song.artist || '')} - ${escapeHtml(song.title || '')} (${song.year || ''})</span>`;
+        qText.innerHTML = `
+          <div style="margin-bottom: 8px;">
+            <span style="display: inline-block; background: var(--cat-green); color: #000; font-weight: 900; font-size: 1.25rem; padding: 4px 18px; border-radius: 20px; box-shadow: 0 4px 15px rgba(16,185,129,0.45);">🎉 RICHTIG!</span>
+          </div>
+          <div style="font-size: 1.5rem; font-weight: 900; color: #fff; margin-top: 6px; line-height: 1.2;">${sTitle}</div>
+          <div style="font-size: 1.2rem; font-weight: 800; color: #38bdf8; margin-top: 3px;">${sArtist}</div>
+          <div style="margin-top: 8px;">
+            <span style="display: inline-block; background: #fbbf24; color: #000; font-weight: 900; font-size: 1.15rem; padding: 3px 12px; border-radius: 8px;">Jahr: ${sYear}</span>
+          </div>
+        `;
         if (markInstruction) {
           markInstruction.style.display = 'block';
           markInstruction.innerHTML = `✨ <strong>DEINE ANTWORT WAR RICHTIG!</strong><br>👇 Tippe jetzt unten auf ein freies <strong>[${targetCol.toUpperCase()}]</strong>-Feld auf deinem Bingo-Schein!`;
@@ -2369,7 +2609,17 @@
         }
       } else if (myAnswer.approved === false) {
         // FALSCH!
-        qText.innerHTML = `❌ <strong style="color: #ef4444; font-size: 1.2rem;">Leider falsch!</strong><br><span style="color: #e2e8f0; font-size: 0.95rem;">${escapeHtml(song.artist || '')} - ${escapeHtml(song.title || '')} (${song.year || ''})</span><br><span style="font-size: 0.85rem; color: #94a3b8;">Dein Tipp war: "${escapeHtml(String(myAnswer.answer || ''))}"</span>`;
+        qText.innerHTML = `
+          <div style="margin-bottom: 8px;">
+            <span style="display: inline-block; background: #ef4444; color: #fff; font-weight: 900; font-size: 1.2rem; padding: 4px 18px; border-radius: 20px; box-shadow: 0 4px 15px rgba(239,68,68,0.45);">❌ LEIDER FALSCH</span>
+          </div>
+          <div style="font-size: 1.5rem; font-weight: 900; color: #fff; margin-top: 6px; line-height: 1.2;">${sTitle}</div>
+          <div style="font-size: 1.2rem; font-weight: 800; color: #38bdf8; margin-top: 3px;">${sArtist}</div>
+          <div style="margin-top: 8px;">
+            <span style="display: inline-block; background: #fbbf24; color: #000; font-weight: 900; font-size: 1.15rem; padding: 3px 12px; border-radius: 8px;">Jahr: ${sYear}</span>
+          </div>
+          <div style="font-size: 0.92rem; color: #cbd5e1; margin-top: 10px;">Dein Tipp war: <strong>"${escapeHtml(String(myAnswer.answer || ''))}"</strong></div>
+        `;
         if (markInstruction) markInstruction.style.display = 'none';
 
         document.querySelectorAll('#player-bingo-board .bingo-cell').forEach(el => {
@@ -2387,7 +2637,10 @@
         }
       } else {
         // PENDING (Waiting for host manual review)
-        qText.innerHTML = `⏳ <strong>Tipp eingeloggt: "${escapeHtml(String(myAnswer.answer || ''))}"</strong><br><span style="color: #cbd5e1; font-size: 0.9rem;">Warte auf Bestätigung durch den Host...</span>`;
+        qText.innerHTML = `
+          <div style="font-size: 1.1rem; color: #fff; margin-bottom: 6px;">⏳ <strong>Tipp eingeloggt: "${escapeHtml(String(myAnswer.answer || ''))}"</strong></div>
+          <div style="color: #cbd5e1; font-size: 0.9rem;">Warte auf Bestätigung durch den Host...</div>
+        `;
         if (markInstruction) markInstruction.style.display = 'none';
       }
 
