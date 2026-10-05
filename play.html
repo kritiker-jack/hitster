@@ -2,22 +2,29 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0a0b12">
   <title>Hitster Blind-Player 🎵</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg-dark: #0b0d14;
-      --bg-card: #151826;
+      --bg-dark: #0a0b12;
+      --bg-glass: rgba(18, 22, 38, 0.75);
       --accent-pink: #ff2a7a;
       --accent-cyan: #00f2fe;
       --accent-purple: #7928ca;
       --accent-yellow: #ffde59;
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-      --border-color: #262c45;
+      --text-main: #f5f6fa;
+      --text-muted: #9499b3;
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --border-glass-bright: rgba(255, 255, 255, 0.16);
+      --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Outfit", sans-serif;
     }
 
     * {
@@ -28,62 +35,59 @@
     }
 
     body {
-      font-family: 'Outfit', sans-serif;
-      background: radial-gradient(circle at 50% 20%, #1e223d 0%, var(--bg-dark) 80%);
+      font-family: var(--font-system);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 15%, rgba(121, 40, 202, 0.22) 0%, transparent 55%),
+        radial-gradient(circle at 85% 85%, rgba(0, 242, 254, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 15% 80%, rgba(255, 42, 122, 0.1) 0%, transparent 45%);
+      background-attachment: fixed;
       color: var(--text-main);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 1.5rem 1rem;
+      padding: max(env(safe-area-inset-top, 16px), 16px) 16px max(env(safe-area-inset-bottom, 20px), 20px);
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* TOP BAR WITH APP BACK BUTTON */
     header {
       width: 100%;
-      max-width: 480px;
+      max-width: 440px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
 
-    .brand {
+    .brand-pill {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      padding: 6px 14px;
+      border-radius: 980px;
       display: flex;
       align-items: center;
-      gap: 10px;
-    }
-
-    .brand-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 15px rgba(255, 42, 122, 0.4);
-    }
-
-    .brand-title {
-      font-size: 1.1rem;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-      background: linear-gradient(90deg, #fff, var(--accent-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .scan-nav-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border-color);
-      color: white;
-      padding: 8px 14px;
-      border-radius: 20px;
+      gap: 8px;
+      font-weight: 800;
       font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-scanner-link {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass-bright);
+      color: #fff;
+      padding: 7px 14px;
+      border-radius: 980px;
+      font-size: 0.82rem;
       font-weight: 600;
       text-decoration: none;
       display: flex;
@@ -92,25 +96,27 @@
       transition: all 0.2s;
     }
 
-    .scan-nav-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
+    .btn-scanner-link:active {
+      transform: scale(0.92);
+      background: rgba(255, 255, 255, 0.2);
     }
 
+    /* MAIN PLAYER CONTAINER */
     main {
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1.2rem;
       margin: auto 0;
     }
 
-    /* VINYL RECORD ANIMATION */
+    /* VINYL RECORD */
     .vinyl-container {
       position: relative;
-      width: 210px;
-      height: 210px;
+      width: 190px;
+      height: 190px;
       margin: 0 auto;
     }
 
@@ -124,69 +130,65 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.3s;
-      animation: spin 3.5s linear infinite paused;
+      animation: spinVinyl 3.5s linear infinite paused;
     }
 
-    .vinyl.playing {
+    .vinyl.spinning {
       animation-play-state: running;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 242, 254, 0.4);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 242, 254, 0.45);
     }
 
-    @keyframes spin {
+    @keyframes spinVinyl {
       100% { transform: rotate(360deg); }
     }
 
     .vinyl-label {
-      width: 76px;
-      height: 76px;
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
-      position: relative;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
     }
 
     .vinyl-hole {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
-      background: #0b0d14;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: #0a0b12;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
     }
 
     .vinyl-text {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       font-weight: 900;
       letter-spacing: 1px;
       color: white;
-      margin-top: 4px;
-      text-transform: uppercase;
+      margin-top: 3px;
     }
 
-    /* EQUALIZER WAVE */
+    /* EQUALIZER BARS */
     .equalizer-bars {
       display: flex;
       align-items: flex-end;
       justify-content: center;
       gap: 5px;
-      height: 32px;
-      margin: 0.5rem 0;
+      height: 28px;
     }
 
     .eq-bar {
       width: 5px;
       background: linear-gradient(to top, var(--accent-pink), var(--accent-cyan));
-      border-radius: 3px;
-      height: 6px;
+      border-radius: 2px;
+      height: 5px;
       transition: height 0.1s ease;
     }
 
     .eq-bar.active {
-      animation: bounce 0.6s ease-in-out infinite alternate;
+      animation: eqBounce 0.55s ease-in-out infinite alternate;
     }
 
     .eq-bar:nth-child(1) { animation-delay: 0.1s; }
@@ -197,51 +199,39 @@
     .eq-bar:nth-child(6) { animation-delay: 0.35s; }
     .eq-bar:nth-child(7) { animation-delay: 0.15s; }
 
-    @keyframes bounce {
-      0% { height: 6px; }
-      100% { height: 30px; }
+    @keyframes eqBounce {
+      0% { height: 5px; }
+      100% { height: 28px; }
     }
 
-    /* STATUS HINT */
-    .play-status-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      text-align: center;
-      color: #fff;
-    }
-
-    .play-status-subtitle {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    /* PROGRESS BAR & TIMER */
+    /* TIMER CONTAINER */
     .timer-container {
       width: 100%;
       background: rgba(255, 255, 255, 0.06);
-      border-radius: 12px;
-      padding: 12px 16px;
-      border: 1px solid var(--border-color);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 10px 16px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .timer-info-row {
+    .timer-row {
       display: flex;
       justify-content: space-between;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
       font-family: monospace;
     }
 
     .progress-bar-bg {
       width: 100%;
-      height: 8px;
+      height: 7px;
       background: rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
+      border-radius: 980px;
       overflow: hidden;
     }
 
@@ -249,7 +239,7 @@
       width: 0%;
       height: 100%;
       background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
-      border-radius: 4px;
+      border-radius: 980px;
       transition: width 0.25s linear;
     }
 
@@ -262,100 +252,99 @@
       width: 100%;
     }
 
-    .btn-control {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: white;
-      width: 50px;
-      height: 50px;
+    .btn-control-circle {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-glass-bright);
+      color: #fff;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-      transition: all 0.2s;
+      transition: transform 0.15s;
     }
 
-    .btn-control:active {
+    .btn-control-circle:active {
       transform: scale(0.92);
     }
 
-    .btn-play-primary {
-      width: 72px;
-      height: 72px;
+    .btn-play-hero {
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent-pink), #e01463);
       border: none;
       color: white;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       cursor: pointer;
-      box-shadow: 0 8px 25px rgba(255, 42, 122, 0.5);
-      transition: all 0.2s;
+      box-shadow: 0 6px 22px rgba(255, 42, 122, 0.5);
+      transition: transform 0.15s;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .btn-play-primary:active {
-      transform: scale(0.92);
-      box-shadow: 0 4px 15px rgba(255, 42, 122, 0.3);
+    .btn-play-hero:active {
+      transform: scale(0.94);
     }
 
     /* REVEAL BUTTON */
-    .btn-reveal {
+    .btn-reveal-hero {
       width: 100%;
-      padding: 16px 20px;
+      padding: 16px;
       background: linear-gradient(135deg, var(--accent-purple), #4a148c);
       color: white;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      border-radius: 14px;
-      font-size: 1.15rem;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 16px;
+      font-family: inherit;
+      font-size: 1.05rem;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       cursor: pointer;
-      box-shadow: 0 8px 25px rgba(121, 40, 202, 0.4);
+      box-shadow: 0 8px 25px rgba(121, 40, 202, 0.45);
       transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       text-transform: uppercase;
     }
 
-    .btn-reveal:active {
-      transform: translateY(2px);
+    .btn-reveal-hero:active {
+      transform: scale(0.97);
     }
 
-    /* SOLUTION BOX (HIDDEN INITIALLY) */
+    /* REVEALED SOLUTION CARD */
     .solution-card {
       width: 100%;
       background: linear-gradient(145deg, #1b2038 0%, #121524 100%);
       border: 2px solid var(--accent-pink);
-      border-radius: 18px;
-      padding: 1.8rem 1.4rem;
+      border-radius: 20px;
+      padding: 1.6rem 1.4rem;
       text-align: center;
       display: none;
-      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      box-shadow: 0 10px 40px rgba(255, 42, 122, 0.25);
+      animation: springPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      box-shadow: 0 10px 40px rgba(255, 42, 122, 0.3);
     }
 
-    @keyframes popIn {
+    @keyframes springPop {
       0% { opacity: 0; transform: scale(0.85); }
       100% { opacity: 1; transform: scale(1); }
     }
 
-    .solution-tag {
-      font-size: 0.8rem;
+    .sol-tag {
+      font-size: 0.75rem;
       font-weight: 800;
       letter-spacing: 2px;
       color: var(--accent-cyan);
       text-transform: uppercase;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
     }
 
-    .solution-year {
+    .sol-year {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 4.2rem;
       font-weight: 900;
@@ -364,37 +353,36 @@
       background: linear-gradient(135deg, #ffffff 0%, var(--accent-yellow) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin: 0.4rem 0 1rem;
-      text-shadow: 0 4px 20px rgba(255, 222, 89, 0.3);
+      margin: 0.2rem 0 0.8rem;
     }
 
-    .solution-title {
-      font-size: 1.4rem;
+    .sol-title {
+      font-size: 1.3rem;
       font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 0.3rem;
+      color: #fff;
+      margin-bottom: 0.2rem;
       line-height: 1.3;
     }
 
-    .solution-artist {
-      font-size: 1.05rem;
+    .sol-artist {
+      font-size: 0.95rem;
       color: var(--accent-cyan);
       font-weight: 600;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.4rem;
     }
 
-    .solution-actions {
+    .sol-actions {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .btn-spotify-ext {
+    .btn-spotify-apple {
       background: #1DB954;
       color: black;
       font-weight: 800;
-      padding: 12px;
-      border-radius: 10px;
+      padding: 13px;
+      border-radius: 12px;
       text-decoration: none;
       font-size: 0.95rem;
       display: flex;
@@ -403,13 +391,13 @@
       gap: 8px;
     }
 
-    .btn-next-scan {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--border-color);
+    .btn-next-scan-apple {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--border-glass-bright);
       color: white;
       font-weight: 700;
-      padding: 12px;
-      border-radius: 10px;
+      padding: 13px;
+      border-radius: 12px;
       text-decoration: none;
       font-size: 0.95rem;
       display: flex;
@@ -418,48 +406,51 @@
       gap: 8px;
     }
 
+    /* LOADING SPINNER */
     .loading-spinner {
-      border: 4px solid rgba(255, 255, 255, 0.1);
-      border-top: 4px solid var(--accent-cyan);
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid var(--accent-cyan);
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       animation: spin 0.8s linear infinite;
       margin: 1.5rem auto;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
     }
 
     footer {
       font-size: 0.75rem;
       color: #636b87;
       text-align: center;
-      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
+  <!-- TOP HEADER -->
   <header>
-    <div class="brand">
-      <div class="brand-logo">H</div>
-      <div class="brand-title">HITSTER PLAYER</div>
+    <div class="brand-pill">
+      <span>💿</span> HITSTER PLAYER
     </div>
-    <a href="/" class="scan-nav-btn">
+    <a href="index.html#scanner" class="btn-scanner-link">
       <span>📷</span> Scanner
     </a>
   </header>
 
-  <!-- MAIN BLIND PLAYER -->
+  <!-- MAIN PLAYER -->
   <main id="player-container">
 
     <!-- LOADING STATE -->
     <div id="loading-state" style="text-align: center; padding: 2rem 0;">
       <div class="loading-spinner"></div>
-      <p style="color: var(--text-muted); margin-top: 1rem; font-weight: 600;">Lade Song-Informationen...</p>
+      <p style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Lade Song...</p>
     </div>
 
-    <!-- ACTIVE GAME STATE -->
-    <div id="game-state" style="display: none; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+    <!-- ACTIVE BLIND GAME STATE -->
+    <div id="game-state" style="display: none; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.2rem;">
       
       <!-- ROTATING VINYL -->
       <div class="vinyl-container">
@@ -482,15 +473,15 @@
         <div class="eq-bar"></div>
       </div>
 
-      <!-- TITLE TEXT: INTENTIONALLY NEUTRAL / SPOILER-FREE -->
-      <div>
-        <div id="status-title" class="play-status-title">🎵 Song bereit zum Raten</div>
-        <div id="status-sub" class="play-status-subtitle">Tippe auf Play – Erratet das Erscheinungsjahr!</div>
+      <!-- STATUS TEXT -->
+      <div style="text-align: center;">
+        <div id="status-title" style="font-size: 1.2rem; font-weight: 800; color: #fff;">🎶 Song läuft...</div>
+        <div id="status-sub" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Erratet das Erscheinungsjahr!</div>
       </div>
 
       <!-- TIMER & PROGRESS -->
       <div class="timer-container">
-        <div class="timer-info-row">
+        <div class="timer-row">
           <span>ABGESPIELT</span>
           <span id="timer-display">00:00 / 00:30</span>
         </div>
@@ -501,26 +492,16 @@
 
       <!-- CONTROLS -->
       <div class="controls-row">
-        <button class="btn-control" onclick="restartAudio()" title="Von vorne">
-          <span>⏮️</span>
+        <button class="btn-control-circle" onclick="restartAudio()" title="Von vorne">⏮️</button>
+        <button id="btn-main-play" class="btn-play-hero" onclick="togglePlayPause()" title="Play / Pause">
+          <span id="play-icon">⏸️</span>
         </button>
-        <button id="btn-main-play" class="btn-play-primary" onclick="togglePlayPause()" title="Play / Pause">
-          <span id="play-icon">▶️</span>
-        </button>
-        <button class="btn-control" onclick="stopAudio()" title="Stopp">
-          <span>⏹️</span>
-        </button>
+        <button class="btn-control-circle" onclick="stopAudio()" title="Stopp">⏹️</button>
       </div>
 
-      <!-- REVEAL BUTTON -->
-      <button id="btn-reveal-solution" class="btn-reveal" onclick="revealSolution()">
-        <span>👁️</span> Lösung aufdecken
-      </button>
-
-      
       <!-- SPOTIFY EMBED WITH BLIND SHIELD -->
-      <div id="spotify-player-box" style="width: 100%; position: relative; margin-top: 5px;">
-        <div id="spotify-cover-shield" style="position: absolute; top: 0; left: 0; width: calc(100% - 85px); height: 80px; background: #151826; border: 1px solid var(--border-color); border-radius: 12px; z-index: 10; display: flex; align-items: center; padding: 0 15px; gap: 10px; pointer-events: none;">
+      <div id="spotify-player-box" style="width: 100%; position: relative; margin-top: 5px; display: none;">
+        <div id="spotify-cover-shield" style="position: absolute; top: 0; left: 0; width: calc(100% - 85px); height: 80px; background: #151826; border: 1px solid var(--border-glass); border-radius: 12px; z-index: 10; display: flex; align-items: center; padding: 0 15px; gap: 10px; pointer-events: none;">
           <span style="font-size: 1.3rem;">🔒</span>
           <div>
             <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-pink);">HITSTER BLIND-MODUS</div>
@@ -530,18 +511,23 @@
         <iframe id="spotify-iframe" src="" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius: 12px; border: none; display: block;"></iframe>
       </div>
 
-      <!-- SOLUTION CARD (SHOWN ONLY AFTER CLICKING REVEAL) -->
-      <div id="solution-card" class="solution-card">
-        <div class="solution-tag">🏆 Erscheinungsjahr</div>
-        <div id="sol-year" class="solution-year">----</div>
-        <div id="sol-title" class="solution-title">---</div>
-        <div id="sol-artist" class="solution-artist">---</div>
+      <!-- REVEAL HERO BUTTON -->
+      <button id="btn-reveal-solution" class="btn-reveal-hero" onclick="revealSolution()">
+        <span>👁️</span> Lösung aufdecken
+      </button>
 
-        <div class="solution-actions">
-          <a id="sol-spotify-link" href="#" target="_blank" class="btn-spotify-ext">
+      <!-- REVEALED SOLUTION CARD -->
+      <div id="solution-card" class="solution-card">
+        <div class="sol-tag">🏆 Erscheinungsjahr</div>
+        <div id="sol-year" class="sol-year">----</div>
+        <div id="sol-title" class="sol-title">---</div>
+        <div id="sol-artist" class="sol-artist">---</div>
+
+        <div class="sol-actions">
+          <a id="sol-spotify-link" href="#" target="_blank" class="btn-spotify-apple">
             <span>🎧</span> In Spotify in voller Länge hören
           </a>
-          <a href="/" class="btn-next-scan">
+          <a href="index.html#scanner" class="btn-next-scan-apple">
             <span>📷</span> Nächste Karte scannen
           </a>
         </div>
@@ -550,19 +536,17 @@
     </div>
 
     <!-- ERROR STATE -->
-    <div id="error-state" style="display: none; text-align: center; padding: 1.5rem; background: rgba(239, 68, 68, 0.15); border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3);">
+    <div id="error-state" style="display: none; text-align: center; padding: 1.5rem; background: rgba(239, 68, 68, 0.15); border-radius: 14px; border: 1px solid rgba(239, 68, 68, 0.3);">
       <p style="color: #f87171; font-weight: 700; margin-bottom: 0.5rem;" id="error-msg">Song konnte nicht geladen werden.</p>
-      <a href="/" class="btn-next-scan" style="margin-top: 1rem; display: inline-flex;">Zurück zum Scanner</a>
+      <a href="index.html#scanner" class="btn-next-scan-apple" style="margin-top: 1rem; display: inline-flex;">Zurück zum Scanner</a>
     </div>
 
   </main>
 
-  <!-- FOOTER -->
   <footer>
-    Hitster Studio &bull; 100% Spoilerfreier Blind-Player
+    Hitster Studio &bull; 100% Spoilerfrei
   </footer>
 
-  <!-- AUDIO ELEMENT -->
   <audio id="audio-player" preload="auto"></audio>
 
   <script>
@@ -589,8 +573,8 @@
     const paramArtist = params.get('a');
 
     async function initTrack() {
+      // 1. Static GitHub Pages Mode (all parameters embedded in QR code URL!)
       if (paramYear && paramTitle) {
-        // 100% Static GitHub Pages Mode (No backend required!)
         document.getElementById('loading-state').style.display = 'none';
         document.getElementById('game-state').style.display = 'flex';
         
@@ -607,14 +591,12 @@
         document.getElementById('sol-artist').textContent = currentTrack.artist;
         document.getElementById('sol-spotify-link').href = currentTrack.url;
 
-        if (trackId) {
-          document.getElementById('spotify-iframe').src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`;
-          statusTitle.textContent = '🎵 Song bereit zum Raten';
-          statusSub.textContent = 'Tippe im Player rechts auf ▶️ Play!';
-        }
+        // Try to fetch audio preview
+        fetchAudioPreview(currentTrack.artist, currentTrack.title);
         return;
       }
 
+      // 2. Fallback mode: query via server
       if (!trackId) {
         showError("Keine Song-ID im Link gefunden.");
         return;
@@ -629,86 +611,107 @@
         }
 
         currentTrack = data;
-        
-        // Hide loader, show game
         document.getElementById('loading-state').style.display = 'none';
         document.getElementById('game-state').style.display = 'flex';
 
-        // Prepare audio
-        if (data.previewUrl) {
-          audio.src = data.previewUrl;
-        } else {
-          statusSub.textContent = "Keine 30s-Vorschau verfügbar. Ihr könnt den Song in Spotify anhören.";
-        }
-
-        // Fill solution data
         document.getElementById('sol-year').textContent = data.year || "----";
         document.getElementById('sol-title').textContent = data.title || "Unbekannter Titel";
         document.getElementById('sol-artist').textContent = data.artist || "Unbekannter Künstler";
         document.getElementById('sol-spotify-link').href = `https://open.spotify.com/track/${data.id}`;
+
+        if (data.previewUrl) {
+          audio.src = data.previewUrl;
+          playAudio();
+        } else {
+          showSpotifyEmbed(data.id);
+        }
 
       } catch (err) {
         showError(err.message);
       }
     }
 
-    function togglePlayPause() {
-      if (!audio.src) {
-        // If no preview, offer direct link
-        window.open(`https://open.spotify.com/track/${trackId}`, '_blank');
-        return;
-      }
+    async function fetchAudioPreview(artist, title) {
+      let previewUrl = null;
+      try {
+        const resp = await fetch(`/api/preview?artist=${encodeURIComponent(artist)}&title=${encodeURIComponent(title)}`);
+        const data = await resp.json();
+        if (data.previewUrl) previewUrl = data.previewUrl;
+      } catch (e) {}
 
-      if (isPlaying) {
-        pauseAudio();
-      } else {
+      if (previewUrl) {
+        audio.src = previewUrl;
         playAudio();
+      } else {
+        showSpotifyEmbed(trackId);
       }
+    }
+
+    function showSpotifyEmbed(tId) {
+      if (tId) {
+        document.getElementById('spotify-player-box').style.display = 'block';
+        document.getElementById('spotify-iframe').src = `https://open.spotify.com/embed/track/${tId}?utm_source=generator&theme=0`;
+        statusTitle.textContent = "🎵 Song bereit";
+        statusSub.textContent = "Tippe rechts im Spotify-Player auf ▶️ Play!";
+        vinyl.classList.add('spinning');
+        startTimer(30);
+      }
+    }
+
+    function togglePlayPause() {
+      if (!audio.src) return;
+      if (isPlaying) pauseAudio();
+      else playAudio();
     }
 
     function playAudio() {
       audio.play().then(() => {
         isPlaying = true;
-        vinyl.classList.add('playing');
+        vinyl.classList.add('spinning');
         eqBars.forEach(b => b.classList.add('active'));
         playIcon.textContent = '⏸️';
         statusTitle.textContent = '🎶 Song läuft...';
-        statusSub.textContent = 'Hört genau hin und ratet das Jahr!';
-        startTimer();
-      }).catch(err => {
-        console.warn("Autoplay blocked or audio error:", err);
-      });
+        statusSub.textContent = 'Welches Jahr ist es?';
+        startTimer(audio.duration || 30);
+      }).catch(() => {});
     }
 
     function pauseAudio() {
       audio.pause();
       isPlaying = false;
-      vinyl.classList.remove('playing');
+      vinyl.classList.remove('spinning');
       eqBars.forEach(b => b.classList.remove('active'));
       playIcon.textContent = '▶️';
       statusTitle.textContent = '⏸️ Pause';
-      statusSub.textContent = 'Tippe auf Play zum Weiterspielen.';
       clearInterval(timerInterval);
     }
 
     function restartAudio() {
       audio.currentTime = 0;
-      playAudio();
+      if (audio.src) playAudio();
     }
 
     function stopAudio() {
       pauseAudio();
       audio.currentTime = 0;
-      updateProgress(0, audio.duration || 30);
+      updateProgress(0, 30);
     }
 
-    function startTimer() {
+    function startTimer(duration) {
       clearInterval(timerInterval);
+      let elapsed = 0;
       timerInterval = setInterval(() => {
-        if (!audio.paused) {
-          const current = Math.floor(audio.currentTime);
-          const total = Math.floor(audio.duration || 30);
-          updateProgress(current, total);
+        if (!audio.paused && audio.src) {
+          elapsed = audio.currentTime;
+          updateProgress(Math.floor(elapsed), Math.floor(audio.duration || 30));
+        } else {
+          elapsed += 0.25;
+          updateProgress(Math.floor(elapsed), 30);
+          if (elapsed >= 30) {
+            clearInterval(timerInterval);
+            statusTitle.textContent = '⏱️ Zeit abgelaufen!';
+            statusSub.textContent = 'Karte platzieren & Lösung aufdecken!';
+          }
         }
       }, 250);
     }
@@ -717,7 +720,6 @@
       const curStr = String(current).padStart(2, '0');
       const totStr = String(total).padStart(2, '0');
       timerDisplay.textContent = `00:${curStr} / 00:${totStr}`;
-
       const pct = total > 0 ? (current / total) * 100 : 0;
       progressFill.style.width = `${Math.min(pct, 100)}%`;
     }
@@ -725,7 +727,7 @@
     audio.onended = () => {
       pauseAudio();
       statusTitle.textContent = '⏱️ Zeit abgelaufen!';
-      statusSub.textContent = 'Jetzt Karte auf der Zeitleiste platzieren & aufdecken!';
+      statusSub.textContent = 'Platziert die Karte & deckt auf!';
     };
 
     function revealSolution() {
@@ -734,6 +736,10 @@
       const shield = document.getElementById('spotify-cover-shield');
       if (shield) shield.style.display = 'none';
       solutionCard.scrollIntoView({ behavior: 'smooth' });
+
+      if (navigator.vibrate) {
+        try { navigator.vibrate([80, 40, 80]); } catch (e) {}
+      }
     }
 
     function showError(msg) {
@@ -744,7 +750,6 @@
       errBox.style.display = 'block';
     }
 
-    // Start loading
     window.addEventListener('DOMContentLoaded', initTrack);
   </script>
 </body>

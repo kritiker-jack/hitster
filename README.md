@@ -1,56 +1,43 @@
-# 🎵 Hitster Studio & Spoilerfreier Blind-Player
+# 🎵 Hitster Studio & Mobile App
 
-Ein web-basiertes Tool zur automatischen Generierung von Hitster-Karten aus Spotify-Playlists mit QR-Codes, Erscheinungsjahr, Songtitel, Künstler, A4 Duplex-Druck und einem **100% spoilerfreien Blind-Player**.
+Eine moderne, web-basierte Hitster-App im minimalistischen Apple-Design zur Generierung von Karten aus Spotify-Playlists, A4-Duplex-Druck und einem **vollwertigen, spoilerfreien mobilen Kamera-Scanner**.
 
----
-
-## 🚀 Schnellstart
-
-1. Starte die Datei **`start.bat`** per Doppelklick (oder führe `python server.py` aus).
-2. Der Browser öffnet sich automatisch unter: `http://localhost:5055`
-3. Füge den Link deiner Spotify-Playlist ein und klicke auf **„⚡ Playlist importieren“**!
+👉 **Live auf GitHub Pages:** [kritiker-jack.github.io/hitster](https://kritiker-jack.github.io/hitster/)
 
 ---
 
-## 🛡️ Wie das Problem mit dem Spotify-Spoiler gelöst wird
+## 📱 Mobile Scanner App (Wie die originale Hitster-App)
 
-Wenn du einen normalen Spotify-Link mit dem Smartphone scannst, öffnet sich sofort die offizielle Spotify-App und zeigt Songtitel, Interpret und Albumcover groß auf dem Display an. Das ruiniert das Spiel, bevor der Song überhaupt angespielt wurde.
-
-**Hitster Studio bietet dir zwei geniale Lösungen, um das zu umgehen:**
-
-### Lösung 1: Der spoilerfreie Web-Player (Für die normale Handy-Kamera)
-* In Hitster Studio ist standardmäßig **„Hitster Blind-Player (Empfohlen)“** als QR-Code-Ziel aktiviert.
-* Wenn deine Mitspieler den gedruckten QR-Code mit ihrer **normalen Smartphone-Kamera** scannen, öffnet sich **nicht Spotify**, sondern direkt die neutrale Hitster-Player-Webseite im Safari/Chrome-Browser!
-* **Auf dem Display:** Eine coole, rotierende Vinyl-Schallplatte und ein großer Play-Button. **Kein Songname, kein Künstler, kein Cover!**
-* Die 30-Sekunden-Vorschau wird sofort abgespielt und ein Timer läuft herunter.
-* Erst wenn alle geraten haben, tippt man auf **„👁️ Lösung aufdecken“**, und das Jahr, der Titel und der Interpret werden animiert enthüllt!
-
-### Lösung 2: Der integrierte Live-Scanner & Buzzer (Web-App)
-* Klicke oben rechts auf **„📲 Am Handy öffnen“** und scanne den Verbindungs-QR-Code einmalig mit deinem Smartphone.
-* Auf dem Handy öffnet sich das Hitster Studio.
-* Gehe auf den Tab **„📱 Spiel-Scanner & Buzzer“**:
-  * Die Kamera deines Handys aktiviert sich.
-  * Halte eine beliebige Hitster-Karte vor die Kamera.
-  * Bei Erkennung ertönt ein Signal-Ton (*Beep!*), die Musik startet sofort spoilerfrei, und der Countdown läuft!
-  * Nach der Runde tippt man auf *„Lösung aufdecken“* und anschließend auf *„Nächste Karte scannen“* – perfekt für einen flüssigen Spielabend!
+* **Direkt im Browser öffnen:** Rufe auf dem Smartphone einfach [kritiker-jack.github.io/hitster](https://kritiker-jack.github.io/hitster/) auf und tippe auf **„📱 Spiel-Scanner“** (oder direkt `#scanner`).
+* **Vollbild-App-Modus:** Der Rest der Webseite wird komplett ausgeblendet. Oben links gibt es einen dezenten Zurück-Pfeil (‹ Studio), um wieder zur Übersicht zu gelangen.
+* **Laser-Scanner & Animationen:** 
+  * Animierter Sucher-Rahmen mit Laser-Scanlinie und Apple-typischem Frosted-Glass-Design.
+  * Beim Erkennen einer Karte ertönt ein angenehmer 2-Ton-Gong mit Haptik-Feedback (Vibration).
+* **Blind-Player Bottom-Sheet:**
+  * Ein elegantes Glas-Panel gleitet von unten hoch.
+  * Eine rotierende Vinyl-Schallplatte und Equalizer-Wellen starten die Wiedergabe.
+  * **100 % spoilerfrei:** Kein Songname, kein Künstler, kein Albumcover!
+  * 30-Sekunden-Countdown läuft herunter.
+* **Lösung aufdecken:**
+  * Erst wenn alle geraten haben, tippt man auf **„👁️ Lösung aufdecken“**.
+  * Das **Erscheinungsjahr** springt in riesiger goldener Typografie auf den Bildschirm, darunter Songtitel und Interpret.
+  * Ein Tipp auf **„Nächste Karte scannen“** schließt die Ansicht und die Kamera ist sofort wieder bereit für die nächste Runde.
 
 ---
 
-## ✨ Features im Überblick
+## 🖨️ Karten drucken & überallhin mitnehmen
 
-1. **Kein Login & keine API-Schlüssel nötig:**
-   * Einfach den öffentlichen Spotify-Playlist-Link reinkopieren.
-   * Titel, Künstler, Spotify-Link, Erscheinungsjahr und 30s-Audio-Previews werden vollautomatisch ermittelt.
+1. Öffne das Studio am PC (über `start.bat` oder direkt im Browser).
+2. Playlist-Link einfügen und importieren.
+3. Als QR-Code-Ziel ist standardmäßig **🌐 GitHub Pages** aktiv.
+4. Drucke die Karten über den Tab **„🖨️ A4 Druck“** beidseitig aus (*„An langer Kante spiegeln“*).
+5. **Der Vorteil:** Jeder QR-Code verlinkt direkt auf deine Online-App. Du kannst die Karten überallhin mitnehmen (zu Freunden, auf Partys, in den Urlaub) – **es ist kein PC und kein lokales WLAN nötig!**
 
-2. **100% Spoilerfrei:**
-   * Wähle zwischen dem lokalen Blind-Player (kein Öffnen von Spotify) und Spotify-Direktlinks.
+---
 
-3. **Intelligente Titelbereinigung:**
-   * Entfernt automatisch störende Zusätze wie ` - 2011 Remaster`, ` - Radio Edit` oder `(Live)` aus den Songtiteln, damit Jahreszahlen und Spoiler nicht vorab verraten werden.
+## 🎨 Design & Features
 
-4. **🃏 3D Karten-Vorschau:**
-   * Interaktive 3D-Karten, die sich per Klick umdrehen lassen (Vorderseite: QR-Code; Rückseite: Jahr im Großformat, Titel & Künstler).
-
-5. **🖨️ Perfekter A4 Duplex-Druck (Beidseitig):**
-   * 9 Karten pro A4-Bogen (3x3 Raster, ca. 60 x 86 mm).
-   * Automatische horizontale Spiegelung der Rückseite, damit beim doppelseitigen Druck (*„An langer Kante spiegeln“*) Vorderseite (QR-Code) und Rückseite (Auflösung) passgenau aufeinanderliegen.
+* **Apple Minimalist UI:** Glassmorphism, Tiefenschärfe-Blur (`backdrop-filter`), geschmeidige Kurven und intuitive Segmented Controls.
+* **Intelligente Titelbereinigung:** Entfernt störende Zusätze wie ` - 2011 Remaster`, ` - Radio Edit` oder `(Live)` aus den Titeln, damit keine Jahreszahlen verraten werden.
+* **🃏 3D-Karten-Vorschau:** Interaktive Karten zum Umdrehen per Klick.
+* **100 % Web-Standard:** Keine App-Installation aus dem App Store nötig – läuft direkt in Safari (iOS) und Chrome (Android).

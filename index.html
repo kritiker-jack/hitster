@@ -2,152 +2,210 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hitster Studio - Eigene Karten & Spotify Playlist Import</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0a0b12">
+  <title>Hitster Studio & Scanner</title>
+  
   <script src="qrcode.min.js"></script>
   <script src="jsQR.js"></script>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg-dark: #0f111a;
-      --bg-card: #181b29;
-      --bg-input: #23283e;
+      --bg-dark: #0a0b12;
+      --bg-surface: #121524;
+      --bg-glass: rgba(18, 22, 38, 0.72);
+      --bg-glass-card: rgba(22, 27, 46, 0.65);
+      --bg-glass-input: rgba(28, 34, 58, 0.6);
+      
       --accent-pink: #ff2a7a;
       --accent-cyan: #00f2fe;
-      --accent-yellow: #ffde59;
       --accent-purple: #7928ca;
+      --accent-yellow: #ffde59;
       --accent-green: #10b981;
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-      --border-color: #2e354f;
+      
+      --text-main: #f5f6fa;
+      --text-muted: #9499b3;
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --border-glass-bright: rgba(255, 255, 255, 0.15);
+      --shadow-apple: 0 10px 30px rgba(0, 0, 0, 0.4);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 22px;
+      --radius-pill: 980px;
+      --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Outfit", sans-serif;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      font-family: 'Outfit', sans-serif;
+      font-family: var(--font-system);
       background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(121, 40, 202, 0.18) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(0, 242, 254, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255, 42, 122, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
       color: var(--text-main);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Screen UI Header */
+    /* Body state when full-screen scanner app is running */
+    body.scanner-app-active {
+      overflow: hidden;
+    }
+
+    body.scanner-app-active header,
+    body.scanner-app-active main {
+      display: none !important;
+    }
+
+    /* APPLE-STYLE HEADER */
     header {
-      background: linear-gradient(135deg, #16192b 0%, #0d0f18 100%);
-      border-bottom: 1px solid var(--border-color);
-      padding: 1.2rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 11, 18, 0.78);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 0.85rem 1.8rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
       gap: 1rem;
+      flex-wrap: wrap;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 0.8rem;
+      cursor: pointer;
     }
 
     .brand-logo {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
       background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 1.4rem;
-      box-shadow: 0 4px 15px rgba(255, 42, 122, 0.4);
+      font-size: 1.3rem;
+      box-shadow: 0 4px 18px rgba(255, 42, 122, 0.45);
+      color: #fff;
     }
 
     .brand-title h1 {
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: 1px;
-      background: linear-gradient(90deg, #fff, var(--accent-cyan));
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      background: linear-gradient(90deg, #ffffff, var(--accent-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .brand-title p {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
+      font-weight: 500;
     }
 
-    .nav-tabs {
+    /* SEGMENTED PILL CONTROL (APPLE DESIGN) */
+    .segmented-control {
       display: flex;
-      background: var(--bg-card);
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
       padding: 4px;
-      border: 1px solid var(--border-color);
-      gap: 4px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-glass);
+      gap: 2px;
     }
 
-    .tab-btn {
-      padding: 8px 18px;
+    .seg-btn {
+      padding: 7px 18px;
       border: none;
       background: transparent;
       color: var(--text-muted);
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
       font-family: inherit;
-      transition: all 0.2s ease;
+      font-weight: 600;
+      font-size: 0.88rem;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .seg-btn:hover {
+      color: #fff;
+    }
+
+    .seg-btn.active {
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .seg-btn-scanner-pill {
+      background: linear-gradient(135deg, rgba(255, 42, 122, 0.25), rgba(121, 40, 202, 0.25)) !important;
+      color: #fff !important;
+      border: 1px solid rgba(255, 42, 122, 0.4);
+    }
+
+    .seg-btn-scanner-pill:hover {
+      box-shadow: 0 0 16px rgba(255, 42, 122, 0.4);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-apple-print {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-glass-bright);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
-    }
-
-    .tab-btn:hover {
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .tab-btn.active {
-      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-      color: white;
-      box-shadow: 0 2px 10px rgba(255, 42, 122, 0.3);
-    }
-
-    .action-btn {
-      padding: 10px 22px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
       transition: all 0.2s;
     }
 
-    .btn-print {
-      background: linear-gradient(135deg, var(--accent-cyan), #00a8ff);
-      color: #051326;
-      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+    .btn-apple-print:hover {
+      background: rgba(255, 255, 255, 0.16);
+      transform: translateY(-1px);
     }
 
-    .btn-print:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
-    }
-
-    /* Main Container */
+    /* MAIN CONTAINER */
     main {
       flex: 1;
-      padding: 2rem;
-      max-width: 1400px;
+      padding: 1.8rem 1.5rem;
+      max-width: 1200px;
       margin: 0 auto;
       width: 100%;
     }
@@ -158,282 +216,297 @@
 
     .tab-content.active {
       display: block;
+      animation: fadeIn 0.25s ease-out;
     }
 
-    /* SPOTIFY PLAYLIST IMPORTER BANNER */
-    .playlist-import-banner {
-      background: linear-gradient(135deg, #1b263b 0%, #151a2e 100%);
-      border: 2px solid #2f3d63;
-      border-radius: 16px;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SPOTIFY IMPORTER GLASS CARD */
+    .glass-panel {
+      background: var(--bg-glass-card);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
       padding: 1.8rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      margin-bottom: 1.8rem;
+      box-shadow: var(--shadow-apple);
     }
 
-    .banner-header {
+    .panel-header-row {
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 1.2rem;
     }
 
-    .spotify-badge {
+    .spotify-pill-badge {
       background: #1DB954;
       color: #000;
-      font-weight: 900;
-      font-size: 0.8rem;
-      padding: 4px 12px;
-      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      letter-spacing: 1px;
     }
 
-    .banner-title {
-      font-size: 1.35rem;
+    .panel-header-row h2 {
+      font-size: 1.25rem;
       font-weight: 800;
-      color: #ffffff;
+      letter-spacing: -0.3px;
     }
 
     .import-input-row {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
       margin-bottom: 1rem;
     }
 
-    .playlist-url-input {
+    .input-apple {
       flex: 1;
-      min-width: 320px;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 14px 18px;
-      color: white;
-      font-size: 1.05rem;
+      min-width: 280px;
+      background: var(--bg-glass-input);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 13px 18px;
+      color: #fff;
       font-family: inherit;
-    }
-
-    .playlist-url-input:focus {
+      font-size: 0.98rem;
       outline: none;
-      border-color: #1DB954;
-      box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.25);
-    }
-
-    .btn-import-spotify {
-      background: linear-gradient(135deg, #1DB954, #14833b);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 14px 28px;
-      font-size: 1rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
       transition: all 0.2s;
     }
 
-    .btn-import-spotify:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 25px rgba(29, 185, 84, 0.45);
+    .input-apple:focus {
+      border-color: #1DB954;
+      box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.2);
     }
 
-    .btn-import-spotify:disabled {
-      opacity: 0.6;
+    .btn-apple-green {
+      background: linear-gradient(135deg, #1DB954, #13893e);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 13px 26px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.98rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.35);
+    }
+
+    .btn-apple-green:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(29, 185, 84, 0.45);
+    }
+
+    .btn-apple-green:disabled {
+      opacity: 0.5;
       cursor: not-allowed;
       transform: none;
     }
 
-    .import-options-row {
+    .options-row {
       display: flex;
-      gap: 22px;
-      align-items: center;
+      gap: 20px;
       flex-wrap: wrap;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
+      align-items: center;
     }
 
-    .import-options-row label {
+    .options-row label {
       display: flex;
       align-items: center;
       gap: 7px;
       cursor: pointer;
     }
 
-    .status-msg {
-      margin-top: 1rem;
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      display: none;
-      line-height: 1.5;
+    .options-row input[type="checkbox"],
+    .options-row input[type="radio"] {
+      accent-color: #1DB954;
     }
 
-    .status-msg.loading {
+    .qr-destination-card {
+      margin-top: 1.2rem;
+      padding: 14px 18px;
+      background: rgba(0, 242, 254, 0.05);
+      border: 1px solid rgba(0, 242, 254, 0.2);
+      border-radius: var(--radius-md);
+    }
+
+    .qr-destination-header {
+      font-weight: 700;
+      color: var(--accent-cyan);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .qr-destination-choices {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+    }
+
+    .qr-destination-choices label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .status-toast {
+      margin-top: 1rem;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .status-toast.loading {
       display: block;
       background: rgba(0, 242, 254, 0.1);
       color: var(--accent-cyan);
       border: 1px solid rgba(0, 242, 254, 0.3);
     }
 
-    .status-msg.success {
+    .status-toast.success {
       display: block;
       background: rgba(16, 185, 129, 0.15);
       color: #34d399;
       border: 1px solid rgba(16, 185, 129, 0.3);
     }
 
-    .status-msg.error {
+    .status-toast.error {
       display: block;
       background: rgba(239, 68, 68, 0.15);
       color: #f87171;
       border: 1px solid rgba(239, 68, 68, 0.3);
     }
 
-    /* COLLAPSIBLE MANUAL ENTRY (AUTOMATICALLY COLLAPSED BY DEFAULT) */
-    .collapsible-manual-panel {
-      background: var(--bg-card);
-      border-radius: 14px;
-      border: 1px solid var(--border-color);
-      margin-bottom: 2rem;
+    /* COLLAPSIBLE MANUAL PANEL */
+    .collapsible-glass {
+      background: var(--bg-glass-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      margin-bottom: 1.8rem;
       overflow: hidden;
+      backdrop-filter: blur(20px);
     }
 
-    .collapsible-manual-panel summary {
-      padding: 1.1rem 1.5rem;
-      font-size: 1.05rem;
+    .collapsible-glass summary {
+      padding: 1rem 1.6rem;
+      font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: space-between;
       user-select: none;
-      transition: background 0.2s;
     }
 
-    .collapsible-manual-panel summary:hover {
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .manual-form-body {
-      padding: 1.5rem;
-      border-top: 1px solid var(--border-color);
+    .manual-form-grid {
+      padding: 1.5rem 1.6rem;
+      border-top: 1px solid var(--border-glass);
       display: grid;
-      grid-template-columns: 1fr 1fr 140px 1fr auto;
+      grid-template-columns: 1fr 1fr 120px 1fr auto;
       gap: 12px;
       align-items: end;
     }
 
-    @media (max-width: 1000px) {
-      .manual-form-body {
+    @media (max-width: 900px) {
+      .manual-form-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    .form-group {
+    .form-field {
       display: flex;
       flex-direction: column;
       gap: 5px;
     }
 
-    .form-group label {
-      font-size: 0.8rem;
+    .form-field label {
+      font-size: 0.78rem;
       font-weight: 600;
       color: var(--text-muted);
     }
 
-    .form-control {
-      width: 100%;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 10px 14px;
-      color: var(--text-main);
+    .btn-manual-add {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-glass-bright);
+      color: #fff;
       font-family: inherit;
-      font-size: 0.95rem;
-      transition: border-color 0.2s;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--accent-pink);
-      box-shadow: 0 0 0 3px rgba(255, 42, 122, 0.2);
-    }
-
-    .btn-submit-manual {
-      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
       font-weight: 700;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
       cursor: pointer;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
+      transition: all 0.2s;
     }
 
-    .btn-submit-manual:hover {
-      opacity: 0.95;
-      transform: translateY(-1px);
+    .btn-manual-add:hover {
+      background: rgba(255, 255, 255, 0.18);
     }
 
     /* SONG TABLE PANEL */
     .song-list-panel {
-      background: var(--bg-card);
-      border-radius: 16px;
-      border: 1px solid var(--border-color);
-      padding: 1.5rem;
+      background: var(--bg-glass-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-apple);
     }
 
-    .song-list-header {
+    .song-list-top {
+      padding: 1.2rem 1.6rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.2rem;
-      flex-wrap: wrap;
-      gap: 10px;
+      border-bottom: 1px solid var(--border-glass);
     }
 
-    .badge-count {
-      background: var(--accent-purple);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 700;
-    }
-
-    .song-table-container {
-      max-height: 600px;
+    .song-table-wrapper {
+      max-height: 520px;
       overflow-y: auto;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
     }
 
     .song-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
     }
 
     .song-table th {
-      background: var(--bg-input);
-      padding: 12px 14px;
-      font-weight: 700;
+      background: rgba(10, 12, 20, 0.5);
+      padding: 12px 16px;
       color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       position: sticky;
       top: 0;
-      z-index: 2;
+      z-index: 10;
     }
 
     .song-table td {
-      padding: 12px 14px;
-      border-top: 1px solid var(--border-color);
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       vertical-align: middle;
     }
 
@@ -441,78 +514,54 @@
       background: rgba(255, 255, 255, 0.03);
     }
 
-    .year-badge {
-      display: inline-block;
-      font-family: 'Space Grotesk', monospace;
-      font-weight: 700;
-      font-size: 1.05rem;
+    .year-pill {
+      background: rgba(255, 222, 89, 0.15);
       color: var(--accent-yellow);
-      background: rgba(255, 222, 89, 0.1);
-      padding: 2px 8px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 222, 89, 0.3);
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      display: inline-block;
     }
 
-    .btn-icon {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      padding: 6px;
-      border-radius: 6px;
-      transition: all 0.2s;
-    }
-
-    .btn-icon:hover {
-      color: #ff4757;
-      background: rgba(255, 71, 87, 0.15);
-    }
-
-    .table-actions {
+    .table-footer-actions {
+      padding: 1rem 1.6rem;
       display: flex;
-      gap: 10px;
-      margin-top: 1.2rem;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--border-glass);
       flex-wrap: wrap;
     }
 
-    .btn-secondary {
-      background: var(--bg-input);
-      color: var(--text-main);
-      border: 1px solid var(--border-color);
-      padding: 8px 16px;
-      border-radius: 8px;
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border-glass);
+      color: var(--text-muted);
+      font-family: inherit;
       font-size: 0.85rem;
       font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .btn-secondary:hover {
-      background: var(--border-color);
+    .btn-ghost:hover {
+      color: #fff;
+      border-color: var(--border-glass-bright);
     }
 
-    /* 3D Interactive Card Preview Tab */
-    .preview-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      background: var(--bg-card);
-      padding: 1rem 1.5rem;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-    }
-
+    /* 3D CARDS PREVIEW TAB */
     .card-grid-preview {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 2rem;
-      perspective: 1000px;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1.5rem;
     }
 
     .flip-card {
       background-color: transparent;
-      height: 340px;
+      height: 330px;
       perspective: 1000px;
       cursor: pointer;
     }
@@ -522,10 +571,10 @@
       width: 100%;
       height: 100%;
       text-align: center;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       transform-style: preserve-3d;
-      border-radius: 14px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      border-radius: var(--radius-md);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
 
     .flip-card.flipped .flip-card-inner {
@@ -537,24 +586,16 @@
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
-      border-radius: 14px;
+      border-radius: var(--radius-md);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      border: 2px solid #2a3148;
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    /* Front Card Style */
     .card-front {
-      background: linear-gradient(145deg, #171a29 0%, #0a0b12 100%);
+      background: linear-gradient(155deg, #16192a 0%, #0a0b12 100%);
       padding: 1.2rem;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .card-front-header {
-      width: 100%;
-      display: flex;
       justify-content: space-between;
       align-items: center;
     }
@@ -564,169 +605,62 @@
       letter-spacing: 2px;
       font-size: 0.95rem;
       color: var(--accent-pink);
-      text-transform: uppercase;
-    }
-
-    .card-number {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-family: monospace;
     }
 
     .card-qr-box {
       background: white;
       padding: 10px;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     .card-qr-box img, .card-qr-box canvas {
       display: block;
-      width: 130px;
-      height: 130px;
+      width: 120px;
+      height: 120px;
     }
 
-    .card-front-footer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .scan-hint {
-      font-size: 0.75rem;
-      letter-spacing: 1.5px;
-      color: var(--accent-cyan);
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .wave-bars {
-      display: flex;
-      gap: 3px;
-      align-items: center;
-      height: 12px;
-    }
-
-    .wave-bar {
-      width: 3px;
-      background: var(--accent-cyan);
-      border-radius: 2px;
-      animation: wave 1.2s ease-in-out infinite;
-    }
-
-    .wave-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
-    .wave-bar:nth-child(2) { height: 12px; animation-delay: 0.3s; }
-    .wave-bar:nth-child(3) { height: 8px; animation-delay: 0.2s; }
-    .wave-bar:nth-child(4) { height: 14px; animation-delay: 0.4s; }
-    .wave-bar:nth-child(5) { height: 5px; animation-delay: 0.15s; }
-
-    @keyframes wave {
-      0%, 100% { transform: scaleY(0.4); }
-      50% { transform: scaleY(1); }
-    }
-
-    /* Back Card Style */
     .card-back {
-      background: radial-gradient(circle at 50% 30%, #252b45 0%, #121524 100%);
+      background: linear-gradient(155deg, #181d33 0%, #0e111f 100%);
       transform: rotateY(180deg);
-      padding: 1.4rem;
+      padding: 1.5rem 1.2rem;
       justify-content: space-between;
-      text-align: center;
-      border-color: var(--accent-pink);
-    }
-
-    .card-back-tag {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--text-muted);
-      font-weight: 600;
+      align-items: center;
+      border-color: rgba(255, 42, 122, 0.4);
     }
 
     .year-display {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 3.2rem;
+      font-size: 3.5rem;
       font-weight: 900;
-      line-height: 1;
-      margin: 0.6rem 0;
-      background: linear-gradient(180deg, #ffffff 30%, var(--accent-yellow) 100%);
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #ffffff 0%, var(--accent-yellow) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 10px rgba(255, 222, 89, 0.3));
-    }
-
-    .song-info {
-      margin-bottom: 0.5rem;
+      margin: auto 0;
     }
 
     .song-title-display {
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 800;
-      color: white;
-      margin-bottom: 0.3rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      line-height: 1.25;
+      color: #fff;
+      line-height: 1.3;
     }
 
     .artist-display {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       color: var(--accent-cyan);
       font-weight: 600;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      margin-top: 4px;
     }
 
-    .card-back-footer {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 0.5rem;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    /* Print Sheet Preview */
-    .print-sheet-info {
-      background: #1e2438;
-      padding: 1.2rem;
-      border-radius: 12px;
-      margin-bottom: 1.5rem;
-      border-left: 4px solid var(--accent-cyan);
-    }
-
-    .print-sheet-info h3 {
-      color: var(--accent-cyan);
-      margin-bottom: 0.4rem;
-    }
-
-    .print-sheet-info p, .print-sheet-info li {
-      font-size: 0.9rem;
-      color: #cbd5e1;
-      line-height: 1.4;
-    }
-
-    .print-sheet-info ul {
-      margin-left: 1.2rem;
-      margin-top: 0.4rem;
-    }
-
-    /* ============================================================
-       PRINT MEDIA QUERIES & DUPLEX STYLES (A4, 3x3 Grid, 9 Cards)
-       ============================================================ */
+    /* A4 PRINT SHEETS */
     .print-pages-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 30px;
+      margin-top: 1.5rem;
     }
 
     .a4-sheet {
@@ -737,7 +671,6 @@
       padding: 10mm;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       box-sizing: border-box;
-      page-break-after: always;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -749,8 +682,7 @@
       top: 3mm;
       left: 10mm;
       font-size: 7pt;
-      color: #999;
-      font-family: sans-serif;
+      color: #888;
     }
 
     .sheet-grid {
@@ -769,11 +701,9 @@
       border: 0.5pt solid #ddd;
       border-radius: 3mm;
       overflow: hidden;
-      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       position: relative;
-      page-break-inside: avoid;
     }
 
     .print-card.front {
@@ -796,8 +726,8 @@
     .print-card.front .p-brand {
       font-size: 8pt;
       font-weight: 900;
-      letter-spacing: 1.5pt;
       color: #ff2a7a !important;
+      letter-spacing: 1.5pt;
     }
 
     .print-card.front .p-num {
@@ -810,9 +740,6 @@
       background: white !important;
       padding: 2.5mm;
       border-radius: 2mm;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .print-card.front .p-qr img,
@@ -822,15 +749,11 @@
       display: block;
     }
 
-    .print-card.front .p-foot {
-      text-align: center;
-    }
-
     .print-card.front .p-scan {
       font-size: 6pt;
       font-weight: 800;
-      letter-spacing: 1.5pt;
       color: #00f2fe !important;
+      letter-spacing: 1.5pt;
     }
 
     .print-card.back {
@@ -848,327 +771,353 @@
     .print-card.back .p-back-tag {
       font-size: 6.5pt;
       color: #888;
-      letter-spacing: 1pt;
-      text-transform: uppercase;
     }
 
     .print-card.back .p-year {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 32pt;
       font-weight: 900;
-      color: #ffde59 !important;
       line-height: 1;
-      margin: 2mm 0;
-    }
-
-    .print-card.back .p-song-info {
-      width: 100%;
+      color: #ffde59 !important;
+      margin: auto 0;
     }
 
     .print-card.back .p-title {
-      font-size: 9.5pt;
+      font-size: 8.5pt;
       font-weight: 800;
-      color: #ffffff !important;
       line-height: 1.2;
-      margin-bottom: 1.5mm;
-      max-height: 12mm;
-      overflow: hidden;
     }
 
     .print-card.back .p-artist {
-      font-size: 8pt;
-      font-weight: 600;
+      font-size: 7.5pt;
       color: #00f2fe !important;
-      line-height: 1.2;
-      max-height: 9mm;
-      overflow: hidden;
+      margin-top: 1mm;
     }
 
     .print-card.back .p-back-foot {
       width: 100%;
-      border-top: 0.5pt solid #333;
-      padding-top: 1.5mm;
-      font-size: 5.5pt;
-      color: #777;
       display: flex;
       justify-content: space-between;
+      font-size: 6.5pt;
+      color: #666;
     }
 
+    /* PRINT MEDIA RULES */
     @media print {
       body {
         background: white !important;
         color: black !important;
-        padding: 0 !important;
-        margin: 0 !important;
       }
-
-      header, main > nav, .playlist-import-banner, .collapsible-manual-panel, .song-list-panel, #tab-editor, #tab-preview, .print-sheet-info, .no-print {
+      header, .glass-panel, .collapsible-glass, .song-list-panel, #tab-editor, #tab-preview, .no-print {
         display: none !important;
       }
-
       main {
         padding: 0 !important;
         max-width: none !important;
       }
-
       #tab-print {
         display: block !important;
       }
-
       .a4-sheet {
         box-shadow: none !important;
         margin: 0 !important;
-        padding: 10mm !important;
         page-break-after: always !important;
         page-break-inside: avoid !important;
       }
-
       @page {
         size: A4 portrait;
         margin: 0;
       }
+    }
 
     /* ============================================================
-       SCANNER, BLIND PLAYER & PHONE CONNECT STYLES
+       STANDALONE FULL-SCREEN SCANNER APP (APPLE HITSTER APP STYLE)
        ============================================================ */
-    .qr-target-settings-box {
-      margin-top: 1.2rem;
-      padding: 14px 18px;
-      background: rgba(0, 242, 254, 0.07);
-      border: 1px solid rgba(0, 242, 254, 0.25);
-      border-radius: 12px;
+    #scanner-fullscreen-app {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      z-index: 99999;
+      background: #000;
+      overflow: hidden;
     }
 
-    .qr-target-header {
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--accent-cyan);
+    #scanner-fullscreen-app.active {
       display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.95rem;
+      flex-direction: column;
+      animation: fadeIn 0.2s ease-out;
     }
 
-    .qr-target-options {
-      display: flex;
-      gap: 22px;
-      flex-wrap: wrap;
-      font-size: 0.88rem;
-    }
-
-    .qr-target-options label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-    }
-
-    .scanner-wrapper {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .scanner-header-bar {
+    /* FLOATING TOP BAR WITH BACK BUTTON */
+    .scanner-top-bar {
+      position: absolute;
+      top: max(env(safe-area-inset-top, 16px), 16px);
+      left: 16px;
+      right: 16px;
+      z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 1.2rem 1.6rem;
-      margin-bottom: 1.5rem;
+      pointer-events: none;
     }
 
-    .scanner-header-actions {
+    .scanner-nav-btn {
+      pointer-events: all;
+      background: rgba(18, 22, 38, 0.72);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
       display: flex;
-      gap: 10px;
       align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      transition: all 0.2s;
     }
 
-    .scanner-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+    .scanner-nav-btn:active {
+      transform: scale(0.92);
+      background: rgba(255, 255, 255, 0.2);
     }
 
-    @media (max-width: 820px) {
-      .scanner-layout {
-        grid-template-columns: 1fr;
-      }
+    .scanner-title-pill {
+      background: rgba(18, 22, 38, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .scanner-viewfinder-box {
-      background: #000;
-      border-radius: 16px;
-      border: 2px solid var(--border-color);
+    /* FULL BLEED CAMERA VIEWFINDER */
+    .scanner-camera-viewport {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
-      position: relative;
-      min-height: 420px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
-    #scanner-video {
+    #app-camera-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
 
-    .scanner-overlay {
+    /* HUD OVERLAY & LASER SCANNER */
+    .scanner-hud-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      pointer-events: none;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      pointer-events: none;
-      background: rgba(0, 0, 0, 0.35);
+      padding-bottom: 60px;
     }
 
-    .scanner-target-reticle {
-      width: 220px;
-      height: 220px;
-      border: 2px solid rgba(0, 242, 254, 0.8);
-      border-radius: 16px;
+    .scan-reticle {
+      width: 250px;
+      height: 250px;
+      max-width: 70vw;
+      max-height: 70vw;
+      border-radius: 28px;
       position: relative;
-      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.52);
     }
 
-    .scanner-target-reticle::before,
-    .scanner-target-reticle::after {
+    /* Glowing squircle corner brackets */
+    .scan-reticle::before,
+    .scan-reticle::after {
       content: '';
       position: absolute;
-      width: 20px;
-      height: 20px;
-      border-color: var(--accent-pink);
+      width: 28px;
+      height: 28px;
+      border-color: var(--accent-cyan);
       border-style: solid;
+      filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.8));
     }
 
-    .scanner-target-reticle::before {
-      top: -3px; left: -3px;
+    .scan-reticle::before {
+      top: -2px;
+      left: -2px;
       border-width: 4px 0 0 4px;
-      border-top-left-radius: 14px;
+      border-top-left-radius: 24px;
     }
 
-    .scanner-target-reticle::after {
-      bottom: -3px; right: -3px;
+    .scan-reticle::after {
+      bottom: -2px;
+      right: -2px;
       border-width: 0 4px 4px 0;
-      border-bottom-right-radius: 14px;
+      border-bottom-right-radius: 24px;
     }
 
-    .laser-beam {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-pink), transparent);
-      box-shadow: 0 0 12px var(--accent-cyan);
-      animation: scanLaser 2s linear infinite alternate;
-    }
-
-    @keyframes scanLaser {
-      0% { top: 4%; }
-      100% { top: 94%; }
-    }
-
-    .scanner-prompt-text {
-      margin-top: 1.5rem;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 6px 14px;
-      border-radius: 20px;
-      letter-spacing: 0.5px;
-    }
-
-    .scanner-placeholder {
+    .scan-reticle-c2 {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: #111422;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      text-align: center;
     }
 
-    .scanner-player-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 1.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 420px;
+    .scan-reticle-c2::before,
+    .scan-reticle-c2::after {
+      content: '';
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-color: var(--accent-pink);
+      border-style: solid;
+      filter: drop-shadow(0 0 8px rgba(255, 42, 122, 0.8));
     }
 
-    .player-empty-state {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    .scan-reticle-c2::before {
+      top: -2px;
+      right: -2px;
+      border-width: 4px 4px 0 0;
+      border-top-right-radius: 24px;
     }
 
-    .player-active-state {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.3rem;
+    .scan-reticle-c2::after {
+      bottom: -2px;
+      left: -2px;
+      border-width: 0 0 4px 4px;
+      border-bottom-left-radius: 24px;
     }
 
-    /* VINYL DISC STYLES */
-    .vinyl-container {
+    /* Smooth vertical laser line */
+    .animated-laser {
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-pink), transparent);
+      box-shadow: 0 0 16px var(--accent-cyan);
+      animation: laserSweep 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes laserSweep {
+      0% { top: 6%; opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { top: 92%; opacity: 0.8; }
+    }
+
+    .scan-instruction-badge {
+      margin-top: 1.8rem;
+      background: rgba(18, 22, 38, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      animation: pulseGlow 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+      100% { box-shadow: 0 4px 20px rgba(0, 242, 254, 0.35); }
+    }
+
+    /* BOTTOM SHEET BLIND PLAYER (SLIDES UP ON CARD DETECTION) */
+    .bottom-sheet-player {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-height: 88vh;
+      max-height: 88dvh;
+      background: rgba(15, 18, 32, 0.94);
+      backdrop-filter: blur(35px) saturate(190%);
+      -webkit-backdrop-filter: blur(35px) saturate(190%);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 28px 28px 0 0;
+      padding: 1.2rem 1.4rem calc(env(safe-area-inset-bottom, 20px) + 1.2rem);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.1rem;
+      z-index: 200;
+      overflow-y: auto;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.75);
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bottom-sheet-player.visible {
+      display: flex;
+      transform: translateY(0);
+    }
+
+    .sheet-drag-handle {
+      width: 44px;
+      height: 5px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.25);
+      margin-bottom: 0.2rem;
+    }
+
+    /* VINYL DISC ANIMATION */
+    .sheet-vinyl-container {
       position: relative;
-      width: 160px;
-      height: 160px;
-      margin: 0 auto;
+      width: 150px;
+      height: 150px;
+      margin: 0.3rem auto 0;
     }
 
-    .vinyl-container.mini {
-      width: 110px;
-      height: 110px;
-      opacity: 0.6;
-    }
-
-    .vinyl {
+    .sheet-vinyl {
       width: 100%;
       height: 100%;
       border-radius: 50%;
       background: radial-gradient(circle, #252838 18%, #111 20%, #1a1a1a 21%, #111 40%, #1a1a1a 41%, #111 60%, #181818 61%, #090909 100%);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 42, 122, 0.25);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 42, 122, 0.25);
       border: 3px solid #202438;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: spin 3.5s linear infinite paused;
+      animation: spinVinyl 3.5s linear infinite paused;
     }
 
-    .vinyl.playing {
+    .sheet-vinyl.spinning {
       animation-play-state: running;
-      box-shadow: 0 8px 35px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 242, 254, 0.4);
+      box-shadow: 0 8px 35px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 242, 254, 0.45);
     }
 
-    .vinyl-label {
-      width: 58px;
-      height: 58px;
+    @keyframes spinVinyl {
+      100% { transform: rotate(360deg); }
+    }
+
+    .sheet-vinyl-label {
+      width: 54px;
+      height: 54px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
       display: flex;
@@ -1178,33 +1127,32 @@
       box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
     }
 
-    .vinyl-hole {
-      width: 11px;
-      height: 11px;
+    .sheet-vinyl-hole {
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: #0b0d14;
       border: 1.5px solid rgba(255, 255, 255, 0.3);
     }
 
-    .vinyl-text {
-      font-size: 0.5rem;
+    .sheet-vinyl-tag {
+      font-size: 0.45rem;
       font-weight: 900;
       letter-spacing: 1px;
       color: white;
       margin-top: 3px;
-      text-transform: uppercase;
     }
 
     /* EQUALIZER BARS */
-    .equalizer-bars {
+    .sheet-equalizer {
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      gap: 5px;
-      height: 28px;
+      gap: 4px;
+      height: 24px;
     }
 
-    .eq-bar {
+    .sheet-eq-bar {
       width: 4px;
       background: linear-gradient(to top, var(--accent-pink), var(--accent-cyan));
       border-radius: 2px;
@@ -1212,84 +1160,74 @@
       transition: height 0.1s ease;
     }
 
-    .eq-bar.active {
-      animation: bounce 0.6s ease-in-out infinite alternate;
+    .sheet-eq-bar.active {
+      animation: eqBounce 0.55s ease-in-out infinite alternate;
     }
 
-    .eq-bar:nth-child(1) { animation-delay: 0.1s; }
-    .eq-bar:nth-child(2) { animation-delay: 0.3s; }
-    .eq-bar:nth-child(3) { animation-delay: 0.05s; }
-    .eq-bar:nth-child(4) { animation-delay: 0.4s; }
-    .eq-bar:nth-child(5) { animation-delay: 0.2s; }
-    .eq-bar:nth-child(6) { animation-delay: 0.35s; }
-    .eq-bar:nth-child(7) { animation-delay: 0.15s; }
+    .sheet-eq-bar:nth-child(1) { animation-delay: 0.1s; }
+    .sheet-eq-bar:nth-child(2) { animation-delay: 0.3s; }
+    .sheet-eq-bar:nth-child(3) { animation-delay: 0.05s; }
+    .sheet-eq-bar:nth-child(4) { animation-delay: 0.4s; }
+    .sheet-eq-bar:nth-child(5) { animation-delay: 0.2s; }
+    .sheet-eq-bar:nth-child(6) { animation-delay: 0.35s; }
+    .sheet-eq-bar:nth-child(7) { animation-delay: 0.15s; }
 
-    @keyframes bounce {
+    @keyframes eqBounce {
       0% { height: 4px; }
-      100% { height: 26px; }
+      100% { height: 24px; }
     }
 
-    .play-status-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      text-align: center;
-      color: #fff;
-    }
-
-    .play-status-subtitle {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    .timer-container {
+    /* TIMER CONTAINER */
+    .sheet-timer-box {
       width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
+      max-width: 360px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
       padding: 10px 14px;
-      border: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
-    .timer-info-row {
+    .sheet-timer-row {
       display: flex;
       justify-content: space-between;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
       font-family: monospace;
     }
 
-    .progress-bar-bg {
+    .sheet-progress-bg {
       width: 100%;
       height: 6px;
       background: rgba(255, 255, 255, 0.1);
-      border-radius: 3px;
+      border-radius: var(--radius-pill);
       overflow: hidden;
     }
 
-    .progress-bar-fill {
+    .sheet-progress-fill {
       width: 0%;
       height: 100%;
       background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
-      border-radius: 3px;
+      border-radius: var(--radius-pill);
       transition: width 0.25s linear;
     }
 
-    .controls-row {
+    /* CONTROLS ROW */
+    .sheet-controls {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 16px;
       width: 100%;
     }
 
-    .btn-control {
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      color: white;
+    .sheet-btn-circle {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-glass-bright);
+      color: #fff;
       width: 44px;
       height: 44px;
       border-radius: 50%;
@@ -1298,358 +1236,306 @@
       justify-content: center;
       font-size: 1.1rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform 0.15s;
     }
 
-    .btn-control:hover {
-      background: rgba(255, 255, 255, 0.1);
+    .sheet-btn-circle:active {
+      transform: scale(0.9);
     }
 
-    .btn-play-primary {
-      width: 60px;
-      height: 60px;
+    .sheet-btn-play-hero {
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent-pink), #e01463);
       border: none;
       color: white;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(255, 42, 122, 0.45);
-      transition: all 0.2s;
+      box-shadow: 0 6px 20px rgba(255, 42, 122, 0.5);
+      transition: transform 0.15s;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .btn-play-primary:hover {
-      transform: scale(1.05);
+    .sheet-btn-play-hero:active {
+      transform: scale(0.92);
     }
 
-    .btn-reveal {
+    /* REVEAL BUTTON (TACTILE HERO) */
+    .sheet-btn-reveal {
       width: 100%;
-      padding: 14px 18px;
+      max-width: 360px;
+      padding: 15px;
       background: linear-gradient(135deg, var(--accent-purple), #4a148c);
       color: white;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: var(--radius-md);
+      font-family: inherit;
       font-size: 1.05rem;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(121, 40, 202, 0.4);
+      box-shadow: 0 8px 25px rgba(121, 40, 202, 0.45);
       transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       text-transform: uppercase;
     }
 
-    .btn-reveal:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(121, 40, 202, 0.5);
+    .sheet-btn-reveal:active {
+      transform: scale(0.96);
     }
 
-    .solution-card {
+    /* REVEALED SOLUTION CARD */
+    .sheet-solution-card {
       width: 100%;
+      max-width: 360px;
       background: linear-gradient(145deg, #1b2038 0%, #121524 100%);
       border: 2px solid var(--accent-pink);
-      border-radius: 16px;
+      border-radius: var(--radius-lg);
       padding: 1.5rem 1.2rem;
       text-align: center;
       display: none;
-      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      box-shadow: 0 8px 30px rgba(255, 42, 122, 0.25);
+      animation: springPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      box-shadow: 0 10px 40px rgba(255, 42, 122, 0.3);
     }
 
-    @keyframes popIn {
-      0% { opacity: 0; transform: scale(0.9); }
+    @keyframes springPop {
+      0% { opacity: 0; transform: scale(0.85); }
       100% { opacity: 1; transform: scale(1); }
     }
 
-    .solution-tag {
-      font-size: 0.75rem;
+    .sheet-sol-tag {
+      font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 2px;
       color: var(--accent-cyan);
       text-transform: uppercase;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.3rem;
     }
 
-    .solution-year {
+    .sheet-sol-year {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 3.6rem;
+      font-size: 4rem;
       font-weight: 900;
       line-height: 1;
       letter-spacing: -2px;
       background: linear-gradient(135deg, #ffffff 0%, var(--accent-yellow) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin: 0.3rem 0 0.8rem;
+      margin: 0.2rem 0 0.8rem;
     }
 
-    .solution-title {
+    .sheet-sol-title {
       font-size: 1.25rem;
       font-weight: 800;
-      color: #ffffff;
+      color: #fff;
       margin-bottom: 0.2rem;
       line-height: 1.3;
     }
 
-    .solution-artist {
+    .sheet-sol-artist {
       font-size: 0.95rem;
       color: var(--accent-cyan);
       font-weight: 600;
       margin-bottom: 1.2rem;
     }
 
-    .solution-actions {
+    .sheet-sol-actions {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .btn-spotify-ext {
+    .btn-spotify-apple {
       background: #1DB954;
       color: black;
       font-weight: 800;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: var(--radius-md);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
     }
 
-    .btn-next-scan {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--border-color);
+    .btn-next-scan-hero {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--border-glass-bright);
       color: white;
       font-weight: 700;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: var(--radius-md);
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
+      transition: all 0.2s;
     }
 
-    .btn-next-scan:hover {
-      background: rgba(255, 255, 255, 0.18);
-    }
-
-    /* MODAL STYLES */
-    .modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(5px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      padding: 1rem;
-    }
-
-    .modal-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-      max-width: 440px;
-      width: 100%;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-      overflow: hidden;
-      animation: popIn 0.3s ease;
-    }
-
-    .modal-header {
-      padding: 1.2rem 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .btn-close-modal {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.6rem;
-      cursor: pointer;
-      line-height: 1;
-    }
-
+    .btn-next-scan-hero:active {
+      transform: scale(0.96);
     }
   </style>
 </head>
 <body>
 
-  <!-- Screen Header -->
-  <header class="no-print">
-    <div class="brand">
+  <!-- DESKTOP / MOBILE STUDIO HEADER -->
+  <header>
+    <div class="brand" onclick="switchTab('editor')">
       <div class="brand-logo">H</div>
       <div class="brand-title">
         <h1>HITSTER STUDIO</h1>
-        <p>Eigene Party-Karten gestalten, QR-Codes generieren & Duplex drucken</p>
+        <p>Eigene Karten gestalten & Duplex drucken</p>
       </div>
     </div>
 
-    <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchTab('editor')">
-        <span>✏️</span> Songs & Playlist
+    <!-- APPLE-STYLE SEGMENTED NAVIGATION -->
+    <div class="segmented-control">
+      <button class="seg-btn active" onclick="switchTab('editor')">
+        <span>✏️</span> Songs
       </button>
-      <button class="tab-btn" onclick="switchTab('preview')">
-        <span>🃏</span> 3D Karten-Vorschau
+      <button class="seg-btn" onclick="switchTab('preview')">
+        <span>🃏</span> 3D Vorschau
       </button>
-      <button class="tab-btn" onclick="switchTab('print')">
-        <span>🖨️</span> A4 Druckbogen
+      <button class="seg-btn" onclick="switchTab('print')">
+        <span>🖨️</span> A4 Druck
       </button>
-      <button class="tab-btn" onclick="switchTab('scanner')">
-        <span>📱</span> Spiel-Scanner & Buzzer
+      <button class="seg-btn seg-btn-scanner-pill" onclick="enterScannerMode()">
+        <span>📱</span> Spiel-Scanner
       </button>
     </div>
 
-    <div style="display: flex; gap: 8px; align-items: center;">
-      <button class="action-btn" onclick="openPhoneModal()" style="background: rgba(0, 242, 254, 0.12); border: 1px solid var(--accent-cyan); color: var(--accent-cyan);">
-        <span>📲</span> Am Handy öffnen
-      </button>
-      <button class="action-btn btn-print" onclick="triggerPrint()">
-        <span>🖨️</span> Drucken / PDF
+    <div class="header-actions">
+      <button class="btn-apple-print" onclick="triggerPrint()">
+        <span>🖨️</span> Drucken
       </button>
     </div>
   </header>
 
+  <!-- STUDIO MAIN CONTENT -->
   <main>
     <!-- TAB 1: SONG EDITOR & PLAYLIST IMPORT -->
     <div id="tab-editor" class="tab-content active">
 
-      <!-- SPOTIFY AUTO-IMPORT BOX -->
-      <div class="playlist-import-banner">
-        <div class="banner-header">
-          <span class="spotify-badge">Spotify Auto-Import</span>
-          <div class="banner-title">Playlist-Link einfügen & Karten automatisch generieren</div>
+      <!-- SPOTIFY AUTO-IMPORT GLASS PANEL -->
+      <div class="glass-panel">
+        <div class="panel-header-row">
+          <span class="spotify-pill-badge">Spotify Import</span>
+          <h2>Playlist-Link einfügen</h2>
         </div>
 
-        <div class="banner-body">
-          <div class="import-input-row">
-            <input type="text" id="spotify-playlist-url" class="playlist-url-input" 
-              placeholder="https://open.spotify.com/playlist/... (z. B. 80er Hits, Rock Classics, Deutschrap)">
-            <button id="btn-import" class="btn-import-spotify" onclick="importSpotifyPlaylist()">
-              <span>⚡</span> Playlist importieren
-            </button>
-          </div>
-
-          <div class="import-options-row">
-            <label>
-              <input type="checkbox" id="clean-titles-check" checked>
-              <span>Titel bereinigen (z.B. <em>"Remastered"</em>, <em>"Live"</em>, <em>"Radio Edit"</em> entfernen für faire Quizfragen)</span>
-            </label>
-            <label>
-              <input type="radio" name="import-mode" value="replace" checked>
-              <span>Bestehende Liste ersetzen</span>
-            </label>
-            <label>
-              <input type="radio" name="import-mode" value="append">
-              <span>An bestehende Liste anhängen</span>
-            </label>
-          </div>
-
-          <div class="qr-target-settings-box">
-            <div class="qr-target-header">
-              <span>🛡️</span> QR-Code Ziel für gedruckte Karten:
-            </div>
-            <div class="qr-target-options">
-              <label style="color: white;">
-                <input type="radio" name="qr-target-mode" value="github" checked onchange="saveQrMode()">
-                <strong>🌐 GitHub Pages (Empfohlen für Handy überall)</strong> – <code>https://kritiker-jack.github.io/hitster</code> (Kein PC nötig!)
-              </label>
-              <label style="color: var(--text-muted);">
-                <input type="radio" name="qr-target-mode" value="blind" onchange="saveQrMode()">
-                <strong>🏠 Lokaler Blind-Player</strong> – Läuft über deinen PC im Heim-WLAN
-              </label>
-              <label style="color: var(--text-muted);">
-                <input type="radio" name="qr-target-mode" value="spotify" onchange="saveQrMode()">
-                <strong>🎧 Spotify Direktlink</strong> – Öffnet die Spotify App
-              </label>
-            </div>
-          </div>
-
-          <div id="import-status" class="status-msg"></div>
+        <div class="import-input-row">
+          <input type="text" id="spotify-playlist-url" class="input-apple" 
+            placeholder="https://open.spotify.com/playlist/... (z. B. 80er Hits, Rock Classics, Deutschrap)">
+          <button id="btn-import" class="btn-apple-green" onclick="importSpotifyPlaylist()">
+            <span>⚡</span> Playlist importieren
+          </button>
         </div>
+
+        <div class="options-row">
+          <label>
+            <input type="checkbox" id="clean-titles-check" checked>
+            <span>Titel bereinigen (z.B. <em>"Remastered"</em>, <em>"Live"</em> entfernen für faire Quizfragen)</span>
+          </label>
+          <label>
+            <input type="radio" name="import-mode" value="replace" checked>
+            <span>Bestehende Liste ersetzen</span>
+          </label>
+          <label>
+            <input type="radio" name="import-mode" value="append">
+            <span>An bestehende Liste anhängen</span>
+          </label>
+        </div>
+
+        <!-- QR DESTINATION SETTINGS -->
+        <div class="qr-destination-card">
+          <div class="qr-destination-header">
+            <span>🛡️</span> QR-Code Ziel für gedruckte Karten:
+          </div>
+          <div class="qr-destination-choices">
+            <label style="color: white;">
+              <input type="radio" name="qr-target-mode" value="github" checked onchange="saveQrMode()">
+              <strong>🌐 GitHub Pages (Empfohlen)</strong> – <code>https://kritiker-jack.github.io/hitster</code> (Kein PC nötig, überall spielbar!)
+            </label>
+            <label style="color: var(--text-muted);">
+              <input type="radio" name="qr-target-mode" value="blind" onchange="saveQrMode()">
+              <strong>🏠 Lokaler Blind-Player</strong> – Läuft über PC im Heim-WLAN
+            </label>
+            <label style="color: var(--text-muted);">
+              <input type="radio" name="qr-target-mode" value="spotify" onchange="saveQrMode()">
+              <strong>🎧 Spotify Direktlink</strong> – Öffnet die Spotify App
+            </label>
+          </div>
+        </div>
+
+        <div id="import-status" class="status-toast"></div>
       </div>
 
-      <!-- COLLAPSIBLE MANUAL ENTRY (AUTOMATICALLY COLLAPSED BY DEFAULT) -->
-      <details class="collapsible-manual-panel">
+      <!-- COLLAPSIBLE MANUAL ENTRY (DEFAULT COLLAPSED) -->
+      <details class="collapsible-glass">
         <summary>
-          <span>➕ Einzelnen Song manuell hinzufügen (Klick zum Aufklappen)</span>
-          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 400;">Optional</span>
+          <span>➕ Einzelnen Song manuell hinzufügen</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Optional</span>
         </summary>
-        <form id="song-form" class="manual-form-body" onsubmit="addSongFromForm(event)">
-          <div class="form-group">
+        <form id="song-form" class="manual-form-grid" onsubmit="addSongFromForm(event)">
+          <div class="form-field">
             <label for="input-title">Songtitel *</label>
-            <input type="text" id="input-title" class="form-control" placeholder="z. B. Billie Jean" required>
+            <input type="text" id="input-title" class="input-apple" placeholder="z. B. Billie Jean" required>
           </div>
-
-          <div class="form-group">
+          <div class="form-field">
             <label for="input-artist">Künstler / Band *</label>
-            <input type="text" id="input-artist" class="form-control" placeholder="z. B. Michael Jackson" required>
+            <input type="text" id="input-artist" class="input-apple" placeholder="z. B. Michael Jackson" required>
           </div>
-
-          <div class="form-group">
-            <label for="input-year">Erscheinungsjahr *</label>
-            <input type="number" id="input-year" class="form-control" placeholder="z. B. 1982" min="1900" max="2099" required>
+          <div class="form-field">
+            <label for="input-year">Jahr *</label>
+            <input type="number" id="input-year" class="input-apple" placeholder="1982" min="1900" max="2099" required>
           </div>
-
-          <div class="form-group">
+          <div class="form-field">
             <label for="input-url">Spotify Link (Optional)</label>
-            <input type="url" id="input-url" class="form-control" placeholder="https://open.spotify.com/track/...">
+            <input type="url" id="input-url" class="input-apple" placeholder="https://open.spotify.com/track/...">
           </div>
-
           <div>
-            <button type="submit" class="btn-submit-manual">Song hinzufügen</button>
+            <button type="submit" class="btn-manual-add">Hinzufügen</button>
           </div>
         </form>
       </details>
 
-      <!-- SONG TABLE PANEL -->
+      <!-- SONG TABLE -->
       <div class="song-list-panel">
-        <div class="song-list-header">
-          <div>
-            <h2><span>🎵</span> Deine Song-Karten</h2>
-          </div>
-          <div>
-            <span id="song-count-badge" class="badge-count">0 Karten</span>
-          </div>
+        <div class="song-list-top">
+          <h2 style="font-size: 1.15rem; font-weight: 800;"><span>🎵</span> Deine Song-Karten</h2>
+          <span id="song-count-badge" class="year-pill" style="background: rgba(0, 242, 254, 0.15); color: var(--accent-cyan);">0 Karten</span>
         </div>
 
-        <div class="song-table-container">
+        <div class="song-table-wrapper">
           <table class="song-table">
             <thead>
               <tr>
                 <th style="width: 50px;">#</th>
                 <th>Titel</th>
                 <th>Künstler</th>
-                <th style="width: 90px;">Jahr</th>
-                <th style="width: 80px;">Link</th>
-                <th style="width: 50px;">Aktion</th>
+                <th style="width: 100px;">Jahr</th>
+                <th style="width: 70px; text-align: right;">Aktion</th>
               </tr>
             </thead>
             <tbody id="song-table-body">
-              <!-- Dynamically populated -->
+              <!-- Rendered via JS -->
             </tbody>
           </table>
         </div>
 
-        <div class="table-actions">
-          <button class="btn-secondary" onclick="loadSampleSongs()">✨ 18 Beispiel-Hits laden</button>
-          <button class="btn-secondary" onclick="clearAllSongs()" style="color: #ff6b6b;">🗑️ Alle löschen</button>
+        <div class="table-footer-actions">
+          <button class="btn-ghost" onclick="loadSampleSongs()">✨ 18 Beispiel-Hits laden</button>
+          <button class="btn-ghost" onclick="clearAllSongs()" style="color: #ff6b6b; border-color: rgba(255, 107, 107, 0.3);">🗑️ Alle löschen</button>
         </div>
       </div>
 
@@ -1657,16 +1543,12 @@
 
     <!-- TAB 2: 3D CARD PREVIEW -->
     <div id="tab-preview" class="tab-content">
-      <div class="preview-controls">
+      <div class="glass-panel" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <div>
-          <h2 style="font-size: 1.2rem;">Karten-Vorschau (Klick auf Karte zum Umdrehen)</h2>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            Vorderseite: QR-Code zum Scannen | Rückseite: Auflösung mit Jahr & Titel
-          </p>
+          <h2 style="font-size: 1.2rem; font-weight: 800;">3D Karten-Vorschau</h2>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Klicke auf eine Karte, um sie umzudrehen.</p>
         </div>
-        <div>
-          <button class="btn-secondary" onclick="flipAllCards()">🔄 Alle umdrehen</button>
-        </div>
+        <button class="btn-ghost" onclick="flipAllCards()">🔄 Alle umdrehen</button>
       </div>
 
       <div id="preview-grid" class="card-grid-preview">
@@ -1676,9 +1558,9 @@
 
     <!-- TAB 3: A4 PRINT SHEET (DUPLEX OPTIMIZED) -->
     <div id="tab-print" class="tab-content">
-      <div class="print-sheet-info no-print">
-        <h3>🖨️ Tipps für perfekten doppelseitigen Druck (Duplex):</h3>
-        <ul>
+      <div class="glass-panel no-print" style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 0.5rem;">🖨️ Tipps für perfekten doppelseitigen Druck (Duplex):</h3>
+        <ul style="padding-left: 20px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
           <li><strong>Druckerdialog:</strong> Wähle <em>"Beidseitig drucken"</em> und als Wendung <strong>"An langer Kante spiegeln" (Flip on long edge)</strong>.</li>
           <li><strong>Ränder:</strong> Stelle im Druckerdialog die Ränder auf <strong>"Keine"</strong> oder <strong>"Standard"</strong>.</li>
           <li><strong>Hintergrundgrafiken:</strong> Haken bei <strong>"Hintergrundgrafiken drucken"</strong> aktivieren!</li>
@@ -1690,139 +1572,120 @@
         <!-- Generated A4 Sheets (Front & Back mirrored) -->
       </div>
     </div>
+  </main>
 
-    <!-- TAB 4: HITSTER KAMERA-SCANNER & SPIEL-BUZZER -->
-    <div id="tab-scanner" class="tab-content">
-      <div class="scanner-wrapper">
-        <div class="scanner-header-bar">
-          <div>
-            <h2 style="font-size: 1.25rem; font-weight: 800;">📱 Hitster Live-Scanner & Buzzer</h2>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Halte eine Hitster-Karte vor die Kamera – der Song wird sofort spoilerfrei abgespielt!</p>
-          </div>
-          <div class="scanner-header-actions">
-            <button id="btn-camera-toggle" class="btn-import-spotify" onclick="toggleCamera()" style="padding: 10px 20px; font-size: 0.9rem;">
-              <span id="cam-icon">📷</span> <span id="cam-btn-text">Kamera starten</span>
-            </button>
-            <button class="btn-secondary" onclick="switchCameraFacing()">
-              <span>🔄</span> Kamera wechseln
-            </button>
-          </div>
-        </div>
+  <!-- ============================================================
+       STANDALONE FULL-SCREEN SCANNER APP (APPLE / HITSTER STYLE)
+       ============================================================ -->
+  <div id="scanner-fullscreen-app">
+    <!-- FLOATING TOP BAR -->
+    <div class="scanner-top-bar">
+      <button class="scanner-nav-btn" onclick="exitScannerMode()">
+        <span style="font-size: 1.2rem; line-height: 1;">‹</span> Studio
+      </button>
 
-        <div class="scanner-layout">
-          <!-- Left: Camera Viewfinder -->
-          <div class="scanner-viewfinder-box">
-            <video id="scanner-video" playsinline muted autoplay></video>
-            <canvas id="scanner-canvas" style="display: none;"></canvas>
-            
-            <div id="scanner-overlay" class="scanner-overlay" style="display: none;">
-              <div class="scanner-target-reticle">
-                <div class="laser-beam"></div>
-              </div>
-              <div class="scanner-prompt-text">QR-Code der Karte im Rahmen zentrieren</div>
-            </div>
+      <div class="scanner-title-pill">
+        <span>💿</span> HITSTER SCANNER
+      </div>
 
-            <div id="scanner-placeholder" class="scanner-placeholder">
-              <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">📷</div>
-              <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 0.5rem;">Kamera ist inaktiv</div>
-              <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 280px; margin-bottom: 1.2rem;">
-                Klicke auf "Kamera starten" und erlaube den Kamera-Zugriff deines Browsers.
-              </p>
-              <button class="btn-import-spotify" onclick="startCamera()">Kamera aktivieren</button>
-            </div>
-          </div>
+      <button class="scanner-nav-btn" onclick="switchCameraFacing()">
+        <span>🔄</span>
+      </button>
+    </div>
 
-          <!-- Right: Blind Player Display -->
-          <div class="scanner-player-box">
-            <div id="scanner-player-empty" class="player-empty-state">
-              <div class="vinyl-container mini">
-                <div class="vinyl">
-                  <div class="vinyl-label">
-                    <div class="vinyl-hole"></div>
-                    <div class="vinyl-text">HITSTER</div>
-                  </div>
-                </div>
-              </div>
-              <h3 style="margin-top: 1rem; color: #fff;">Bereit für die nächste Karte</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem; max-width: 260px;">
-                Scanne eine gedruckte Hitster-Karte, um die Runde zu starten!
-              </p>
-            </div>
+    <!-- CAMERA VIEWPORT -->
+    <div class="scanner-camera-viewport">
+      <video id="app-camera-video" playsinline muted autoplay></video>
+      <canvas id="app-camera-canvas" style="display: none;"></canvas>
+    </div>
 
-            <!-- Active Song Player (Hidden until scanned) -->
-            <div id="scanner-player-active" class="player-active-state" style="display: none;">
-              <!-- Rotating Vinyl -->
-              <div class="vinyl-container">
-                <div id="tab-vinyl" class="vinyl">
-                  <div class="vinyl-label">
-                    <div class="vinyl-hole"></div>
-                    <div class="vinyl-text">HITSTER</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Animated Equalizer -->
-              <div id="tab-eq" class="equalizer-bars">
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-              </div>
-
-              <div style="text-align: center;">
-                <div id="tab-status-title" class="play-status-title">🎵 Song läuft...</div>
-                <div id="tab-status-sub" class="play-status-subtitle">Erratet das Erscheinungsjahr!</div>
-              </div>
-
-              <!-- Timer & Progress -->
-              <div class="timer-container">
-                <div class="timer-info-row">
-                  <span>ABGESPIELT</span>
-                  <span id="tab-timer-display">00:00 / 00:30</span>
-                </div>
-                <div class="progress-bar-bg">
-                  <div id="tab-progress-fill" class="progress-bar-fill"></div>
-                </div>
-              </div>
-
-              <!-- Controls -->
-              <div class="controls-row">
-                <button class="btn-control" onclick="restartTabAudio()" title="Von vorne">⏮️</button>
-                <button id="tab-btn-play" class="btn-play-primary" onclick="toggleTabPlayPause()">⏸️</button>
-                <button class="btn-control" onclick="stopTabAudio()" title="Stopp">⏹️</button>
-              </div>
-
-              <!-- Reveal Solution Button -->
-              <button id="tab-btn-reveal" class="btn-reveal" onclick="revealTabSolution()">
-                <span>👁️</span> Lösung aufdecken
-              </button>
-
-              <!-- Revealed Solution Card -->
-              <div id="tab-solution-card" class="solution-card">
-                <div class="solution-tag">🏆 Erscheinungsjahr</div>
-                <div id="tab-sol-year" class="solution-year">----</div>
-                <div id="tab-sol-title" class="solution-title">---</div>
-                <div id="tab-sol-artist" class="solution-artist">---</div>
-                <div class="solution-actions">
-                  <a id="tab-sol-spotify-link" href="#" target="_blank" class="btn-spotify-ext">
-                    <span>🎧</span> In Spotify in voller Länge hören
-                  </a>
-                  <button class="btn-next-scan" onclick="resetScannerForNext()">
-                    <span>📷</span> Nächste Karte scannen
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
+    <!-- HUD OVERLAY -->
+    <div class="scanner-hud-overlay">
+      <div class="scan-reticle">
+        <div class="scan-reticle-c2"></div>
+        <div class="animated-laser"></div>
+      </div>
+      <div class="scan-instruction-badge">
+        Halte eine Hitster-Karte in den Rahmen
       </div>
     </div>
 
-  </main>
+    <!-- BOTTOM SHEET: BLIND PLAYER (SLIDES UP ON RECOGNITION) -->
+    <div id="app-bottom-sheet" class="bottom-sheet-player">
+      <div class="sheet-drag-handle"></div>
+
+      <!-- ROTATING VINYL -->
+      <div class="sheet-vinyl-container">
+        <div id="app-sheet-vinyl" class="sheet-vinyl">
+          <div class="sheet-vinyl-label">
+            <div class="sheet-vinyl-hole"></div>
+            <div class="sheet-vinyl-tag">HITSTER</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EQUALIZER BARS -->
+      <div id="app-sheet-eq" class="sheet-equalizer">
+        <div class="sheet-eq-bar"></div>
+        <div class="sheet-eq-bar"></div>
+        <div class="sheet-eq-bar"></div>
+        <div class="sheet-eq-bar"></div>
+        <div class="sheet-eq-bar"></div>
+        <div class="sheet-eq-bar"></div>
+        <div class="sheet-eq-bar"></div>
+      </div>
+
+      <!-- TITLE STATUS: BLIND / SPOILER-FREE -->
+      <div style="text-align: center;">
+        <div id="app-status-title" style="font-size: 1.15rem; font-weight: 800; color: #fff;">🎶 Song läuft...</div>
+        <div id="app-status-sub" style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Erratet das Erscheinungsjahr!</div>
+      </div>
+
+      <!-- 30S TIMER & PROGRESS -->
+      <div class="sheet-timer-box">
+        <div class="sheet-timer-row">
+          <span>ABGESPIELT</span>
+          <span id="app-timer-display">00:00 / 00:30</span>
+        </div>
+        <div class="sheet-progress-bg">
+          <div id="app-progress-fill" class="sheet-progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- PLAYBACK CONTROLS -->
+      <div class="sheet-controls">
+        <button class="sheet-btn-circle" onclick="restartAppAudio()" title="Von vorne">⏮️</button>
+        <button id="app-btn-play" class="sheet-btn-play-hero" onclick="toggleAppPlayPause()">⏸️</button>
+        <button class="sheet-btn-circle" onclick="stopAppAudio()" title="Stopp">⏹️</button>
+      </div>
+
+      <!-- REVEAL SOLUTION HERO BUTTON -->
+      <button id="app-btn-reveal" class="sheet-btn-reveal" onclick="revealAppSolution()">
+        <span>👁️</span> Lösung aufdecken
+      </button>
+
+      <!-- REVEALED SOLUTION CARD -->
+      <div id="app-solution-card" class="sheet-solution-card">
+        <div class="sheet-sol-tag">🏆 Erscheinungsjahr</div>
+        <div id="app-sol-year" class="sheet-sol-year">----</div>
+        <div id="app-sol-title" class="sheet-sol-title">---</div>
+        <div id="app-sol-artist" class="sheet-sol-artist">---</div>
+
+        <div class="sheet-sol-actions">
+          <a id="app-sol-spotify-link" href="#" target="_blank" class="btn-spotify-apple">
+            <span>🎧</span> In Spotify in voller Länge hören
+          </a>
+          <button class="btn-next-scan-hero" onclick="dismissSheetAndScanNext()">
+            <span>📷</span> Nächste Karte scannen
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AUDIO ELEMENT FOR APP PLAYBACK -->
+  <audio id="app-game-audio" preload="auto"></audio>
 
   <script>
     const sampleHits = [
@@ -1847,6 +1710,7 @@
     ];
 
     let songs = [];
+    let lanHostUrl = window.location.origin;
 
     function init() {
       const stored = localStorage.getItem('hitster_custom_songs');
@@ -1861,37 +1725,29 @@
       }
       renderAll();
       initSystemInfo();
+
+      // Check if hash is #scanner
+      if (window.location.hash === '#scanner') {
+        enterScannerMode();
+      }
     }
-
-    function saveSongs() {
-      localStorage.setItem('hitster_custom_songs', JSON.stringify(songs));
-      renderAll();
-      initSystemInfo();
-    }
-
-
-    // ============================================================
-    // SYSTEM INFO, SPOILER-FREE QR TARGETS & CAMERA SCANNER
-    // ============================================================
-    let lanHostUrl = window.location.origin;
 
     function initSystemInfo() {
       fetch('/api/system-info')
         .then(r => r.json())
         .then(data => {
-          if (data.hostUrl) {
-            lanHostUrl = data.hostUrl;
-            const urlEl = document.getElementById('phone-connect-url');
-            if (urlEl) urlEl.textContent = data.hostUrl;
-            renderPhoneConnectQr(data.hostUrl);
-          }
+          if (data.hostUrl) lanHostUrl = data.hostUrl;
         })
         .catch(() => {});
     }
 
+    function saveSongs() {
+      localStorage.setItem('hitster_custom_songs', JSON.stringify(songs));
+      renderAll();
+    }
+
     function saveQrMode() {
       renderAll();
-      initSystemInfo();
     }
 
     function getTargetUrl(song) {
@@ -1902,7 +1758,7 @@
         const m = song.url.match(/track[/:]([a-zA-Z0-9]+)/);
         if (m) trackId = m[1];
       }
-      
+
       // 1. GitHub Pages Mode (Global & 100% free, no local PC needed!)
       if (qrMode === 'github') {
         const ghBase = 'https://kritiker-jack.github.io/hitster';
@@ -1910,12 +1766,12 @@
         const encArtist = encodeURIComponent(song.artist);
         return `${ghBase}/player.html?id=${trackId}&y=${song.year}&t=${encTitle}&a=${encArtist}`;
       }
-      
+
       // 2. Local Blind Player Mode
       if (qrMode === 'blind' && trackId) {
         return `${lanHostUrl}/play?id=${trackId}`;
       }
-      
+
       // 3. Spotify Direct Link
       if (song.url && song.url.trim().length > 0) {
         return song.url.trim();
@@ -1923,478 +1779,72 @@
       const query = encodeURIComponent(`${song.artist} ${song.title}`);
       return `https://open.spotify.com/search/${query}`;
     }
-    // PHONE CONNECT MODAL
-    let phoneQrRendered = false;
-    function openPhoneModal() {
-      document.getElementById('phone-modal').style.display = 'flex';
-      if (!phoneQrRendered) {
-        renderPhoneConnectQr(lanHostUrl);
-        phoneQrRendered = true;
-      }
-    }
-
-    function closePhoneModal(event) {
-      document.getElementById('phone-modal').style.display = 'none';
-    }
-
-    function renderPhoneConnectQr(url) {
-      const box = document.getElementById('phone-connect-qr');
-      if (!box) return;
-      box.innerHTML = '';
-      new QRCode(box, {
-        text: url,
-        width: 160,
-        height: 160,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-
-    // CAMERA SCANNER LOGIC
-    let isScanning = false;
-    let cameraStream = null;
-    let currentFacingMode = "environment";
-    const tabAudio = document.getElementById('tab-audio-player');
-    let tabTimerInterval = null;
-    let barcodeDetector = null;
-
-    if ('BarcodeDetector' in window) {
-      try {
-        barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
-      } catch (e) {
-        barcodeDetector = null;
-      }
-    }
-
-    async function toggleCamera() {
-      if (isScanning) {
-        stopCamera();
-      } else {
-        await startCamera();
-      }
-    }
-
-    async function startCamera() {
-      const video = document.getElementById('scanner-video');
-      const placeholder = document.getElementById('scanner-placeholder');
-      const overlay = document.getElementById('scanner-overlay');
-      const btnText = document.getElementById('cam-btn-text');
-      const camIcon = document.getElementById('cam-icon');
-
-      try {
-        const constraints = {
-          video: {
-            facingMode: { ideal: currentFacingMode },
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          },
-          audio: false
-        };
-
-        cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-        video.srcObject = cameraStream;
-        await video.play();
-
-        isScanning = true;
-        placeholder.style.display = 'none';
-        overlay.style.display = 'flex';
-        btnText.textContent = "Kamera stoppen";
-        camIcon.textContent = "⏹️";
-
-        requestAnimationFrame(scanVideoLoop);
-      } catch (err) {
-        alert("Kamera-Fehler: " + (err.message || "Zugriff verweigert oder keine Kamera gefunden."));
-      }
-    }
-
-    function stopCamera() {
-      isScanning = false;
-      if (cameraStream) {
-        cameraStream.getTracks().forEach(t => t.stop());
-        cameraStream = null;
-      }
-      const video = document.getElementById('scanner-video');
-      if (video) video.srcObject = null;
-
-      const placeholder = document.getElementById('scanner-placeholder');
-      const overlay = document.getElementById('scanner-overlay');
-      const btnText = document.getElementById('cam-btn-text');
-      const camIcon = document.getElementById('cam-icon');
-
-      if (placeholder) placeholder.style.display = 'flex';
-      if (overlay) overlay.style.display = 'none';
-      if (btnText) btnText.textContent = "Kamera starten";
-      if (camIcon) camIcon.textContent = "📷";
-    }
-
-    async function switchCameraFacing() {
-      currentFacingMode = (currentFacingMode === "environment") ? "user" : "environment";
-      if (isScanning) {
-        stopCamera();
-        await startCamera();
-      }
-    }
-
-    let lastDetectedCode = '';
-    let scanCooldown = false;
-
-    async function scanVideoLoop() {
-      if (!isScanning) return;
-      const video = document.getElementById('scanner-video');
-
-      if (video && video.readyState >= 2 && !scanCooldown) {
-        if (barcodeDetector) {
-          try {
-            const barcodes = await barcodeDetector.detect(video);
-            if (barcodes.length > 0) {
-              handleQrDetected(barcodes[0].rawValue);
-              return;
-            }
-          } catch (e) {
-            fallbackJsQr(video);
-          }
-        } else {
-          fallbackJsQr(video);
-        }
-      }
-
-      if (isScanning) {
-        requestAnimationFrame(scanVideoLoop);
-      }
-    }
-
-    function fallbackJsQr(video) {
-      if (!window.jsQR) return;
-      const canvas = document.getElementById('scanner-canvas');
-      const ctx = canvas.getContext('2d', { willReadFrequently: true });
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const code = window.jsQR(imageData.data, imageData.width, imageData.height, {
-        inversionAttempts: "dontInvert"
-      });
-      if (code && code.data) {
-        handleQrDetected(code.data);
-      }
-    }
-
-    function playBeepSound() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.28);
-      } catch (e) {}
-    }
-
-    async function handleQrDetected(qrData) {
-      if (!qrData || scanCooldown) return;
-      scanCooldown = true;
-      playBeepSound();
-
-      // Pause camera during active round
-      stopCamera();
-
-      // Extract Spotify track id
-      let trackId = '';
-      if (qrData.includes('play?id=')) {
-        const urlParams = new URLSearchParams(qrData.split('?')[1]);
-        trackId = urlParams.get('id');
-      } else if (qrData.includes('open.spotify.com/track/')) {
-        trackId = qrData.split('track/')[1].split('?')[0];
-      }
-
-      // Check if song is in current deck
-      let foundSong = songs.find(s => s.url && s.url.includes(trackId));
-
-      let trackInfo = null;
-      if (foundSong) {
-        trackInfo = {
-          id: trackId,
-          title: foundSong.title,
-          artist: foundSong.artist,
-          year: foundSong.year,
-          previewUrl: foundSong.previewUrl || null,
-          url: foundSong.url
-        };
-      }
-
-      // If no preview, fetch track info from server
-      if (!trackInfo || !trackInfo.previewUrl) {
-        try {
-          const resp = await fetch(`/api/track-info?id=${encodeURIComponent(trackId)}`);
-          const data = await resp.json();
-          if (data.success) {
-            trackInfo = data;
-          }
-        } catch (e) {}
-      }
-
-      if (!trackInfo) {
-        trackInfo = {
-          id: trackId,
-          title: "Unbekannter Titel",
-          artist: "Unbekannter Künstler",
-          year: 2000,
-          previewUrl: null,
-          url: `https://open.spotify.com/track/${trackId}`
-        };
-      }
-
-      loadSongIntoScannerPlayer(trackInfo);
-    }
-
-    function loadSongIntoScannerPlayer(track) {
-      document.getElementById('scanner-player-empty').style.display = 'none';
-      document.getElementById('scanner-player-active').style.display = 'flex';
-      document.getElementById('tab-solution-card').style.display = 'none';
-      document.getElementById('tab-btn-reveal').style.display = 'flex';
-
-      document.getElementById('tab-sol-year').textContent = track.year || "----";
-      document.getElementById('tab-sol-title').textContent = track.title || "---";
-      document.getElementById('tab-sol-artist').textContent = track.artist || "---";
-      document.getElementById('tab-sol-spotify-link').href = track.url || `https://open.spotify.com/track/${track.id}`;
-
-      if (track.previewUrl) {
-        tabAudio.src = track.previewUrl;
-        playTabAudio();
-      } else {
-        document.getElementById('tab-status-title').textContent = "🎵 Song bereit";
-        document.getElementById('tab-status-sub').textContent = "Keine 30s-Vorschau verfügbar. Ihr könnt in Spotify reinhören.";
-      }
-    }
-
-    let tabIsPlaying = false;
-    function playTabAudio() {
-      if (!tabAudio.src) return;
-      tabAudio.play().then(() => {
-        tabIsPlaying = true;
-        document.getElementById('tab-vinyl').classList.add('playing');
-        document.querySelectorAll('#tab-eq .eq-bar').forEach(b => b.classList.add('active'));
-        document.getElementById('tab-btn-play').textContent = '⏸️';
-        document.getElementById('tab-status-title').textContent = '🎶 Song läuft...';
-        document.getElementById('tab-status-sub').textContent = 'Erratet das Erscheinungsjahr!';
-        startTabTimer();
-      }).catch(() => {});
-    }
-
-    function pauseTabAudio() {
-      tabAudio.pause();
-      tabIsPlaying = false;
-      document.getElementById('tab-vinyl').classList.remove('playing');
-      document.querySelectorAll('#tab-eq .eq-bar').forEach(b => b.classList.remove('active'));
-      document.getElementById('tab-btn-play').textContent = '▶️';
-      document.getElementById('tab-status-title').textContent = '⏸️ Pause';
-      clearInterval(tabTimerInterval);
-    }
-
-    function toggleTabPlayPause() {
-      if (tabIsPlaying) pauseTabAudio();
-      else playTabAudio();
-    }
-
-    function restartTabAudio() {
-      tabAudio.currentTime = 0;
-      playTabAudio();
-    }
-
-    function stopTabAudio() {
-      pauseTabAudio();
-      tabAudio.currentTime = 0;
-      updateTabProgress(0, 30);
-    }
-
-    function startTabTimer() {
-      clearInterval(tabTimerInterval);
-      tabTimerInterval = setInterval(() => {
-        if (!tabAudio.paused) {
-          const current = Math.floor(tabAudio.currentTime);
-          const total = Math.floor(tabAudio.duration || 30);
-          updateTabProgress(current, total);
-        }
-      }, 250);
-    }
-
-    function updateTabProgress(current, total) {
-      const curStr = String(current).padStart(2, '0');
-      const totStr = String(total).padStart(2, '0');
-      document.getElementById('tab-timer-display').textContent = `00:${curStr} / 00:${totStr}`;
-      const pct = total > 0 ? (current / total) * 100 : 0;
-      document.getElementById('tab-progress-fill').style.width = `${Math.min(pct, 100)}%`;
-    }
-
-    tabAudio.onended = () => {
-      pauseTabAudio();
-      document.getElementById('tab-status-title').textContent = '⏱️ Zeit abgelaufen!';
-      document.getElementById('tab-status-sub').textContent = 'Karte platzieren & Lösung aufdecken!';
-    };
-
-    function revealTabSolution() {
-      document.getElementById('tab-solution-card').style.display = 'block';
-      document.getElementById('tab-btn-reveal').style.display = 'none';
-      document.getElementById('tab-solution-card').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function resetScannerForNext() {
-      stopTabAudio();
-      document.getElementById('scanner-player-active').style.display = 'none';
-      document.getElementById('scanner-player-empty').style.display = 'flex';
-      scanCooldown = false;
-      startCamera();
-    }
-
 
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.seg-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
 
       const targetTab = document.getElementById(`tab-${tabId}`);
       if (targetTab) targetTab.classList.add('active');
 
-      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      const activeBtn = Array.from(document.querySelectorAll('.seg-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
       if (activeBtn) activeBtn.classList.add('active');
 
-      if (tabId === 'preview') {
-        renderInteractivePreview();
-      } else if (tabId === 'print') {
-        renderPrintSheets();
-      } else if (tabId === 'scanner') {
-        startCamera();
-      }
-
-      if (tabId !== 'scanner') {
-        stopCamera();
-        pauseTabAudio();
-      }
+      if (tabId === 'preview') renderInteractivePreview();
+      else if (tabId === 'print') renderPrintSheets();
     }
 
     function triggerPrint() {
       switchTab('print');
-      setTimeout(() => {
-        window.print();
-      }, 300);
+      setTimeout(() => window.print(), 200);
     }
 
     function renderAll() {
-      renderTable();
-      document.getElementById('song-count-badge').textContent = `${songs.length} Karten`;
-      if (document.getElementById('tab-preview').classList.contains('active')) {
-        renderInteractivePreview();
-      }
-      if (document.getElementById('tab-print').classList.contains('active')) {
-        renderPrintSheets();
-      }
+      renderSongTable();
+      renderInteractivePreview();
+      renderPrintSheets();
     }
 
-    // AUTOMATIC SPOTIFY PLAYLIST IMPORT
-    async function importSpotifyPlaylist() {
-      const urlInput = document.getElementById('spotify-playlist-url');
-      const statusEl = document.getElementById('import-status');
-      const btn = document.getElementById('btn-import');
-      const cleanTitles = document.getElementById('clean-titles-check').checked;
-      const mode = document.querySelector('input[name="import-mode"]:checked').value;
-      const url = urlInput.value.trim();
-
-      if (!url) {
-        statusEl.className = 'status-msg error';
-        statusEl.innerHTML = '⚠️ Bitte gib einen Spotify-Playlist-Link ein!';
-        return;
-      }
-
-      btn.disabled = true;
-      statusEl.className = 'status-msg loading';
-      statusEl.innerHTML = '⏳ Lade Playlist von Spotify und ermittle Erscheinungsjahre... Bitte kurz warten...';
-
-      const apiEndpoint = window.location.origin.includes('5055') 
-        ? '/api/playlist' 
-        : 'http://localhost:5055/api/playlist';
-
-      try {
-        const response = await fetch(apiEndpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: url, cleanTitles: cleanTitles })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok || !data.success) {
-          throw new Error(data.error || 'Fehler beim Laden der Playlist.');
-        }
-
-        const importedSongs = data.songs;
-        if (!importedSongs || importedSongs.length === 0) {
-          throw new Error('Keine Songs in der Playlist gefunden.');
-        }
-
-        if (mode === 'replace') {
-          songs = importedSongs;
-        } else {
-          songs = [...songs, ...importedSongs];
-        }
-
-        saveSongs();
-        urlInput.value = '';
-        statusEl.className = 'status-msg success';
-        statusEl.innerHTML = `✅ <strong>${importedSongs.length} Songs</strong> erfolgreich aus <em>"${escapeHtml(data.playlistName)}"</em> importiert!`;
-
-      } catch (err) {
-        console.error('Import error:', err);
-        statusEl.className = 'status-msg error';
-        if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
-          statusEl.innerHTML = `
-            ❌ <strong>Verbindung zum Hitster-Server fehlgeschlagen:</strong><br>
-            Bitte starte die Datei <code>start.bat</code> im Projektordner!
-          `;
-        } else {
-          statusEl.innerHTML = `❌ Fehler: ${escapeHtml(err.message)}`;
-        }
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    // Render Table in Editor
-    function renderTable() {
+    function renderSongTable() {
       const tbody = document.getElementById('song-table-body');
       tbody.innerHTML = '';
+      document.getElementById('song-count-badge').textContent = `${songs.length} Karten`;
 
       if (songs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">Noch keine Songs vorhanden. Füge oben einen Playlist-Link ein oder erstelle manuell Songs!</td></tr>`;
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">Keine Songs in der Liste. Füge eine Playlist oder Songs hinzu.</td></tr>';
         return;
       }
 
       songs.forEach((song, idx) => {
         const tr = document.createElement('tr');
-        const numStr = String(idx + 1).padStart(3, '0');
-        const targetUrl = getTargetUrl(song);
-
         tr.innerHTML = `
-          <td style="color: var(--text-muted); font-family: monospace;">#${numStr}</td>
-          <td style="font-weight: 700;">${escapeHtml(song.title)}</td>
+          <td style="color: var(--text-muted); font-family: monospace;">${idx + 1}</td>
+          <td style="font-weight: 700; color: #fff;">${escapeHtml(song.title)}</td>
           <td style="color: var(--text-muted);">${escapeHtml(song.artist)}</td>
-          <td><span class="year-badge">${song.year}</span></td>
-          <td>
-            <a href="${targetUrl}" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-size: 0.8rem;" title="${targetUrl}">
-              Öffnen ↗
-            </a>
-          </td>
-          <td>
-            <button class="btn-icon" onclick="deleteSong(${idx})" title="Löschen">✕</button>
+          <td><span class="year-pill">${song.year}</span></td>
+          <td style="text-align: right;">
+            <button class="btn-ghost" style="padding: 4px 10px; font-size: 0.8rem; color: #ff6b6b;" onclick="deleteSong(${idx})" title="Löschen">✕</button>
           </td>
         `;
         tbody.appendChild(tr);
       });
+    }
+
+    function deleteSong(idx) {
+      songs.splice(idx, 1);
+      saveSongs();
+    }
+
+    function clearAllSongs() {
+      if (confirm('Möchtest du wirklich alle Songs aus der Liste löschen?')) {
+        songs = [];
+        saveSongs();
+      }
+    }
+
+    function loadSampleSongs() {
+      songs = [...sampleHits];
+      saveSongs();
     }
 
     function addSongFromForm(e) {
@@ -2412,21 +1862,66 @@
       document.getElementById('song-form').reset();
     }
 
-    function deleteSong(index) {
-      songs.splice(index, 1);
-      saveSongs();
-    }
+    async function importSpotifyPlaylist() {
+      const urlInput = document.getElementById('spotify-playlist-url');
+      const cleanCheck = document.getElementById('clean-titles-check');
+      const statusMsg = document.getElementById('import-status');
+      const btn = document.getElementById('btn-import');
+      const importMode = document.querySelector('input[name="import-mode"]:checked').value;
 
-    function clearAllSongs() {
-      if (confirm("Möchtest du wirklich alle Songs aus der Liste löschen?")) {
-        songs = [];
+      const url = urlInput.value.trim();
+      if (!url) {
+        showStatus('Bitte gib einen gültigen Spotify Playlist-Link ein.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳</span> Lade Songs...';
+      showStatus('Lade Playlist-Daten & Erscheinungsjahre... Das kann einige Sekunden dauern.', 'loading');
+
+      try {
+        const resp = await fetch('/api/playlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: url,
+            cleanTitles: cleanCheck.checked
+          })
+        });
+
+        const data = await resp.json();
+
+        if (!data.success) {
+          throw new Error(data.error || 'Fehler beim Laden der Playlist');
+        }
+
+        const newSongs = data.songs;
+        if (!newSongs || newSongs.length === 0) {
+          throw new Error('Keine Songs in der Playlist gefunden.');
+        }
+
+        if (importMode === 'replace') {
+          songs = newSongs;
+        } else {
+          songs = [...songs, ...newSongs];
+        }
+
         saveSongs();
+        showStatus(`Erfolgreich ${newSongs.length} Songs aus "${data.playlistName}" importiert!`, 'success');
+        urlInput.value = '';
+
+      } catch (err) {
+        showStatus(`Fehler: ${err.message}`, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>⚡</span> Playlist importieren';
       }
     }
 
-    function loadSampleSongs() {
-      songs = [...sampleHits];
-      saveSongs();
+    function showStatus(msg, type) {
+      const statusEl = document.getElementById('import-status');
+      statusEl.className = `status-toast ${type}`;
+      statusEl.textContent = msg;
     }
 
     // 3D Card Interactive Preview
@@ -2435,7 +1930,7 @@
       container.innerHTML = '';
 
       if (songs.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-muted);">Keine Songs vorhanden.</p>';
+        container.innerHTML = '<p style="color: var(--text-muted); padding: 2rem;">Keine Songs vorhanden.</p>';
         return;
       }
 
@@ -2449,33 +1944,22 @@
 
         card.innerHTML = `
           <div class="flip-card-inner">
-            <!-- Front -->
             <div class="card-face card-front">
-              <div class="card-front-header">
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
                 <span class="card-brand-tag">HITSTER</span>
-                <span class="card-number">#${numStr}</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">#${numStr}</span>
               </div>
               <div class="card-qr-box" id="qr-preview-${idx}"></div>
-              <div class="card-front-footer">
-                <span class="scan-hint">Scan to Play</span>
-                <div class="wave-bars">
-                  <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                  <div class="wave-bar"></div><div class="wave-bar"></div>
-                </div>
-              </div>
+              <div style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 1.5px;">SCAN TO PLAY</div>
             </div>
-            <!-- Back -->
             <div class="card-face card-back">
-              <div class="card-back-tag">Custom Edition</div>
+              <div style="font-size: 0.75rem; color: #888;">Custom Edition</div>
               <div class="year-display">${song.year}</div>
-              <div class="song-info">
+              <div>
                 <div class="song-title-display">${escapeHtml(song.title)}</div>
                 <div class="artist-display">${escapeHtml(song.artist)}</div>
               </div>
-              <div class="card-back-footer">
-                <span>#${numStr}</span>
-                <span>Hitster Fan Edition</span>
-              </div>
+              <div style="font-size: 0.7rem; color: #666; font-family: monospace;">#${numStr}</div>
             </div>
           </div>
         `;
@@ -2487,8 +1971,8 @@
           if (qrBox) {
             new QRCode(qrBox, {
               text: targetUrl,
-              width: 130,
-              height: 130,
+              width: 120,
+              height: 120,
               colorDark: "#000000",
               colorLight: "#ffffff",
               correctLevel: QRCode.CorrectLevel.M
@@ -2547,7 +2031,7 @@
               <span class="p-num">#${numStr}</span>
             </div>
             <div class="p-qr" id="print-qr-${globalIdx}"></div>
-            <div class="p-foot">
+            <div style="text-align: center;">
               <span class="p-scan">SCAN TO PLAY</span>
             </div>
           `;
@@ -2579,7 +2063,7 @@
         const backSheet = document.createElement('div');
         backSheet.className = 'a4-sheet';
         backSheet.innerHTML = `
-          <div class="sheet-label no-print">A4 Bogen ${p + 1}B (Rückseiten / Auflösung - Horizontal gespiegelt für Duplex)</div>
+          <div class="sheet-label no-print">A4 Bogen ${p + 1}B (Rückseiten / Auflösung) - Beidseitig spiegelnd drucken!</div>
           <div class="sheet-grid" id="back-grid-${p}"></div>
         `;
         container.appendChild(backSheet);
@@ -2599,7 +2083,7 @@
               card.innerHTML = `
                 <div class="p-back-tag">Custom Edition</div>
                 <div class="p-year">${song.year}</div>
-                <div class="p-song-info">
+                <div>
                   <div class="p-title">${escapeHtml(song.title)}</div>
                   <div class="p-artist">${escapeHtml(song.artist)}</div>
                 </div>
@@ -2620,6 +2104,334 @@
       }
     }
 
+    // ============================================================
+    // STANDALONE FULL-SCREEN SCANNER APP LOGIC
+    // ============================================================
+    let isAppScanning = false;
+    let appCameraStream = null;
+    let appFacingMode = "environment";
+    const appAudio = document.getElementById('app-game-audio');
+    let appTimerInterval = null;
+    let appBarcodeDetector = null;
+    let appScanCooldown = false;
+
+    if ('BarcodeDetector' in window) {
+      try {
+        appBarcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
+      } catch (e) {
+        appBarcodeDetector = null;
+      }
+    }
+
+    async function enterScannerMode() {
+      document.body.classList.add('scanner-app-active');
+      const appContainer = document.getElementById('scanner-fullscreen-app');
+      appContainer.classList.add('active');
+      window.location.hash = 'scanner';
+
+      await startAppCamera();
+    }
+
+    function exitScannerMode() {
+      stopAppCamera();
+      stopAppAudio();
+      document.body.classList.remove('scanner-app-active');
+      const appContainer = document.getElementById('scanner-fullscreen-app');
+      appContainer.classList.remove('active');
+      document.getElementById('app-bottom-sheet').classList.remove('visible');
+
+      if (window.location.hash === '#scanner') {
+        history.replaceState(null, null, ' ');
+      }
+    }
+
+    async function startAppCamera() {
+      const video = document.getElementById('app-camera-video');
+      try {
+        const constraints = {
+          video: {
+            facingMode: { ideal: appFacingMode },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
+        };
+
+        appCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = appCameraStream;
+        await video.play();
+
+        isAppScanning = true;
+        appScanCooldown = false;
+        requestAnimationFrame(scanAppLoop);
+      } catch (err) {
+        alert("Kamera-Fehler: " + (err.message || "Zugriff verweigert."));
+        exitScannerMode();
+      }
+    }
+
+    function stopAppCamera() {
+      isAppScanning = false;
+      if (appCameraStream) {
+        appCameraStream.getTracks().forEach(t => t.stop());
+        appCameraStream = null;
+      }
+      const video = document.getElementById('app-camera-video');
+      if (video) video.srcObject = null;
+    }
+
+    async function switchCameraFacing() {
+      appFacingMode = (appFacingMode === "environment") ? "user" : "environment";
+      if (isAppScanning) {
+        stopAppCamera();
+        await startAppCamera();
+      }
+    }
+
+    async function scanAppLoop() {
+      if (!isAppScanning) return;
+      const video = document.getElementById('app-camera-video');
+
+      if (video && video.readyState >= 2 && !appScanCooldown) {
+        if (appBarcodeDetector) {
+          try {
+            const barcodes = await appBarcodeDetector.detect(video);
+            if (barcodes.length > 0) {
+              handleAppQrRecognized(barcodes[0].rawValue);
+              return;
+            }
+          } catch (e) {
+            fallbackAppJsQr(video);
+          }
+        } else {
+          fallbackAppJsQr(video);
+        }
+      }
+
+      if (isAppScanning) {
+        requestAnimationFrame(scanAppLoop);
+      }
+    }
+
+    function fallbackAppJsQr(video) {
+      if (!window.jsQR) return;
+      const canvas = document.getElementById('app-camera-canvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = window.jsQR(imageData.data, imageData.width, imageData.height, {
+        inversionAttempts: "dontInvert"
+      });
+      if (code && code.data) {
+        handleAppQrRecognized(code.data);
+      }
+    }
+
+    function playAppChime() {
+      // Haptic feedback
+      if (navigator.vibrate) {
+        try { navigator.vibrate([40, 50, 40]); } catch (e) {}
+      }
+
+      // Melodic chime via Web Audio
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.08); // A5
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
+      } catch (e) {}
+    }
+
+    async function handleAppQrRecognized(qrData) {
+      if (!qrData || appScanCooldown) return;
+      appScanCooldown = true;
+      playAppChime();
+
+      // Parse track parameters from URL or search
+      let trackId = '';
+      let trackYear = null;
+      let trackTitle = null;
+      let trackArtist = null;
+
+      try {
+        const urlObj = new URL(qrData);
+        trackId = urlObj.searchParams.get('id') || urlObj.searchParams.get('s') || '';
+        trackYear = urlObj.searchParams.get('y');
+        trackTitle = urlObj.searchParams.get('t');
+        trackArtist = urlObj.searchParams.get('a');
+      } catch (e) {
+        if (qrData.includes('track/')) {
+          trackId = qrData.split('track/')[1].split('?')[0];
+        }
+      }
+
+      // Check local songs
+      let foundSong = songs.find(s => s.url && trackId && s.url.includes(trackId));
+      if (foundSong) {
+        trackYear = trackYear || foundSong.year;
+        trackTitle = trackTitle || foundSong.title;
+        trackArtist = trackArtist || foundSong.artist;
+      }
+
+      // Fetch from server if year/title missing
+      if ((!trackYear || !trackTitle) && trackId) {
+        try {
+          const resp = await fetch(`/api/track-info?id=${encodeURIComponent(trackId)}`);
+          const data = await resp.json();
+          if (data.success) {
+            trackYear = data.year;
+            trackTitle = data.title;
+            trackArtist = data.artist;
+          }
+        } catch (e) {}
+      }
+
+      const songObj = {
+        id: trackId,
+        year: trackYear || "----",
+        title: trackTitle ? decodeURIComponent(trackTitle) : "Unbekannter Titel",
+        artist: trackArtist ? decodeURIComponent(trackArtist) : "Unbekannter Künstler",
+        url: trackId ? `https://open.spotify.com/track/${trackId}` : qrData
+      };
+
+      openBottomSheetPlayer(songObj);
+    }
+
+    function openBottomSheetPlayer(song) {
+      const sheet = document.getElementById('app-bottom-sheet');
+      document.getElementById('app-solution-card').style.display = 'none';
+      document.getElementById('app-btn-reveal').style.display = 'flex';
+
+      document.getElementById('app-sol-year').textContent = song.year;
+      document.getElementById('app-sol-title').textContent = song.title;
+      document.getElementById('app-sol-artist').textContent = song.artist;
+      document.getElementById('app-sol-spotify-link').href = song.url;
+
+      sheet.classList.add('visible');
+
+      // Start vinyl & audio preview if available
+      playAppAudioPreview(song);
+    }
+
+    async function playAppAudioPreview(song) {
+      // Look for iTunes preview online or via server
+      let previewUrl = null;
+      try {
+        const resp = await fetch(`/api/preview?artist=${encodeURIComponent(song.artist)}&title=${encodeURIComponent(song.title)}`);
+        const data = await resp.json();
+        if (data.previewUrl) previewUrl = data.previewUrl;
+      } catch (e) {}
+
+      if (previewUrl) {
+        appAudio.src = previewUrl;
+        startAppAudioPlayback();
+      } else {
+        document.getElementById('app-status-title').textContent = "🎵 Song bereit";
+        document.getElementById('app-status-sub').textContent = "Hört genau hin und erratet das Jahr!";
+        document.getElementById('app-sheet-vinyl').classList.add('spinning');
+        startAppTimer(30);
+      }
+    }
+
+    let isAppAudioPlaying = false;
+    function startAppAudioPlayback() {
+      appAudio.play().then(() => {
+        isAppAudioPlaying = true;
+        document.getElementById('app-sheet-vinyl').classList.add('spinning');
+        document.querySelectorAll('#app-sheet-eq .sheet-eq-bar').forEach(b => b.classList.add('active'));
+        document.getElementById('app-btn-play').textContent = '⏸️';
+        document.getElementById('app-status-title').textContent = '🎶 Song läuft...';
+        document.getElementById('app-status-sub').textContent = 'Welches Erscheinungsjahr ist es?';
+        startAppTimer(appAudio.duration || 30);
+      }).catch(() => {});
+    }
+
+    function pauseAppAudio() {
+      appAudio.pause();
+      isAppAudioPlaying = false;
+      document.getElementById('app-sheet-vinyl').classList.remove('spinning');
+      document.querySelectorAll('#app-sheet-eq .sheet-eq-bar').forEach(b => b.classList.remove('active'));
+      document.getElementById('app-btn-play').textContent = '▶️';
+      document.getElementById('app-status-title').textContent = '⏸️ Pause';
+      clearInterval(appTimerInterval);
+    }
+
+    function toggleAppPlayPause() {
+      if (isAppAudioPlaying) pauseAppAudio();
+      else if (appAudio.src) startAppAudioPlayback();
+    }
+
+    function restartAppAudio() {
+      appAudio.currentTime = 0;
+      if (appAudio.src) startAppAudioPlayback();
+    }
+
+    function stopAppAudio() {
+      pauseAppAudio();
+      appAudio.currentTime = 0;
+      updateAppProgress(0, 30);
+    }
+
+    function startAppTimer(duration) {
+      clearInterval(appTimerInterval);
+      let elapsed = 0;
+      appTimerInterval = setInterval(() => {
+        if (!appAudio.paused && appAudio.src) {
+          elapsed = appAudio.currentTime;
+          updateAppProgress(Math.floor(elapsed), Math.floor(appAudio.duration || 30));
+        } else {
+          elapsed += 0.25;
+          updateAppProgress(Math.floor(elapsed), 30);
+          if (elapsed >= 30) {
+            clearInterval(appTimerInterval);
+            document.getElementById('app-status-title').textContent = '⏱️ Zeit abgelaufen!';
+            document.getElementById('app-status-sub').textContent = 'Platziert die Karte & deckt auf!';
+          }
+        }
+      }, 250);
+    }
+
+    function updateAppProgress(current, total) {
+      const curStr = String(current).padStart(2, '0');
+      const totStr = String(total).padStart(2, '0');
+      document.getElementById('app-timer-display').textContent = `00:${curStr} / 00:${totStr}`;
+      const pct = total > 0 ? (current / total) * 100 : 0;
+      document.getElementById('app-progress-fill').style.width = `${Math.min(pct, 100)}%`;
+    }
+
+    appAudio.onended = () => {
+      pauseAppAudio();
+      document.getElementById('app-status-title').textContent = '⏱️ Zeit abgelaufen!';
+      document.getElementById('app-status-sub').textContent = 'Platziert die Karte & deckt auf!';
+    };
+
+    function revealAppSolution() {
+      document.getElementById('app-solution-card').style.display = 'block';
+      document.getElementById('app-btn-reveal').style.display = 'none';
+      document.getElementById('app-solution-card').scrollIntoView({ behavior: 'smooth' });
+
+      if (navigator.vibrate) {
+        try { navigator.vibrate([80, 40, 80]); } catch (e) {}
+      }
+    }
+
+    function dismissSheetAndScanNext() {
+      stopAppAudio();
+      document.getElementById('app-bottom-sheet').classList.remove('visible');
+      appScanCooldown = false;
+      requestAnimationFrame(scanAppLoop);
+    }
+
     function escapeHtml(text) {
       if (!text) return '';
       return text
@@ -2632,40 +2444,5 @@
 
     window.addEventListener('DOMContentLoaded', init);
   </script>
-
-  <!-- MODAL: MIT SMARTPHONE VERBINDEN -->
-  <div id="phone-modal" class="modal-backdrop" style="display: none;" onclick="closePhoneModal(event)">
-    <div class="modal-card" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 1.5rem;">📲</span>
-          <h3 style="font-size: 1.25rem; font-weight: 800;">Mit Smartphone verbinden</h3>
-        </div>
-        <button class="btn-close-modal" onclick="closePhoneModal()">&times;</button>
-      </div>
-
-      <div class="modal-body" style="text-align: center; padding: 1.5rem 1.2rem;">
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.2rem; line-height: 1.5;">
-          Scanne diesen QR-Code mit der normalen Kamera deines Handys, um Hitster Studio direkt als <strong>mobilen Spiel-Scanner</strong> zu öffnen!
-        </p>
-
-        <div style="background: white; padding: 14px; border-radius: 14px; display: inline-block; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 1.2rem;">
-          <div id="phone-connect-qr"></div>
-        </div>
-
-        <div style="background: var(--bg-input); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); font-family: monospace; font-size: 1rem; color: var(--accent-cyan); word-break: break-all; margin-bottom: 0.8rem;">
-          <span id="phone-connect-url">http://127.0.0.1:5055</span>
-        </div>
-
-        <p style="font-size: 0.8rem; color: var(--text-muted);">
-          💡 Dein Smartphone muss dafür im selben WLAN wie dieser PC eingeloggt sein.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- HIDDEN AUDIO FOR SCANNER TAB -->
-  <audio id="tab-audio-player" preload="auto"></audio>
-
 </body>
 </html>
