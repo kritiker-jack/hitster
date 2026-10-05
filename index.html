@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#0a0b12">
-  <title>Hitster Studio & Mobile App</title>
+  <title>Kännchen Clubster Studio & Mobile App</title>
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="apple-touch-icon" href="logo.svg">
   
@@ -1549,9 +1549,9 @@
   <!-- STUDIO HEADER WITH APPLE DROPDOWN MENU -->
   <header>
     <div class="brand" onclick="switchTab('editor')">
-      <img src="logo.svg" alt="Hitster Logo" class="brand-logo-img">
+      <img src="logo.svg" alt="Kännchen Clubster Logo" class="brand-logo-img">
       <div class="brand-title">
-        <h1>HITSTER</h1>
+        <h1>KÄNNCHEN CLUBSTER</h1>
       </div>
     </div>
 
@@ -1576,9 +1576,9 @@
   <div id="dropdown-overlay" class="dropdown-menu-overlay" onclick="closeDropdownMenu()">
     <div class="dropdown-menu-sheet" onclick="event.stopPropagation()">
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.9rem; padding: 4px 6px;">
-        <img src="logo.svg" alt="Hitster Logo" style="width: 32px; height: 32px; border-radius: 9px; box-shadow: 0 2px 10px rgba(255, 42, 122, 0.4);">
+        <img src="logo.svg" alt="Kännchen Clubster Logo" style="width: 32px; height: 32px; border-radius: 9px; box-shadow: 0 2px 10px rgba(255, 42, 122, 0.4);">
         <div>
-          <div style="font-weight: 800; font-size: 1rem; color: #fff; letter-spacing: -0.3px;">HITSTER STUDIO</div>
+          <div style="font-weight: 800; font-size: 1rem; color: #fff; letter-spacing: -0.3px;">KÄNNCHEN CLUBSTER STUDIO</div>
           <div style="font-size: 0.72rem; color: var(--text-muted);">Deutschrap, Tekk & Party Edition</div>
         </div>
       </div>
@@ -1588,7 +1588,7 @@
       <button class="menu-item-btn hero-highlight" onclick="window.location.href='bingo.html'" style="background: linear-gradient(135deg, rgba(147, 51, 234, 0.35), rgba(255, 42, 122, 0.35)); border-color: rgba(255, 42, 122, 0.4);">
         <div class="menu-item-left">
           <span style="font-size: 1.25rem;">🪩</span>
-          <span style="font-weight: 800;">Hitster Bingo (Online Multiplayer)</span>
+          <span style="font-weight: 800;">Kännchen Clubster Bingo (Online Multiplayer)</span>
         </div>
         <span style="font-size: 0.75rem; background: linear-gradient(135deg, #9333ea, #ff2a7a); color: #fff; padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 800;">NEU</span>
       </button>
@@ -1840,8 +1840,8 @@
         </button>
 
         <div class="scanner-title-pill">
-          <img src="logo.svg" alt="Hitster" style="width: 20px; height: 20px; border-radius: 5px; vertical-align: middle;">
-          <span>HITSTER SCANNER</span>
+          <img src="logo.svg" alt="Kännchen Clubster" style="width: 20px; height: 20px; border-radius: 5px; vertical-align: middle;">
+          <span>KÄNNCHEN CLUBSTER SCANNER</span>
         </div>
 
         <button class="scanner-nav-btn" onclick="switchCameraFacing()">
@@ -1860,7 +1860,7 @@
           <div class="animated-laser"></div>
         </div>
         <div class="scan-instruction-badge">
-          Halte eine Hitster-Karte in den Rahmen
+          Halte eine Kännchen Clubster-Karte in den Rahmen
         </div>
       </div>
     </div>
@@ -1887,7 +1887,7 @@
           <div id="app-sheet-vinyl" class="sheet-vinyl">
             <div class="sheet-vinyl-label">
               <div class="sheet-vinyl-hole"></div>
-              <div class="sheet-vinyl-tag">HITSTER</div>
+              <div class="sheet-vinyl-tag">KÄNNCHEN CLUBSTER</div>
             </div>
           </div>
         </div>
@@ -1957,7 +1957,7 @@
       </div>
 
       <div style="font-size: 0.72rem; color: #5a6078; text-align: center;">
-        Hitster Studio &bull; 100% Spoilerfrei
+        Kännchen Clubster Studio &bull; 100% Spoilerfrei
       </div>
     </div>
 
@@ -2251,7 +2251,7 @@
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(songs, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `hitster_deck_${songs.length}_karten.json`);
+      downloadAnchor.setAttribute("download", `kaennchen_clubster_deck_${songs.length}_karten.json`);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
@@ -2369,7 +2369,7 @@
           <div class="flip-card-inner">
             <div class="card-face card-front">
               <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                <span class="card-brand-tag">HITSTER</span>
+                <span class="card-brand-tag">KÄNNCHEN CLUBSTER</span>
                 <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">#${numStr}</span>
               </div>
               <div class="card-qr-box" id="qr-preview-${idx}"></div>
@@ -2449,7 +2449,7 @@
           card.className = 'print-card front';
           card.innerHTML = `
             <div class="p-head">
-              <span class="p-brand">HITSTER</span>
+              <span class="p-brand">KÄNNCHEN CLUBSTER</span>
               <span class="p-num">#${numStr}</span>
             </div>
             <div class="p-qr" id="print-qr-${globalIdx}"></div>
@@ -2510,7 +2510,7 @@
                 </div>
                 <div class="p-back-foot">
                   <span>#${numStr}</span>
-                  <span>Hitster</span>
+                  <span>Kännchen Clubster</span>
                 </div>
               `;
               backGrid.appendChild(card);

@@ -622,7 +622,7 @@ def run_server():
     local_url = f"http://localhost:{PORT}"
     network_url = f"http://{lan_ip}:{PORT}"
     print("======================================================")
-    print("🎵 HITSTER STUDIO & BLIND-PLAYER")
+    print("🎵 KÄNNCHEN CLUBSTER STUDIO & BLIND-PLAYER")
     print(f"🖥️  Am PC öffnen:       {local_url}")
     print(f"📱 Am Smartphone öffnen: {network_url}")
     print("======================================================")

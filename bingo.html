@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#0a0b12">
-  <title>Hitster Bingo 🪩 Online Multiplayer</title>
+  <title>Kännchen Clubster Bingo 🪩 Online Multiplayer</title>
   
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="apple-touch-icon" href="logo.svg">
@@ -528,9 +528,90 @@
       animation: bounce 1s infinite alternate;
     }
 
-    @keyframes bounce {
-      from { transform: translateY(0); }
-      to { transform: translateY(-16px); }
+    /* RESPONSIVE MOBILE OPTIMIZATIONS */
+    @media (max-width: 600px) {
+      main {
+        padding: 0.8rem 0.5rem 2.5rem;
+      }
+
+      .glass-card {
+        padding: 1.1rem 0.85rem;
+        border-radius: 16px;
+        margin-bottom: 1rem;
+      }
+
+      .brand-title {
+        font-size: 0.95rem;
+      }
+
+      .discoball-orb {
+        width: 85px;
+        height: 85px;
+      }
+
+      .bingo-board-grid {
+        gap: 6px;
+        max-width: 100%;
+      }
+
+      .bingo-cell {
+        border-radius: 10px;
+        padding: 4px 2px;
+      }
+
+      .bingo-cell div:first-child {
+        font-size: 0.58rem !important;
+      }
+
+      .bingo-cell div:last-child {
+        font-size: 0.72rem !important;
+        line-height: 1.12 !important;
+      }
+
+      .bingo-cell.marked::after {
+        font-size: 1.8rem;
+      }
+
+      .input-apple {
+        font-size: 16px !important; /* Prevents auto-zoom on iOS */
+        padding: 12px 14px;
+      }
+
+      .btn-apple, .btn-apple-secondary {
+        min-height: 46px;
+        font-size: 0.92rem;
+      }
+
+      .player-answer-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .player-answer-row > div:last-child {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .category-drawn-badge {
+        font-size: 0.92rem;
+        padding: 8px 16px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .bingo-board-grid {
+        gap: 4px;
+      }
+
+      .bingo-cell div:first-child {
+        font-size: 0.52rem !important;
+      }
+
+      .bingo-cell div:last-child {
+        font-size: 0.66rem !important;
+      }
     }
   </style>
 </head>
@@ -539,8 +620,8 @@
   <!-- TOP HEADER -->
   <header>
     <a href="index.html" class="brand">
-      <img src="logo.svg" alt="Hitster Logo" class="brand-logo-img">
-      <div class="brand-title">HITSTER BINGO</div>
+      <img src="logo.svg" alt="Kännchen Clubster Logo" class="brand-logo-img">
+      <div class="brand-title">KÄNNCHEN CLUBSTER BINGO</div>
     </a>
     <div style="display: flex; align-items: center; gap: 8px;">
       <span class="header-badge" id="lobby-badge">🪩 LOBBY</span>
@@ -560,16 +641,16 @@
       <div class="glass-card" style="text-align: center; padding: 2rem 1.5rem;">
         <div style="font-size: 3rem; margin-bottom: 0.5rem;">🪩</div>
         <h1 style="font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 0.4rem; color: #fff;">
-          Hitster Bingo Online
+          Kännchen Clubster Bingo Online
         </h1>
         <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">
           Das musikalische Party-Bingo mit Freunden. Musik spielt über die Anlage des Hosts – jeder tippt auf dem eigenen Handy!
         </p>
 
         <!-- GAME SETTINGS -->
-        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); border-radius: 16px; padding: 1.2rem; text-align: left; margin-bottom: 1.5rem;">
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); border-radius: 16px; padding: 1.2rem; text-align: left; margin-bottom: 1.2rem;">
           <label style="font-size: 0.85rem; font-weight: 800; color: #e2e8f0; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">
-            Schwierigkeit (Original Hitster Regeln)
+            Schwierigkeit (Offizielle Bingo Regeln)
           </label>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem;">
             <button id="btn-mode-easy" class="btn-choice selected" onclick="setBingoMode('easy')" style="padding: 12px; justify-content: center; font-size: 0.95rem;">
@@ -584,6 +665,14 @@
           <div style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-glass); border-radius: 12px; padding: 10px 14px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.4;">
             🎲 <strong>Kategorie-Zufall:</strong> In jeder Runde entscheidet das Drehen der Discokugel zufällig, ob es <strong>1 feste Kategorie für alle</strong> gibt oder die Spieler aus <strong>2 Kategorien wählen dürfen</strong>!
           </div>
+        </div>
+
+        <!-- PLAYER / HOST NAME INPUT -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); border-radius: 16px; padding: 1.2rem; text-align: left; margin-bottom: 1.2rem;">
+          <label for="user-player-name" style="font-size: 0.85rem; font-weight: 800; color: #e2e8f0; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">
+            👤 Dein Name / Spielername (für Host & Mitspieler)
+          </label>
+          <input type="text" id="user-player-name" class="input-apple" placeholder="Dein Name (z.B. Jack)" maxlength="20" style="font-weight: 800; font-size: 16px;">
         </div>
 
         <!-- HOST / JOIN BUTTONS -->
@@ -604,7 +693,7 @@
 
       <!-- COLOR CATEGORY LEGEND (OFFICIAL HITSTER BINGO RULES) -->
       <div class="glass-card">
-        <h3 style="font-size: 1.05rem; font-weight: 900; margin-bottom: 0.8rem; color: #fff;">🎨 Die 5 offiziellen Hitster Bingo Kategorien</h3>
+        <h3 style="font-size: 1.05rem; font-weight: 900; margin-bottom: 0.8rem; color: #fff;">🎨 Die 5 offiziellen Kännchen Clubster Bingo Kategorien</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; font-size: 0.82rem;">
           <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid var(--cat-green); border-radius: 12px; padding: 10px; color: #ffffff;">
             <strong style="color: #6ee7b7; font-size: 0.9rem;">🟢 Grün</strong><br>
@@ -890,7 +979,7 @@
     <div class="glass-card intro-dialog-card">
       <div style="font-size: 2.5rem; margin-bottom: 0.3rem;">🪩</div>
       <h2 style="font-size: 1.4rem; font-weight: 900; color: #ffffff; margin-bottom: 0.8rem;">
-        So funktioniert Hitster Bingo
+        So funktioniert Kännchen Clubster Bingo
       </h2>
 
       <div class="intro-rules-list">
@@ -905,8 +994,8 @@
         <div class="intro-rule-item">
           <span class="intro-rule-icon">🔊</span>
           <div>
-            <strong>2. Musik & 25-Sekunden-Timer</strong>
-            <p>Die Musik spielt exklusiv auf der Soundanlage des Hosts. Bei Pause stoppt auch der Timer!</p>
+            <strong>2. Musik & 30-Sekunden-Timer</strong>
+            <p>Die Musik spielt exklusiv auf der Soundanlage des Hosts (stoppt automatisch nach 30s oder bei Liedende). Bei Pause stoppt auch der Timer!</p>
           </div>
         </div>
 
@@ -1142,6 +1231,13 @@
         const roomInput = document.getElementById('join-room-code');
         if (roomInput) roomInput.value = params.get('room').toUpperCase();
       }
+
+      // Restore saved player name
+      const savedName = localStorage.getItem('clubster_player_name') || localStorage.getItem('hitster_player_name') || '';
+      if (savedName) {
+        const nameInput = document.getElementById('user-player-name');
+        if (nameInput) nameInput.value = savedName;
+      }
     });
 
     function setBingoMode(mode) {
@@ -1299,12 +1395,21 @@
        ======================================================== */
     let mqttClient = null;
     let localBroadcast = null;
+    let mqttOutbox = [];
+    let isMqttConnected = false;
+    let syncIntervalId = null;
+    let hostPlayerName = 'Host (Jack)';
+    let lastHandledResolutionState = null;
+    let currentRoundDisplay = -1;
 
     function initRealtimeSync(code) {
       // 1. Local BroadcastChannel for same-device tabs
       try {
         if (typeof BroadcastChannel !== 'undefined') {
-          localBroadcast = new BroadcastChannel('hitster_bingo_' + code);
+          if (localBroadcast) {
+            try { localBroadcast.close(); } catch (e) {}
+          }
+          localBroadcast = new BroadcastChannel('clubster_bingo_' + code);
           localBroadcast.onmessage = (event) => handleIncomingMessage(event.data);
         }
       } catch (e) {}
@@ -1312,19 +1417,22 @@
       // 2. MQTT over WebSocket for cross-device & GitHub Pages
       if (typeof Paho !== 'undefined' && Paho.MQTT) {
         try {
-          const clientId = 'hitster_' + Math.random().toString(36).substring(2, 9);
-          // Connect to HiveMQ Public Broker
+          const clientId = 'clubster_' + Math.random().toString(36).substring(2, 9);
           mqttClient = new Paho.MQTT.Client('broker.hivemq.com', 8884, '/mqtt', clientId);
+          
           mqttClient.onConnectionLost = (resp) => {
             console.log('MQTT connection lost:', resp.errorMessage);
-            setTimeout(() => initRealtimeSync(code), 3000);
+            isMqttConnected = false;
+            setTimeout(() => initRealtimeSync(code), 2500);
           };
+
           mqttClient.onMessageArrived = (msg) => {
             try {
               const payload = JSON.parse(msg.payloadString);
               handleIncomingMessage(payload);
             } catch (e) {}
           };
+
           mqttClient.connect({
             useSSL: true,
             timeout: 5,
@@ -1332,7 +1440,20 @@
             cleanSession: true,
             onSuccess: () => {
               console.log('MQTT Realtime Sync connected!');
-              mqttClient.subscribe(`hitster/bingo/${code}/#`, { qos: 0 });
+              isMqttConnected = true;
+              mqttClient.subscribe(`clubster/bingo/${code}/#`, { qos: 0 });
+              flushMqttOutbox();
+
+              if (role === 'player') {
+                sendRealtimePayload(`client/${myPlayerId}`, {
+                  action: 'join',
+                  playerId: myPlayerId,
+                  name: playerName,
+                  board: myBoard
+                });
+              } else if (role === 'host') {
+                broadcastHostState();
+              }
             },
             onFailure: (err) => {
               console.warn('HiveMQ error, trying EMQX...', err);
@@ -1343,12 +1464,32 @@
           console.error('MQTT setup error:', e);
         }
       }
+
+      // Heartbeat: Re-announce player presence every 2.5s until acknowledged
+      if (syncIntervalId) clearInterval(syncIntervalId);
+      syncIntervalId = setInterval(() => {
+        if (role === 'player' && roomCode && myPlayerId) {
+          const amInList = players.some(p => p.id === myPlayerId);
+          if (!amInList) {
+            sendRealtimePayload(`client/${myPlayerId}`, {
+              action: 'join',
+              playerId: myPlayerId,
+              name: playerName,
+              board: myBoard
+            });
+          }
+        }
+      }, 2500);
     }
 
     function tryEMQX(code) {
       try {
-        const clientId = 'hitster_' + Math.random().toString(36).substring(2, 9);
+        const clientId = 'clubster_' + Math.random().toString(36).substring(2, 9);
         mqttClient = new Paho.MQTT.Client('broker.emqx.io', 8084, '/mqtt', clientId);
+        mqttClient.onConnectionLost = (resp) => {
+          isMqttConnected = false;
+          setTimeout(() => initRealtimeSync(code), 3000);
+        };
         mqttClient.onMessageArrived = (msg) => {
           try {
             const payload = JSON.parse(msg.payloadString);
@@ -1362,26 +1503,71 @@
           cleanSession: true,
           onSuccess: () => {
             console.log('EMQX Realtime Sync connected!');
-            mqttClient.subscribe(`hitster/bingo/${code}/#`, { qos: 0 });
+            isMqttConnected = true;
+            mqttClient.subscribe(`clubster/bingo/${code}/#`, { qos: 0 });
+            flushMqttOutbox();
+            if (role === 'player') {
+              sendRealtimePayload(`client/${myPlayerId}`, {
+                action: 'join',
+                playerId: myPlayerId,
+                name: playerName,
+                board: myBoard
+              });
+            } else if (role === 'host') {
+              broadcastHostState();
+            }
           }
         });
       } catch (e) {}
     }
 
     function sendRealtimePayload(topicSub, data) {
-      // 1. Send via MQTT
+      data.roomCode = roomCode;
+
+      // 1. Send via MQTT (with Outbox Queue)
       if (mqttClient && mqttClient.isConnected && mqttClient.isConnected()) {
         try {
           const msg = new Paho.MQTT.Message(JSON.stringify(data));
-          msg.destinationName = `hitster/bingo/${roomCode}/${topicSub}`;
+          msg.destinationName = `clubster/bingo/${roomCode}/${topicSub}`;
           mqttClient.send(msg);
-        } catch (e) {}
+        } catch (e) {
+          mqttOutbox.push({ topicSub, data });
+        }
+      } else {
+        mqttOutbox.push({ topicSub, data });
       }
-      // 2. Send via BroadcastChannel
+
+      // 2. Send via BroadcastChannel (local tabs)
       if (localBroadcast) {
         try {
           localBroadcast.postMessage(data);
         } catch (e) {}
+      }
+
+      // 3. Local server endpoint fallback
+      try {
+        if (window.location.protocol.startsWith('http') && !window.location.hostname.includes('github.io')) {
+          fetch('/api/bingo/action', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ room: roomCode, topic: topicSub, data: data })
+          }).catch(() => {});
+        }
+      } catch (e) {}
+    }
+
+    function flushMqttOutbox() {
+      if (!mqttClient || !mqttClient.isConnected || !mqttClient.isConnected()) return;
+      while (mqttOutbox.length > 0) {
+        const item = mqttOutbox.shift();
+        try {
+          const msg = new Paho.MQTT.Message(JSON.stringify(item.data));
+          msg.destinationName = `clubster/bingo/${roomCode}/${item.topicSub}`;
+          mqttClient.send(msg);
+        } catch (e) {
+          mqttOutbox.unshift(item);
+          break;
+        }
       }
     }
 
@@ -1391,19 +1577,22 @@
       // HOST receives messages from players
       if (role === 'host') {
         if (msg.action === 'join') {
-          const existing = players.find(p => p.id === msg.playerId);
+          let existing = players.find(p => p.id === msg.playerId);
           if (!existing) {
-            players.push({
+            existing = {
               id: msg.playerId,
-              name: msg.name,
+              name: msg.name || 'Gast',
               score: 0,
-              board: msg.board,
+              board: msg.board || generate4x4Board(),
               answer: null,
               isBot: false
-            });
+            };
+            players.push(existing);
+          } else {
+            if (msg.name) existing.name = msg.name;
+            if (msg.board) existing.board = msg.board;
           }
           updateHostPlayerList();
-          // Broadcast full state to all players
           broadcastHostState();
         } else if (msg.action === 'ready') {
           if (!readyPlayers.includes(msg.playerId)) {
@@ -1411,24 +1600,38 @@
           }
           updateIntroReadyUI();
           broadcastHostState();
-          // Check if all players are ready
           checkAllPlayersReady();
         } else if (msg.action === 'submit_answer') {
-          const p = players.find(x => x.id === msg.playerId);
-          if (p) {
-            p.answer = {
-              category: msg.category,
-              answer: msg.answer,
-              approved: null
+          let p = players.find(x => x.id === msg.playerId);
+          if (!p) {
+            p = {
+              id: msg.playerId,
+              name: msg.name || 'Spieler',
+              score: 0,
+              board: generate4x4Board(),
+              answer: null,
+              isBot: false
             };
+            players.push(p);
           }
+          p.answer = {
+            category: msg.category,
+            answer: msg.answer,
+            approved: null
+          };
           updateHostPlayerList();
+          if (isRevealed) {
+            const song = deckSongs[(currentSongIndex - 1 + deckSongs.length) % deckSongs.length];
+            renderHostAnswersList(song);
+          }
+          broadcastHostState();
         } else if (msg.action === 'mark_cell') {
-          const p = players.find(x => x.id === msg.playerId);
+          let p = players.find(x => x.id === msg.playerId);
           if (p && p.board && p.board[msg.cellIndex]) {
             p.board[msg.cellIndex].marked = true;
           }
           updateHostPlayerList();
+          broadcastHostState();
         } else if (msg.action === 'bingo') {
           triggerBingo({ name: msg.name });
         }
@@ -1440,6 +1643,7 @@
           currentRound = msg.round;
           currentMode = msg.mode;
           readyPlayers = msg.readyPlayers || [];
+          players = msg.players || []; // Keep players synced!
 
           // Handle Intro state
           if (msg.status === 'intro') {
@@ -1447,18 +1651,18 @@
             updateIntroReadyUI();
           } else if (msg.status === 'guessing') {
             document.getElementById('intro-modal').classList.remove('show');
-            isRevealed = false;
-            hasAnswered = false;
-            activeCategories = msg.activeCategories || [];
-            renderPlayerQuestionScreen(msg.activeSong || {});
+            if (isRevealed || currentRoundDisplay !== msg.round) {
+              isRevealed = false;
+              hasAnswered = false;
+              currentRoundDisplay = msg.round;
+              lastHandledResolutionState = null;
+              activeCategories = msg.activeCategories || [];
+              renderPlayerQuestionScreen(msg.activeSong || {});
+            }
           } else if (msg.status === 'revealed') {
             isRevealed = true;
-            const meOnServer = msg.players && msg.players.find(p => p.id === myPlayerId);
-            if (meOnServer && meOnServer.answer) {
-              const me = players.find(p => p.id === myPlayerId) || { id: myPlayerId, answer: meOnServer.answer };
-              me.answer = meOnServer.answer;
-              playerShowResolution(msg.activeSong || {});
-            }
+            const meOnServer = players.find(p => p.id === myPlayerId);
+            playerShowResolution(msg.activeSong || {}, meOnServer ? meOnServer.answer : null);
           } else if (msg.status === 'bingo') {
             triggerBingo({ name: msg.winnerName });
           }
@@ -1490,6 +1694,11 @@
        HOST LOBBY CREATION & QR CODE (GITHUB PAGES URL)
        ======================================================== */
     async function startHostLobby() {
+      const enteredName = (document.getElementById('user-player-name').value || '').trim() || 'Jack';
+      localStorage.setItem('clubster_player_name', enteredName);
+      playerName = enteredName;
+      hostPlayerName = `${enteredName} (Host)`;
+
       role = 'host';
       myPlayerId = 'host-player';
       roomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
@@ -1497,7 +1706,7 @@
       document.getElementById('lobby-badge').textContent = `👑 HOST (${roomCode})`;
 
       players = [
-        { id: 'host-player', name: 'Du (Host)', score: 0, board: generate4x4Board(), answer: null, isBot: false }
+        { id: 'host-player', name: `${enteredName} (Host)`, score: 0, board: generate4x4Board(), answer: null, isBot: false }
       ];
       readyPlayers = ['host-player'];
       myBoard = players[0].board;
@@ -1510,7 +1719,6 @@
     }
 
     function generateHostQRCode() {
-      // By default: Exact GitHub Pages URL as requested
       const joinUrl = `https://kritiker-jack.github.io/hitster/bingo.html?room=${roomCode}`;
       const qrEl = document.getElementById('host-qr-container');
       if (qrEl) {
@@ -1551,9 +1759,15 @@
         alert("Bitte gib einen 4-stelligen Raumcode ein.");
         return;
       }
-      const name = prompt("Wie heißt du?", "Gast") || "Gast";
+      let enteredName = (document.getElementById('user-player-name').value || '').trim();
+      if (!enteredName) {
+        enteredName = prompt("Wie heißt du?", "Gast") || "Gast";
+      }
+      enteredName = enteredName.trim() || "Gast";
+      localStorage.setItem('clubster_player_name', enteredName);
+
       role = 'player';
-      playerName = name;
+      playerName = enteredName;
       roomCode = code;
       myPlayerId = 'player_' + Math.random().toString(36).substring(2, 9);
 
@@ -1567,30 +1781,30 @@
       initRealtimeSync(roomCode);
 
       // Send join action to Host
-      setTimeout(() => {
-        sendRealtimePayload(`client/${myPlayerId}`, {
-          action: 'join',
-          playerId: myPlayerId,
-          name: playerName,
-          board: myBoard
-        });
-      }, 400);
+      sendRealtimePayload(`client/${myPlayerId}`, {
+        action: 'join',
+        playerId: myPlayerId,
+        name: playerName,
+        board: myBoard
+      });
     }
 
     function updateHostPlayerList() {
       document.getElementById('host-player-count').textContent = `${players.length} Spieler`;
       const lb = document.getElementById('host-leaderboard-list');
-      lb.innerHTML = '';
-      players.forEach(p => {
-        const row = document.createElement('div');
-        row.className = 'player-answer-row';
-        const marked = (p.board || []).filter(c => c.marked).length;
-        row.innerHTML = `
-          <div style="font-weight: 800; color: #fff;">${escapeHtml(p.name)}</div>
-          <div style="font-weight: 800; color: #fbbf24;">${marked} / 16 Kreuze</div>
-        `;
-        lb.appendChild(row);
-      });
+      if (lb) {
+        lb.innerHTML = '';
+        players.forEach(p => {
+          const row = document.createElement('div');
+          row.className = 'player-answer-row';
+          const marked = (p.board || []).filter(c => c.marked).length;
+          row.innerHTML = `
+            <div style="font-weight: 800; color: #fff;">${escapeHtml(p.name)}</div>
+            <div style="font-weight: 800; color: #fbbf24;">${marked} / 16 Kreuze</div>
+          `;
+          lb.appendChild(row);
+        });
+      }
 
       const submittedCount = players.filter(p => p.answer).length;
       const countEl = document.getElementById('host-answers-count');
@@ -1795,19 +2009,29 @@
     }
 
     /* ========================================================
-       TIMER CONTROLS (STOPS ON PAUSE, RESETS ON REWIND)
+       TIMER CONTROLS (STOPS ON PAUSE, RESETS ON REWIND, 30s LIMIT)
        ======================================================== */
     function startHostRoundTimer(song) {
       const audio = document.getElementById('host-game-audio');
       if (song.previewUrl) {
         audio.src = song.previewUrl;
+        audio.currentTime = 0;
         audio.play().catch(() => {});
         document.getElementById('btn-audio-icon').textContent = '⏸️';
       }
 
-      roundTimer = 25;
+      // Automatically reveal & pause music if audio ends
+      audio.onended = () => {
+        if (!isRevealed) {
+          audio.pause();
+          document.getElementById('btn-audio-icon').textContent = '▶️';
+          hostRevealSong();
+        }
+      };
+
+      roundTimer = 30; // 30-Second round duration
       clearInterval(timerInterval);
-      updateTimerUI(25);
+      updateTimerUI(30);
 
       timerInterval = setInterval(() => {
         roundTimer--;
@@ -1816,6 +2040,8 @@
         if (roundTimer <= 0) {
           clearInterval(timerInterval);
           timerInterval = null;
+          audio.pause();
+          document.getElementById('btn-audio-icon').textContent = '▶️';
           hostRevealSong();
         }
       }, 1000);
@@ -1834,6 +2060,8 @@
             if (roundTimer <= 0) {
               clearInterval(timerInterval);
               timerInterval = null;
+              audio.pause();
+              document.getElementById('btn-audio-icon').textContent = '▶️';
               hostRevealSong();
             }
           }, 1000);
@@ -1853,9 +2081,9 @@
       audio.play().catch(() => {});
       document.getElementById('btn-audio-icon').textContent = '⏸️';
 
-      // RESET TIMER BACK TO 25 SECONDS!
-      roundTimer = 25;
-      updateTimerUI(25);
+      // RESET TIMER BACK TO 30 SECONDS!
+      roundTimer = 30;
+      updateTimerUI(30);
       clearInterval(timerInterval);
       if (!isRevealed) {
         timerInterval = setInterval(() => {
@@ -1864,6 +2092,8 @@
           if (roundTimer <= 0) {
             clearInterval(timerInterval);
             timerInterval = null;
+            audio.pause();
+            document.getElementById('btn-audio-icon').textContent = '▶️';
             hostRevealSong();
           }
         }, 1000);
@@ -1871,7 +2101,7 @@
     }
 
     function updateTimerUI(sec) {
-      const pct = Math.max(0, (sec / 25) * 100);
+      const pct = Math.max(0, (sec / 30) * 100);
       const fill = document.getElementById('host-timer-fill');
       const text = document.getElementById('host-timer-text');
       if (fill) fill.style.width = `${pct}%`;
@@ -1886,6 +2116,13 @@
       timerInterval = null;
       isRevealed = true;
       const song = deckSongs[(currentSongIndex - 1 + deckSongs.length) % deckSongs.length];
+
+      // Stop audio playback immediately upon reveal
+      const audio = document.getElementById('host-game-audio');
+      if (audio) {
+        audio.pause();
+        document.getElementById('btn-audio-icon').textContent = '▶️';
+      }
 
       document.getElementById('btn-host-reveal').style.display = 'none';
       document.getElementById('btn-host-action').style.display = 'inline-flex';
@@ -1927,9 +2164,6 @@
         updateJokerUI();
       }
 
-      // Notify player screen of resolution
-      playerShowResolution(song);
-
       // Broadcast reveal state to all phones
       broadcastHostState();
     }
@@ -1948,16 +2182,16 @@
         // Auto-Check
         if (ansObj.category && ansObj.category.type === 'choice' && ansObj.category.eval) {
           isCorrect = (ansObj.answer === ansObj.category.eval(song));
-          ansObj.approved = isCorrect;
+          if (ansObj.approved === null) ansObj.approved = isCorrect;
         } else if (ansObj.category && ansObj.category.type === 'number' && ansObj.category.evalNum) {
           isCorrect = ansObj.category.evalNum(song, ansObj.answer);
-          ansObj.approved = isCorrect;
+          if (ansObj.approved === null) ansObj.approved = isCorrect;
         } else if (ansObj.approved !== null) {
           isCorrect = ansObj.approved;
         } else {
           if (ansObj.category && ansObj.category.evalText) {
             isCorrect = ansObj.category.evalText(song, ansObj.answer);
-            ansObj.approved = isCorrect;
+            if (ansObj.approved === null) ansObj.approved = isCorrect;
           }
         }
 
@@ -1972,10 +2206,10 @@
             </div>
           </div>
           <div style="display: flex; gap: 6px; align-items: center;">
-            <button class="btn-apple-secondary" onclick="hostSetAnswerApproval('${p.id}', true)" style="width: auto; padding: 6px 12px; font-size: 0.85rem; border-color: ${ansObj.approved === true ? 'var(--cat-green)' : 'transparent'}; background: ${ansObj.approved === true ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.08)'};">
+            <button class="btn-apple-secondary" onclick="hostSetAnswerApproval('${p.id}', true)" style="width: auto; padding: 6px 12px; font-size: 0.85rem; border-color: ${ansObj.approved === true ? 'var(--cat-green)' : 'transparent'}; background: ${ansObj.approved === true ? 'rgba(16,185,129,0.35)' : 'rgba(255,255,255,0.08)'};">
               ✅ Richtig
             </button>
-            <button class="btn-apple-secondary" onclick="hostSetAnswerApproval('${p.id}', false)" style="width: auto; padding: 6px 12px; font-size: 0.85rem; border-color: ${ansObj.approved === false ? '#ef4444' : 'transparent'}; background: ${ansObj.approved === false ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.08)'};">
+            <button class="btn-apple-secondary" onclick="hostSetAnswerApproval('${p.id}', false)" style="width: auto; padding: 6px 12px; font-size: 0.85rem; border-color: ${ansObj.approved === false ? '#ef4444' : 'transparent'}; background: ${ansObj.approved === false ? 'rgba(239,68,68,0.35)' : 'rgba(255,255,255,0.08)'};">
               ❌ Falsch
             </button>
           </div>
@@ -2002,6 +2236,11 @@
     function renderPlayerQuestionScreen(song) {
       document.getElementById('player-locked-status').style.display = 'none';
       document.getElementById('player-mark-instruction').style.display = 'none';
+
+      // Remove any leftover cell pulsing from last round
+      document.querySelectorAll('#player-bingo-board .bingo-cell').forEach(el => {
+        el.classList.remove('pulsing-target', 'pulsing-joker');
+      });
 
       if (activeCategories.length === 2) {
         const choiceBox = document.getElementById('player-category-choice-box');
@@ -2090,39 +2329,68 @@
         sendRealtimePayload(`client/${myPlayerId}`, {
           action: 'submit_answer',
           playerId: myPlayerId,
+          name: playerName,
           category: selectedPlayerCategory,
           answer: answerText
         });
       }
     }
 
-    function playerShowResolution(song) {
-      const me = players.find(p => p.id === myPlayerId || p.name === playerName);
-      const isCorrect = me && me.answer && me.answer.approved;
-
+    function playerShowResolution(song, myAnswer) {
       const qText = document.getElementById('player-question-text');
-      if (isCorrect) {
-        consecutiveMisses = 0;
-        qText.innerHTML = `🎉 <strong style="color: var(--cat-green);">RICHTIG!</strong> (${song.artist} - ${song.title}, ${song.year})`;
-        document.getElementById('player-mark-instruction').style.display = 'block';
-        playSynthSound('correct');
-        if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+      const markInstruction = document.getElementById('player-mark-instruction');
+      const targetCol = (selectedPlayerCategory && selectedPlayerCategory.color) || (myAnswer && myAnswer.category && myAnswer.category.color) || 'gruen';
 
-        const col = selectedPlayerCategory ? selectedPlayerCategory.color : 'gruen';
-        document.querySelectorAll(`.bingo-cell.col-${col}:not(.marked)`).forEach(el => {
+      if (!myAnswer) {
+        qText.innerHTML = `⏳ <span style="color:#cbd5e1;">Song aufgelöst:</span> <strong>${escapeHtml(song.artist || '')} - ${escapeHtml(song.title || '')} (${song.year || ''})</strong><br><span style="font-size:0.9rem; color:#94a3b8;">Du hattest in dieser Runde keinen Tipp abgegeben.</span>`;
+        if (markInstruction) markInstruction.style.display = 'none';
+        return;
+      }
+
+      if (myAnswer.approved === true) {
+        // RICHTIG!
+        qText.innerHTML = `🎉 <strong style="color: var(--cat-green); font-size: 1.25rem;">RICHTIG!</strong><br><span style="color: #e2e8f0; font-size: 0.95rem;">${escapeHtml(song.artist || '')} - ${escapeHtml(song.title || '')} (${song.year || ''})</span>`;
+        if (markInstruction) {
+          markInstruction.style.display = 'block';
+          markInstruction.innerHTML = `✨ <strong>DEINE ANTWORT WAR RICHTIG!</strong><br>👇 Tippe jetzt unten auf ein freies <strong>[${targetCol.toUpperCase()}]</strong>-Feld auf deinem Bingo-Schein!`;
+        }
+
+        // Highlight cells of matching color
+        document.querySelectorAll(`#player-bingo-board .bingo-cell.col-${targetCol}:not(.marked)`).forEach(el => {
           el.classList.add('pulsing-target');
         });
-      } else {
-        consecutiveMisses++;
-        qText.innerHTML = `❌ <strong style="color: #ef4444;">Leider falsch!</strong> (${song.artist} - ${song.title}, ${song.year})`;
-        document.getElementById('player-mark-instruction').style.display = 'none';
 
-        if (consecutiveMisses >= 3) {
+        // Only play sound and reset streak once per resolution round
+        if (lastHandledResolutionState !== `round_${currentRound}_correct`) {
+          lastHandledResolutionState = `round_${currentRound}_correct`;
           consecutiveMisses = 0;
-          jokerCount++;
-          alert("🃏 3x HINTEREINANDER FALSCH!\nDu erhältst zur Entschädigung 1 JOKER! Setze ihn jederzeit auf ein beliebiges freies Feld ein.");
+          playSynthSound('correct');
+          if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
         }
+      } else if (myAnswer.approved === false) {
+        // FALSCH!
+        qText.innerHTML = `❌ <strong style="color: #ef4444; font-size: 1.2rem;">Leider falsch!</strong><br><span style="color: #e2e8f0; font-size: 0.95rem;">${escapeHtml(song.artist || '')} - ${escapeHtml(song.title || '')} (${song.year || ''})</span><br><span style="font-size: 0.85rem; color: #94a3b8;">Dein Tipp war: "${escapeHtml(String(myAnswer.answer || ''))}"</span>`;
+        if (markInstruction) markInstruction.style.display = 'none';
+
+        document.querySelectorAll('#player-bingo-board .bingo-cell').forEach(el => {
+          el.classList.remove('pulsing-target');
+        });
+
+        if (lastHandledResolutionState !== `round_${currentRound}_wrong`) {
+          lastHandledResolutionState = `round_${currentRound}_wrong`;
+          consecutiveMisses++;
+          if (consecutiveMisses >= 3) {
+            consecutiveMisses = 0;
+            jokerCount++;
+            alert("🃏 3x HINTEREINANDER DANEBEN!\nDu erhältst zur Entschädigung 1 JOKER! Setze ihn jederzeit auf ein beliebiges freies Feld ein.");
+          }
+        }
+      } else {
+        // PENDING (Waiting for host manual review)
+        qText.innerHTML = `⏳ <strong>Tipp eingeloggt: "${escapeHtml(String(myAnswer.answer || ''))}"</strong><br><span style="color: #cbd5e1; font-size: 0.9rem;">Warte auf Bestätigung durch den Host...</span>`;
+        if (markInstruction) markInstruction.style.display = 'none';
       }
+
       updateJokerUI();
     }
 
@@ -2144,7 +2412,7 @@
         playSynthSound('mark');
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
         renderHostOwnBoard();
-        checkBingoForPlayer({ id: 'host-player', name: 'Du (Host)', board: myBoard });
+        checkBingoForPlayer({ id: 'host-player', name: hostPlayerName, board: myBoard });
         return;
       }
 
@@ -2154,7 +2422,7 @@
       }
 
       const hostP = players[0];
-      if (!hostP || !hostP.answer || !hostP.answer.approved) {
+      if (!hostP || !hostP.answer || hostP.answer.approved !== true) {
         alert("Du kannst nur ein Feld markieren, wenn deine Host-Antwort in dieser Runde als richtig gewertet wurde (oder mit Joker)!");
         return;
       }
@@ -2217,12 +2485,12 @@
       }
 
       const me = players.find(p => p.id === myPlayerId || p.name === playerName);
-      if (!me || !me.answer || !me.answer.approved) {
-        alert("Du kannst nur ein Feld markieren, wenn deine Antwort in dieser Runde richtig war (oder indem du einen Joker nutzt)!");
+      if (!me || !me.answer || me.answer.approved !== true) {
+        alert("Du kannst nur ein Feld markieren, wenn deine Antwort in dieser Runde als richtig gewertet wurde (oder indem du einen Joker nutzt)!");
         return;
       }
 
-      const targetColor = (selectedPlayerCategory || activeCategories[0]).color;
+      const targetColor = (me.answer.category && me.answer.category.color) || (selectedPlayerCategory && selectedPlayerCategory.color) || 'gruen';
       if (cell.color !== targetColor) {
         alert(`Dieses Feld hat die falsche Farbe! Du musst ein Feld der Farbe [${targetColor.toUpperCase()}] wählen (oder einen Joker einsetzen).`);
         return;
@@ -2237,21 +2505,19 @@
 
       cell.marked = true;
       document.querySelectorAll('#player-bingo-board .bingo-cell').forEach(el => el.classList.remove('pulsing-target'));
-      document.getElementById('player-mark-instruction').style.display = 'none';
+      const markInstruction = document.getElementById('player-mark-instruction');
+      if (markInstruction) markInstruction.style.display = 'none';
 
       playSynthSound('mark');
       if (navigator.vibrate) navigator.vibrate(100);
 
       renderPlayerBoard();
-      updateHostPlayerList();
 
-      if (role === 'player') {
-        sendRealtimePayload(`client/${myPlayerId}`, {
-          action: 'mark_cell',
-          playerId: myPlayerId,
-          cellIndex: cellIndex
-        });
-      }
+      sendRealtimePayload(`client/${myPlayerId}`, {
+        action: 'mark_cell',
+        playerId: myPlayerId,
+        cellIndex: cellIndex
+      });
 
       checkBingoForPlayer({ id: myPlayerId, name: playerName, board: myBoard });
     }

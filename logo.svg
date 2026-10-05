@@ -99,14 +99,14 @@
   <!-- Center Spindle Hole -->
   <circle cx="256" cy="256" r="14" fill="#070913" stroke="rgba(255, 255, 255, 0.4)" stroke-width="2" />
 
-  <!-- Geometric "H" Monogram Overlay in Center Label -->
+  <!-- Geometric "KC" Monogram Overlay in Center Label (Kännchen Clubster) -->
   <g fill="#ffffff">
-    <!-- Left Pillar -->
-    <rect x="224" y="218" width="13" height="76" rx="6.5" />
-    <!-- Right Pillar -->
-    <rect x="275" y="218" width="13" height="76" rx="6.5" />
-    <!-- Crossbar -->
-    <rect x="224" y="249.5" width="64" height="13" rx="6.5" />
+    <!-- Letter K -->
+    <rect x="216" y="222" width="10" height="68" rx="5" />
+    <polygon points="226,254 246,224 258,224 234,259" />
+    <polygon points="230,255 258,290 246,290 224,263" />
+    <!-- Letter C -->
+    <path d="M 295,235 A 25,25 0 1,0 295,277" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" />
     <!-- Dynamic Accent Dot -->
     <circle cx="256" cy="214" r="5" fill="#00f2fe" filter="url(#neonGlow)" />
   </g>
