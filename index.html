@@ -1786,7 +1786,12 @@
       <div class="song-list-panel">
         <div class="song-list-top">
           <h2 style="font-size: 1.1rem; font-weight: 800;"><span>🎵</span> Deine Song-Karten</h2>
-          <span id="song-count-badge" class="song-count-pill">0 Karten</span>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button class="btn-apple-green" onclick="verifyAndFilterDeckAudio()" title="Prüft alle Songs und entfernt automatisch Titel ohne funktionierende Audio-Vorschau" style="padding: 6px 12px; font-size: 0.78rem; background: rgba(0, 242, 254, 0.12); border: 1px solid var(--accent-cyan); color: #fff;">
+              <span>🔍</span> Audio-Vorschau aller Songs prüfen
+            </button>
+            <span id="song-count-badge" class="song-count-pill">0 Karten</span>
+          </div>
         </div>
 
         <!-- DESKTOP TABLE -->
@@ -2114,6 +2119,47 @@
         document.getElementById('text-import-area').value = '';
       } else {
         alert("Keine gültigen Songs im Text erkannt. Format pro Zeile: Songtitel - Interpret - Jahr");
+      }
+    }
+
+    let isVerifyingAudio = false;
+    async function verifyAndFilterDeckAudio() {
+      if (isVerifyingAudio) return;
+      if (songs.length === 0) {
+        alert("Keine Songs in der Liste zum Prüfen.");
+        return;
+      }
+      isVerifyingAudio = true;
+      const countBadge = document.getElementById('song-count-badge');
+      const origText = `${songs.length} Karten`;
+      countBadge.textContent = "Prüfe 0/" + songs.length + "...";
+
+      const verified = [];
+      let skipped = 0;
+
+      for (let i = 0; i < songs.length; i++) {
+        const s = songs[i];
+        countBadge.textContent = `Prüfe ${i + 1}/${songs.length}...`;
+        const trackId = extractTrackId(s.url);
+        const media = await fetchRobustClientAudioAndArtwork(trackId, s.artist, s.title);
+        if (media && media.previewUrl) {
+          s.previewUrl = media.previewUrl;
+          if (media.artworkUrl) s.artworkUrl = media.artworkUrl;
+          verified.push(s);
+        } else {
+          skipped++;
+          console.warn(`Ausgemustert (keine Audio-Vorschau): ${s.artist} - ${s.title}`);
+        }
+      }
+
+      songs = verified;
+      saveSongs();
+      isVerifyingAudio = false;
+
+      if (skipped > 0) {
+        alert(`✅ Prüfung abgeschlossen!\n${verified.length} Songs sind 100% spielbar.\n${skipped} Song(s) ohne funktionierende Audio-Vorschau wurden automatisch entfernt!`);
+      } else {
+        alert(`🎉 Perfekt! Alle ${verified.length} Songs haben eine geprüfte, spielbare Audio-Vorschau!`);
       }
     }
 

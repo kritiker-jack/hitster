@@ -206,7 +206,7 @@ def fetch_single_track_year(track_item, clean_titles=True):
         "coverUrl": cover_url
     }
 
-def fetch_spotify_playlist(playlist_id, clean_titles=True):
+def fetch_spotify_playlist(playlist_id, clean_titles=True, require_preview=True):
     embed_url = f"https://open.spotify.com/embed/playlist/{playlist_id}"
     req = urllib.request.Request(embed_url, headers=BROWSER_HEADERS)
     
@@ -230,18 +230,28 @@ def fetch_spotify_playlist(playlist_id, clean_titles=True):
         raise RuntimeError("Die Playlist enthält keine Songs oder ist privat.")
 
     results = []
+    skipped_count = 0
     # Moderate concurrency to prevent rate limits
     with ThreadPoolExecutor(max_workers=6) as executor:
         futures = [executor.submit(fetch_single_track_year, t, clean_titles) for t in raw_tracks]
         for f in futures:
             try:
-                results.append(f.result())
+                res = f.result()
+                if not res:
+                    continue
+                # FILTER: Only keep songs that have a verified working 30-sec audio preview!
+                if require_preview and not res.get('previewUrl'):
+                    skipped_count += 1
+                    print(f"⚠️ Übersprungen (keine Audio-Vorschau): {res.get('artist')} - {res.get('title')}")
+                    continue
+                results.append(res)
             except Exception:
                 pass
 
     return {
         "playlistName": playlist_name,
         "count": len(results),
+        "skippedCount": skipped_count,
         "songs": results
     }
 

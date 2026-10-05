@@ -39,22 +39,25 @@ def save_deck_index(index_data):
     with open(INDEX_FILE, 'w', encoding='utf-8') as f:
         json.dump(index_data, f, ensure_ascii=False, indent=2)
 
-def import_playlist_to_deck(playlist_url, custom_name=None, clean_titles=True):
+def import_playlist_to_deck(playlist_url, custom_name=None, clean_titles=True, require_preview=True):
     ensure_decks_dir()
     playlist_id = extract_playlist_id(playlist_url)
     if not playlist_id:
         print(f"❌ Ungültiger Spotify Playlist-Link: {playlist_url}")
         sys.exit(1)
 
-    print(f"⏳ Lade Playlist {playlist_id} von Spotify...")
-    data = fetch_spotify_playlist(playlist_id, clean_titles=clean_titles)
+    print(f"⏳ Lade Playlist {playlist_id} von Spotify und prüfe jede Audio-Vorschau...")
+    data = fetch_spotify_playlist(playlist_id, clean_titles=clean_titles, require_preview=require_preview)
     
     playlist_name = custom_name or data.get('playlistName', 'Hitster Playlist')
     songs = data.get('songs', [])
+    skipped = data.get('skippedCount', 0)
     
     if not songs:
-        print("❌ Keine Songs gefunden!")
+        print("❌ Keine spielbaren Songs mit Audio-Vorschau gefunden!")
         sys.exit(1)
+
+    print(f"🎯 {len(songs)} spielbare Songs mit 100% verifizierter Audio-Vorschau übernommen ({skipped} ohne Vorschau aussortiert).")
 
     slug = slugify(playlist_name)
     deck_filename = f"{slug}.json"
