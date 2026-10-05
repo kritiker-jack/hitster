@@ -1621,6 +1621,13 @@
         <span style="font-size: 0.72rem; background: var(--accent-purple); color: #fff; padding: 2px 7px; border-radius: var(--radius-pill); font-weight: 700;">CLOUD</span>
       </a>
 
+      <a href="https://github.com/kritiker-jack/hitster/actions/workflows/delete_deck.yml" target="_blank" class="menu-item-btn" onclick="closeDropdownMenu();" style="text-decoration: none; color: inherit;">
+        <div class="menu-item-left">
+          <span style="font-size: 1.15rem;">🗑️</span>
+          <span>Deck aus Repo löschen (GitHub)</span>
+        </div>
+      </a>
+
       <button class="menu-item-btn" onclick="loadSampleSongs(); closeDropdownMenu();">
         <div class="menu-item-left">
           <span style="font-size: 1.15rem;">✨</span>
@@ -1653,12 +1660,15 @@
         <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.9rem;">
           Wähle ein vorkonfiguriertes Kartendeck oder ein per GitHub Actions erstelltes Deck direkt aus:
         </p>
-        <div class="import-input-row">
-          <select id="select-git-deck" class="input-apple" style="cursor: pointer; font-size: 0.95rem;">
+        <div class="import-input-row" style="flex-wrap: wrap; gap: 8px;">
+          <select id="select-git-deck" class="input-apple" style="cursor: pointer; font-size: 0.95rem; flex: 1; min-width: 220px;">
             <option value="">Lade Decks aus dem Repository...</option>
           </select>
           <button class="btn-apple-green" onclick="loadSelectedGitDeck()" style="background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); box-shadow: 0 4px 15px rgba(121, 40, 202, 0.4);">
             <span>📂</span> Deck laden
+          </button>
+          <button class="btn-ghost" onclick="deleteSelectedGitDeck()" title="Ausgewähltes Deck aus dem Repository löschen" style="border: 1px solid rgba(255, 42, 122, 0.4); color: var(--accent-pink);">
+            <span>🗑️</span> Deck löschen
           </button>
         </div>
       </div>
@@ -1705,91 +1715,23 @@
             <a href="https://github.com/kritiker-jack/hitster/actions/workflows/import_deck.yml" target="_blank" class="btn-apple-green" style="padding: 8px 14px; font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent-purple), #4a148c); box-shadow: 0 4px 15px rgba(121, 40, 202, 0.4);">
               <span>⚡</span> GitHub Action öffnen & Playlist einfügen
             </a>
+            <a href="https://github.com/kritiker-jack/hitster/actions/workflows/delete_deck.yml" target="_blank" class="btn-ghost" style="padding: 8px 14px; font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-color: rgba(255, 42, 122, 0.4); color: var(--accent-pink);">
+              <span>🗑️</span> Deck über Action löschen
+            </a>
           </div>
           <div style="font-size: 0.8rem; color: var(--accent-yellow);">
-            ✨ Nach ~30 Sekunden ist dein Deck automatisch im Repository gespeichert und kann oben im Dropdown sofort ausgewählt werden!
-          </div>
-        </div>
-
-        <!-- QR DESTINATION SETTINGS -->
-        <div class="qr-destination-card">
-          <div class="qr-destination-header">
-            <span>🛡️</span> QR-Code Ziel für gedruckte Karten:
-          </div>
-          <div class="qr-destination-choices">
-            <label style="color: white;">
-              <input type="radio" name="qr-target-mode" value="github" checked onchange="saveQrMode()">
-              <strong>🌐 GitHub Pages (Empfohlen)</strong> – <code>https://kritiker-jack.github.io/hitster</code> (Kein PC nötig, überall spielbar!)
-            </label>
-            <label style="color: var(--text-muted);">
-              <input type="radio" name="qr-target-mode" value="blind" onchange="saveQrMode()">
-              <strong>🏠 Lokaler Blind-Player</strong> – Läuft über PC im Heim-WLAN
-            </label>
-            <label style="color: var(--text-muted);">
-              <input type="radio" name="qr-target-mode" value="spotify" onchange="saveQrMode()">
-              <strong>🎧 Spotify Direktlink</strong> – Öffnet die Spotify App
-            </label>
+            ✨ Erstellte Decks werden automatisch im Repository gespeichert und stehen direkt zur Verfügung!
           </div>
         </div>
 
         <div id="import-status" class="status-toast"></div>
       </div>
 
-      <!-- COLLAPSIBLE TEXT BULK IMPORT -->
-      <details class="collapsible-glass" style="margin-bottom: 1.2rem;">
-        <summary>
-          <span>📝 Songliste als Text einfügen (Schnell-Import)</span>
-          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Direkt im Browser</span>
-        </summary>
-        <div style="padding: 1rem 0;">
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.8rem;">
-            Füge mehrere Songs zeilenweise ein (z. B. aus Notizen, WhatsApp oder Excel).<br>
-            Format: <code>Songtitel - Interpret - Jahr</code>
-          </p>
-          <textarea id="text-import-area" class="input-apple" style="height: 120px; font-family: monospace; font-size: 0.85rem; resize: vertical; margin-bottom: 0.8rem;" placeholder="Bohemian Rhapsody - Queen - 1975&#10;Take On Me - a-ha - 1985&#10;Roller - Apache 207 - 2019"></textarea>
-          <button class="btn-apple-green" onclick="importTextSongList()" style="width: 100%; justify-content: center;">
-            <span>➕</span> Songs aus Text importieren
-          </button>
-        </div>
-      </details>
-
-      <!-- COLLAPSIBLE MANUAL ENTRY -->
-      <details class="collapsible-glass">
-        <summary>
-          <span>➕ Einzelnen Song manuell hinzufügen</span>
-          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Optional</span>
-        </summary>
-        <form id="song-form" class="manual-form-grid" onsubmit="addSongFromForm(event)">
-          <div class="form-field">
-            <label for="input-title">Songtitel *</label>
-            <input type="text" id="input-title" class="input-apple" placeholder="z. B. Billie Jean" required>
-          </div>
-          <div class="form-field">
-            <label for="input-artist">Künstler / Band *</label>
-            <input type="text" id="input-artist" class="input-apple" placeholder="z. B. Michael Jackson" required>
-          </div>
-          <div class="form-field">
-            <label for="input-year">Jahr *</label>
-            <input type="number" id="input-year" class="input-apple" placeholder="1982" min="1900" max="2099" required>
-          </div>
-          <div class="form-field">
-            <label for="input-url">Spotify Link (Optional)</label>
-            <input type="url" id="input-url" class="input-apple" placeholder="https://open.spotify.com/track/...">
-          </div>
-          <div>
-            <button type="submit" class="btn-manual-add">Hinzufügen</button>
-          </div>
-        </form>
-      </details>
-
       <!-- RESPONSIVE SONG LIST -->
       <div class="song-list-panel">
         <div class="song-list-top">
           <h2 style="font-size: 1.1rem; font-weight: 800;"><span>🎵</span> Deine Song-Karten</h2>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <button class="btn-apple-green" onclick="verifyAndFilterDeckAudio()" title="Prüft alle Songs und entfernt automatisch Titel ohne funktionierende Audio-Vorschau" style="padding: 6px 12px; font-size: 0.78rem; background: rgba(0, 242, 254, 0.12); border: 1px solid var(--accent-cyan); color: #fff;">
-              <span>🔍</span> Audio-Vorschau aller Songs prüfen
-            </button>
+          <div>
             <span id="song-count-badge" class="song-count-pill">0 Karten</span>
           </div>
         </div>
@@ -2037,22 +1979,70 @@
       }
     }
 
+    let gitDecksCatalog = [];
+
     async function loadDecksCatalog() {
       try {
-        const resp = await fetch('decks/index.json');
+        const resp = await fetch('decks/index.json?_t=' + Date.now());
         if (!resp.ok) return;
-        const catalog = await resp.json();
+        gitDecksCatalog = await resp.json();
         const select = document.getElementById('select-git-deck');
         if (!select) return;
         select.innerHTML = '<option value="">-- Wähle ein Deck aus dem Repository --</option>';
-        catalog.forEach(d => {
+        gitDecksCatalog.forEach(d => {
           const opt = document.createElement('option');
           opt.value = d.file;
+          opt.dataset.id = d.id || d.slug;
+          opt.dataset.name = d.name;
           opt.textContent = `${d.name} (${d.count} Karten)`;
           select.appendChild(opt);
         });
       } catch (e) {
         console.warn('No git decks catalog found:', e);
+      }
+    }
+
+    async function deleteSelectedGitDeck() {
+      const select = document.getElementById('select-git-deck');
+      const file = select ? select.value : '';
+      if (!file) {
+        alert("Bitte wähle zuerst ein Deck aus der Liste aus, das gelöscht werden soll.");
+        return;
+      }
+      const selectedOpt = select.selectedOptions[0];
+      const deckId = selectedOpt?.dataset?.id || file.replace('decks/', '').replace('.json', '');
+      const deckName = selectedOpt?.dataset?.name || deckId;
+
+      if (!confirm(`⚠️ Möchtest du das Deck "${deckName}" wirklich aus dem Repository löschen?`)) {
+        return;
+      }
+
+      // 1. Try local server endpoint if running locally
+      try {
+        const res = await fetch('/api/delete-deck', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ deckId: deckId })
+        });
+        if (res.ok) {
+          alert(`✅ Deck "${deckName}" wurde erfolgreich gelöscht!`);
+          await loadDecksCatalog();
+          return;
+        }
+      } catch (e) {}
+
+      // 2. Fallback to GitHub Actions workflow
+      try {
+        await navigator.clipboard.writeText(deckId);
+      } catch (err) {}
+
+      const openAction = confirm(
+        `🗑️ Deck im GitHub Repository löschen:\n\n` +
+        `Deck-Name: "${deckId}"\n(Der Name wurde in die Zwischenablage kopiert!)\n\n` +
+        `Klicke auf "OK", um GitHub Actions zu öffnen. Klicke dort auf "Run workflow", füge "${deckId}" ein und bestätige.`
+      );
+      if (openAction) {
+        window.open('https://github.com/kritiker-jack/hitster/actions/workflows/delete_deck.yml', '_blank');
       }
     }
 
@@ -2064,7 +2054,7 @@
         return;
       }
       try {
-        const resp = await fetch(file);
+        const resp = await fetch(file + '?_t=' + Date.now());
         if (!resp.ok) throw new Error("Deck-Datei konnte nicht geladen werden.");
         const data = await resp.json();
         if (Array.isArray(data) && data.length > 0) {
@@ -2078,88 +2068,6 @@
         }
       } catch (err) {
         alert("Fehler beim Laden des Decks: " + err.message);
-      }
-    }
-
-    function importTextSongList() {
-      const text = document.getElementById('text-import-area').value.trim();
-      if (!text) {
-        alert("Bitte gib zuerst ein paar Songs in das Textfeld ein.");
-        return;
-      }
-      const lines = text.split('\n');
-      const imported = [];
-      for (const line of lines) {
-        const l = line.trim();
-        if (!l) continue;
-        let parts = l.split(/\s*[-–—|;,]\s*/);
-        if (parts.length >= 3) {
-          const title = parts[0].trim();
-          const artist = parts[1].trim();
-          const year = parseInt(parts[2].trim(), 10);
-          if (title && artist && !isNaN(year)) {
-            imported.push({ title, artist, year, url: `https://open.spotify.com/search/${encodeURIComponent(artist + ' ' + title)}` });
-            continue;
-          }
-        }
-        if (parts.length === 2) {
-          const title = parts[0].trim();
-          const artist = parts[1].trim();
-          if (title && artist) {
-            imported.push({ title, artist, year: 2000, url: `https://open.spotify.com/search/${encodeURIComponent(artist + ' ' + title)}` });
-          }
-        }
-      }
-      if (imported.length > 0) {
-        const mode = document.querySelector('input[name="import-mode"]:checked')?.value || 'replace';
-        if (mode === 'replace') songs = imported;
-        else songs = [...songs, ...imported];
-        saveSongs();
-        alert(`${imported.length} Songs erfolgreich aus Text importiert!`);
-        document.getElementById('text-import-area').value = '';
-      } else {
-        alert("Keine gültigen Songs im Text erkannt. Format pro Zeile: Songtitel - Interpret - Jahr");
-      }
-    }
-
-    let isVerifyingAudio = false;
-    async function verifyAndFilterDeckAudio() {
-      if (isVerifyingAudio) return;
-      if (songs.length === 0) {
-        alert("Keine Songs in der Liste zum Prüfen.");
-        return;
-      }
-      isVerifyingAudio = true;
-      const countBadge = document.getElementById('song-count-badge');
-      const origText = `${songs.length} Karten`;
-      countBadge.textContent = "Prüfe 0/" + songs.length + "...";
-
-      const verified = [];
-      let skipped = 0;
-
-      for (let i = 0; i < songs.length; i++) {
-        const s = songs[i];
-        countBadge.textContent = `Prüfe ${i + 1}/${songs.length}...`;
-        const trackId = extractTrackId(s.url);
-        const media = await fetchRobustClientAudioAndArtwork(trackId, s.artist, s.title);
-        if (media && media.previewUrl) {
-          s.previewUrl = media.previewUrl;
-          if (media.artworkUrl) s.artworkUrl = media.artworkUrl;
-          verified.push(s);
-        } else {
-          skipped++;
-          console.warn(`Ausgemustert (keine Audio-Vorschau): ${s.artist} - ${s.title}`);
-        }
-      }
-
-      songs = verified;
-      saveSongs();
-      isVerifyingAudio = false;
-
-      if (skipped > 0) {
-        alert(`✅ Prüfung abgeschlossen!\n${verified.length} Songs sind 100% spielbar.\n${skipped} Song(s) ohne funktionierende Audio-Vorschau wurden automatisch entfernt!`);
-      } else {
-        alert(`🎉 Perfekt! Alle ${verified.length} Songs haben eine geprüfte, spielbare Audio-Vorschau!`);
       }
     }
 
@@ -2205,38 +2113,18 @@
       renderAll();
     }
 
-    function saveQrMode() {
-      renderAll();
-    }
-
     function getTargetUrl(song) {
-      const qrMode = document.querySelector('input[name="qr-target-mode"]:checked')?.value || 'github';
-      
       let trackId = '';
-      if (song.url) {
+      if (song.id) {
+        trackId = song.id;
+      } else if (song.url) {
         const m = song.url.match(/track[/:]([a-zA-Z0-9]+)/);
         if (m) trackId = m[1];
       }
-
-      // 1. GitHub Pages Mode (Global & 100% free, no local PC needed!)
-      if (qrMode === 'github') {
-        const ghBase = 'https://kritiker-jack.github.io/hitster';
-        const encTitle = encodeURIComponent(song.title);
-        const encArtist = encodeURIComponent(song.artist);
-        return `${ghBase}/player.html?id=${trackId}&y=${song.year}&t=${encTitle}&a=${encArtist}`;
-      }
-
-      // 2. Local Blind Player Mode
-      if (qrMode === 'blind' && trackId) {
-        return `${lanHostUrl}/play?id=${trackId}`;
-      }
-
-      // 3. Spotify Direct Link
-      if (song.url && song.url.trim().length > 0) {
-        return song.url.trim();
-      }
-      const query = encodeURIComponent(`${song.artist} ${song.title}`);
-      return `https://open.spotify.com/search/${query}`;
+      const ghBase = 'https://kritiker-jack.github.io/hitster';
+      const encTitle = encodeURIComponent(song.title || '');
+      const encArtist = encodeURIComponent(song.artist || '');
+      return `${ghBase}/player.html?id=${trackId}&y=${song.year || ''}&t=${encTitle}&a=${encArtist}`;
     }
 
     function switchTab(tabId) {
@@ -2355,20 +2243,6 @@
       };
       reader.readAsText(file);
       e.target.value = '';
-    }
-
-    function addSongFromForm(e) {
-      e.preventDefault();
-      const title = document.getElementById('input-title').value.trim();
-      const artist = document.getElementById('input-artist').value.trim();
-      const year = parseInt(document.getElementById('input-year').value, 10);
-      const url = document.getElementById('input-url').value.trim();
-
-      if (!title || !artist || isNaN(year)) return;
-
-      songs.push({ title, artist, year, url });
-      saveSongs();
-      document.getElementById('song-form').reset();
     }
 
     async function importSpotifyPlaylist() {

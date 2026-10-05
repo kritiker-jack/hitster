@@ -1,0 +1,65 @@
+name: 🗑️ Deck aus Repository löschen
+
+on:
+  workflow_dispatch:
+    inputs:
+      deck_id:
+        description: 'Name oder ID des Decks (z. B. hasenbau)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  delete-deck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: 🐍 Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 🗑️ Deck entfernen
+        run: |
+          python -c "
+          import json, os, sys
+          deck_id = '${{ github.event.inputs.deck_id }}'.strip().lower()
+          idx_path = 'decks/index.json'
+          if not os.path.exists(idx_path):
+              sys.exit(0)
+          with open(idx_path, 'r', encoding='utf-8') as f:
+              idx = json.load(f)
+          new_idx = []
+          deleted_files = []
+          for d in idx:
+              slug = d.get('slug', '').lower()
+              name = d.get('name', '').lower()
+              did = d.get('id', '').lower()
+              if deck_id in [slug, name, did]:
+                  deck_file = d.get('file', '')
+                  if deck_file and os.path.exists(deck_file):
+                      os.remove(deck_file)
+                      deleted_files.append(deck_file)
+              else:
+                  new_idx.append(d)
+          with open(idx_path, 'w', encoding='utf-8') as f:
+              json.dump(new_idx, f, ensure_ascii=False, indent=2)
+          print(f'Gelöscht: {deleted_files}, Verbleibende Decks: {len(new_idx)}')
+          "
+
+      - name: 🚀 Änderungen in GitHub speichern & veröffentlichen
+        run: |
+          git config --global user.name "Jack"
+          git config --global user.email "jack@hitster.app"
+          git add -A decks/
+          if git diff --staged --quiet; then
+            echo "Keine Änderungen."
+          else
+            git commit -m "Delete deck via GitHub Actions: ${{ github.event.inputs.deck_id }}"
+            git push origin main
+          fi

@@ -39,8 +39,8 @@ jobs:
 
       - name: 🚀 Neues Deck in GitHub speichern & veröffentlichen
         run: |
-          git config --global user.name "Hitster Deck Bot"
-          git config --global user.email "bot@hitster.app"
+          git config --global user.name "Jack"
+          git config --global user.email "jack@hitster.app"
           git add decks/
           if git diff --staged --quiet; then
             echo "Keine Änderungen gefunden."

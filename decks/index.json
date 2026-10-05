@@ -1,5 +1,19 @@
 [
   {
+    "id": "deutschrap_tekk_party",
+    "slug": "deutschrap_tekk_party",
+    "name": "🔥 Deutschrap, Tekk & Party-Hits",
+    "count": 107,
+    "file": "decks/deutschrap_tekk_party.json"
+  },
+  {
+    "id": "hasenbau",
+    "slug": "hasenbau",
+    "name": "Hasenbau",
+    "count": 97,
+    "file": "decks/hasenbau.json"
+  },
+  {
     "id": "sample_hits",
     "slug": "sample_hits",
     "name": "🌟 18 Welthits & Klassiker",
@@ -12,12 +26,5 @@
     "name": "🇩🇪 Deutsche Hits & Party-Klassiker",
     "count": 14,
     "file": "decks/german_hits.json"
-  },
-  {
-    "id": "hasenbau",
-    "slug": "hasenbau",
-    "name": "Hasenbau",
-    "count": 97,
-    "file": "decks/hasenbau.json"
   }
 ]

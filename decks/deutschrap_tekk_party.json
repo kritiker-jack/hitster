@@ -1,0 +1,858 @@
+[
+  {
+    "title": "Abfahrt",
+    "artist": "Finch",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Finch%20Abfahrt",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/b/6/2/0/b620cf16f1b76cda24367ab558c2f333.mp3?hdnea=exp=1791195887~acl=/api/1/1/b/6/2/0/b620cf16f1b76cda24367ab558c2f333.mp3*~data=user_id=0,application_id=42~hmac=fad2256c43c4e7de2d7d6d93b4427d96905cc39dccf6cbfa7174608e7c990256",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/8ecfea337ba0c65753204d0b4a925c59/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Direkt Bock",
+    "artist": "Finch",
+    "year": 2020,
+    "url": "https://open.spotify.com/search/Finch%20Direkt%20Bock",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/4/f/5/0/4f5e9d4eac46ef33bebe38c3a1505f7b.mp3?hdnea=exp=1791195888~acl=/api/1/1/4/f/5/0/4f5e9d4eac46ef33bebe38c3a1505f7b.mp3*~data=user_id=0,application_id=42~hmac=defd13f060920a6c9611eca5f9c7c2a37393cc0f9a7ec06ebb26e64e5098fc08",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/27386cce32c4b6afed04762dc6936d42/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Liebe auf der Rückbank",
+    "artist": "Finch & Tream",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Finch%20%26%20Tream%20Liebe%20auf%20der%20R%C3%BCckbank",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/5/0/7/0/507d1e5b5786271c5a9b20752191d6a6.mp3?hdnea=exp=1791195888~acl=/api/1/1/5/0/7/0/507d1e5b5786271c5a9b20752191d6a6.mp3*~data=user_id=0,application_id=42~hmac=a07b26e45839fee5b80e453e22e358fb985ed7c2a21a0658aaebd08f37d939b7",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/8289d3f4313376938ea68d0c07dac0ce/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Hoch die Hände Wochenende",
+    "artist": "HBz & Finch",
+    "year": 2022,
+    "url": "https://open.spotify.com/search/HBz%20%26%20Finch%20Hoch%20die%20H%C3%A4nde%20Wochenende",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/f/f/e/0/ffee154b1472264b28834a1d3c184e48.mp3?hdnea=exp=1791195889~acl=/api/1/1/f/f/e/0/ffee154b1472264b28834a1d3c184e48.mp3*~data=user_id=0,application_id=42~hmac=04757dd9938c1e8b396cd448da1348aceb5dff15d28aeb037782a45ba52a3e22",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/1f544e19cbac4f7f18bd5f26498c0fea/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Onkelz Poster",
+    "artist": "Finch",
+    "year": 2019,
+    "url": "https://open.spotify.com/search/Finch%20Onkelz%20Poster",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/3/1/0/0/3107ba5b6234ac8ddfbec5cf7d1af14d.mp3?hdnea=exp=1791195889~acl=/api/1/1/3/1/0/0/3107ba5b6234ac8ddfbec5cf7d1af14d.mp3*~data=user_id=0,application_id=42~hmac=7599b61812449eefdb857281a830d17b731bfbf70788c81ba2ed340fdd2b9b42",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/5352d6fe87e616d7ef4f3a075a18f5e4/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "King Kong",
+    "artist": "HBz",
+    "year": 2021,
+    "url": "https://open.spotify.com/search/HBz%20King%20Kong",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/3/c/8/0/3c85c6bd7e1d9519e825188e04309f8f.mp3?hdnea=exp=1791195889~acl=/api/1/1/3/c/8/0/3c85c6bd7e1d9519e825188e04309f8f.mp3*~data=user_id=0,application_id=42~hmac=a562fe7849e7acf4d1915429cafe7583e96f206c4c699a24d2ecf5a054690371",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/8ce7eee4a7ba12c33796c3aca49530a9/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Lebenslang",
+    "artist": "Tream",
+    "year": 2022,
+    "url": "https://open.spotify.com/search/Tream%20Lebenslang",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/5/e/a/0/5ea1541518e64a696628b61a1f1427be.mp3?hdnea=exp=1791195891~acl=/api/1/1/5/e/a/0/5ea1541518e64a696628b61a1f1427be.mp3*~data=user_id=0,application_id=42~hmac=1d54d4e5d11d99f1b26bfee37cdb6d6ad725382c5dd91e0a6e7789d7eda9fbdd",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/c4fb9114fffed3c1a060058cb732afdc/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "3er BMW",
+    "artist": "Tream",
+    "year": 2022,
+    "url": "https://open.spotify.com/search/Tream%203er%20BMW",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/a/b/4/0/ab4bb499053b017d25f6ae43b051fb18.mp3?hdnea=exp=1791195891~acl=/api/1/1/a/b/4/0/ab4bb499053b017d25f6ae43b051fb18.mp3*~data=user_id=0,application_id=42~hmac=b57172e25042af1508e7a77ab7920370b368f301bedf4209138c7b3b865cabd2",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/81c9ee285a1a3da0bf05cdc2ed35d26d/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Party Sahne",
+    "artist": "Ski Aggu",
+    "year": 2022,
+    "url": "https://open.spotify.com/search/Ski%20Aggu%20Party%20Sahne",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/3/2/7/0/327b93e952d9d874fb89027fd6aa9ab1.mp3?hdnea=exp=1791195892~acl=/api/1/1/3/2/7/0/327b93e952d9d874fb89027fd6aa9ab1.mp3*~data=user_id=0,application_id=42~hmac=aff01bd8c2f3a1d92bc089107a35db262c1fb401f7dec004ff71e11e48a77191",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/aa79069f96107132ff939ee0e7d04279/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Friesenjung",
+    "artist": "Ski Aggu, Joost, Otto Waalkes",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Ski%20Aggu%2C%20Joost%2C%20Otto%20Waalkes%20Friesenjung",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/d/e/2/0/de26386288152166aea60562134316a7.mp3?hdnea=exp=1791195892~acl=/api/1/1/d/e/2/0/de26386288152166aea60562134316a7.mp3*~data=user_id=0,application_id=42~hmac=2ecfe986d4a7c2a285d4613088b738ae46cb76ac576bbee2b18e66a0bf51a8c5",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/aa57f060b99b4b1733603dcf4666b18b/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Mietfrei",
+    "artist": "Ski Aggu",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Ski%20Aggu%20Mietfrei",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/6/f/7/0/6f70a576708be4da940d15e62f9c64d2.mp3?hdnea=exp=1791195892~acl=/api/1/1/6/f/7/0/6f70a576708be4da940d15e62f9c64d2.mp3*~data=user_id=0,application_id=42~hmac=aeb5c010bf94a53d927942c2016a76729c1040412366fb3527dac1c30c8873e0",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/510cf2c2e954ba92f0f968ac397b9b9a/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Theater",
+    "artist": "Ski Aggu",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Ski%20Aggu%20Theater",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/5/b/6/0/5b6d8449cb134277e1c9a4ba0a4e723f.mp3?hdnea=exp=1791195893~acl=/api/1/1/5/b/6/0/5b6d8449cb134277e1c9a4ba0a4e723f.mp3*~data=user_id=0,application_id=42~hmac=3579abd37b15425289d7116b50d947af5b06c3646e919100d1f2ace857f741f7",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/ef9309ac31623c8920d2ffe1c2e1eb02/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Anders",
+    "artist": "Ski Aggu & 01099",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Ski%20Aggu%20%26%2001099%20Anders",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/5/e/2/0/5e2e18ffdf6b5dcb6fe8b55fa49c46ef.mp3?hdnea=exp=1791195893~acl=/api/1/1/5/e/2/0/5e2e18ffdf6b5dcb6fe8b55fa49c46ef.mp3*~data=user_id=0,application_id=42~hmac=908412b83090eba67130fbc87a1ef8a0ffc150f372a03f96f525ca3c6c3af656",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/c4976f4fba1c16e9bb92d4652e971a72/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Roller",
+    "artist": "Apache 207",
+    "year": 2019,
+    "url": "https://open.spotify.com/search/Apache%20207%20Roller",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/4/a/7/0/4a7c519c40ea6c3e3a718bab805ea660.mp3?hdnea=exp=1791195893~acl=/api/1/1/4/a/7/0/4a7c519c40ea6c3e3a718bab805ea660.mp3*~data=user_id=0,application_id=42~hmac=f2c9f7fce671807a4dc4edc1914d6f83c155198229f4b2708832c84d60ae648f",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/664e8010abffa8cfe9c3f8dfa5859353/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Kein Problem",
+    "artist": "Apache 207",
+    "year": 2019,
+    "url": "https://open.spotify.com/search/Apache%20207%20Kein%20Problem",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/5/b/0/0/5b0aeda8848a24945bab07f670ef5d15.mp3?hdnea=exp=1791195893~acl=/api/1/1/5/b/0/0/5b0aeda8848a24945bab07f670ef5d15.mp3*~data=user_id=0,application_id=42~hmac=399fa6c1bfa41846721647c22e27e9fa54da37882cacb7a132fe870af7a7c98a",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/4ec69daf2ce5c0c055d2a8197b898bd0/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Wieso tust du dir das an",
+    "artist": "Apache 207",
+    "year": 2019,
+    "url": "https://open.spotify.com/search/Apache%20207%20Wieso%20tust%20du%20dir%20das%20an",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/c/a/7/0/ca702b89ec536a4bc38a6736a367026d.mp3?hdnea=exp=1791195893~acl=/api/1/1/c/a/7/0/ca702b89ec536a4bc38a6736a367026d.mp3*~data=user_id=0,application_id=42~hmac=b189ae8d3d1808f350ab75f439f34043a4a7c19474bf0a2adb7ca3c3b2106fb1",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/92c13668d496d75e00d1da41fe704c62/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Bläulich",
+    "artist": "Apache 207",
+    "year": 2020,
+    "url": "https://open.spotify.com/search/Apache%20207%20Bl%C3%A4ulich",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/6/c/3/0/6c311b94e706cbe49ff1c13e8b7b125c.mp3?hdnea=exp=1791195893~acl=/api/1/1/6/c/3/0/6c311b94e706cbe49ff1c13e8b7b125c.mp3*~data=user_id=0,application_id=42~hmac=33394bab6f0c96ef292bc00377b4830819b99cfa6f0dfa8215d98e94a5c119b0",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/58971bceabc5a31783ac2ff471f7b8af/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Fame",
+    "artist": "Apache 207",
+    "year": 2020,
+    "url": "https://open.spotify.com/search/Apache%20207%20Fame",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/3/4/e/0/34e53a2f222875c7e1423060fa085e27.mp3?hdnea=exp=1791195893~acl=/api/1/1/3/4/e/0/34e53a2f222875c7e1423060fa085e27.mp3*~data=user_id=0,application_id=42~hmac=9bdda8c9112c305fa190351ffa8730ba1e98d3ff4b08167bcf76c2e15e9d2ff3",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/4f9c8f1d9e450c30dddb16588da5a6da/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Komet",
+    "artist": "Udo Lindenberg & Apache 207",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Udo%20Lindenberg%20%26%20Apache%20207%20Komet",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/2/c/1/0/2c15a2a6a6343ce8f7ce3f59e208b698.mp3?hdnea=exp=1791195894~acl=/api/1/1/2/c/1/0/2c15a2a6a6343ce8f7ce3f59e208b698.mp3*~data=user_id=0,application_id=42~hmac=06f2de03e4fcfe0dbb97653cee077e2f2a83c6fec2bebbdb07861b83a4f7ca83",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/5a7c0b7520db13996f64081ae77c1422/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Madonna",
+    "artist": "Bausa & Apache 207",
+    "year": 2021,
+    "url": "https://open.spotify.com/search/Bausa%20%26%20Apache%20207%20Madonna",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/0/1/d/0/01de4057d192e6c928333e49c6bf27f6.mp3?hdnea=exp=1791195894~acl=/api/1/1/0/1/d/0/01de4057d192e6c928333e49c6bf27f6.mp3*~data=user_id=0,application_id=42~hmac=861b6c8a4c5129829a77e6ed699394814ced38f558beab6cdb55fe81a8564790",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/6fb751505e2d3dce77cf04a0b10500ee/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "2002",
+    "artist": "Sido & Apache 207",
+    "year": 2020,
+    "url": "https://open.spotify.com/search/Sido%20%26%20Apache%20207%202002",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/7/b/d/0/7bd03dfefdb5e9e15aa6228412cd25b9.mp3?hdnea=exp=1791195894~acl=/api/1/1/7/b/d/0/7bd03dfefdb5e9e15aa6228412cd25b9.mp3*~data=user_id=0,application_id=42~hmac=c1fe0e27b1f3f1bec2cc7ee79d8996021a5dad051b6547693eaae84f64819f4a",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/28b2a2d1022edf3b757ef5bf0d800640/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "5 Songs in einer Nacht",
+    "artist": "Capital Bra",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Capital%20Bra%205%20Songs%20in%20einer%20Nacht",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/9/b/a/0/9ba742dd3de243a6a95e307f6784bebd.mp3?hdnea=exp=1791195894~acl=/api/1/1/9/b/a/0/9ba742dd3de243a6a95e307f6784bebd.mp3*~data=user_id=0,application_id=42~hmac=c762029016289644ccc749d624533349d8f3f1b7289a69e62cf00859a7fb6fe0",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/efd5d34e606078c014679c0dc2a3287c/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Neymar",
+    "artist": "Capital Bra",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Capital%20Bra%20Neymar",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/8/d/a/0/8da5f9df2b1814a6f6c1ca03a387e873.mp3?hdnea=exp=1791195894~acl=/api/1/1/8/d/a/0/8da5f9df2b1814a6f6c1ca03a387e873.mp3*~data=user_id=0,application_id=42~hmac=4a50ecf3ae84fc976a0e9a57c6293e5047cb832c0a137b02ed3d409e584ea8cb",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/efd5d34e606078c014679c0dc2a3287c/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "One Night Stand",
+    "artist": "Capital Bra",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Capital%20Bra%20One%20Night%20Stand",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/e/d/2/0/ed27231953c4f45ea2ac5fed8e4f7df8.mp3?hdnea=exp=1791195894~acl=/api/1/1/e/d/2/0/ed27231953c4f45ea2ac5fed8e4f7df8.mp3*~data=user_id=0,application_id=42~hmac=0c0ac49f703cd783e4040d925517089b717f20fa97ae3fd2fc397f27a410d1f2",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/efd5d34e606078c014679c0dc2a3287c/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Berlin lebt",
+    "artist": "Capital Bra",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Capital%20Bra%20Berlin%20lebt",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/f/2/2/0/f22cc48d673f12d04896ccd5299442e7.mp3?hdnea=exp=1791195895~acl=/api/1/1/f/2/2/0/f22cc48d673f12d04896ccd5299442e7.mp3*~data=user_id=0,application_id=42~hmac=701c5d52ce3b9d1bdbe0e796f6e88448c096e7c7deecc561efb64e1c97912ce6",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/efd5d34e606078c014679c0dc2a3287c/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Melodien",
+    "artist": "Capital Bra & Juju",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Capital%20Bra%20%26%20Juju%20Melodien",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/e/c/4/0/ec461500f4a1edc432d38cc4b4f70d51.mp3?hdnea=exp=1791195895~acl=/api/1/1/e/c/4/0/ec461500f4a1edc432d38cc4b4f70d51.mp3*~data=user_id=0,application_id=42~hmac=e23e8c2287925541e0c38a33858319b4776af2c1abf3d89304b1b15665d2c969",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/c77e9468fbd54fa8e02e5eeb10340b53/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Cherry Lady",
+    "artist": "Capital Bra",
+    "year": 2019,
+    "url": "https://open.spotify.com/search/Capital%20Bra%20Cherry%20Lady",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/7/6/b/0/76b6cc48039f1e5b95c63d4605537c43.mp3?hdnea=exp=1791195895~acl=/api/1/1/7/6/b/0/76b6cc48039f1e5b95c63d4605537c43.mp3*~data=user_id=0,application_id=42~hmac=32729b170e6f057db58664d7c63e45f0cc5a6c717cd3a83f454e32a86426946d",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/b50e51e90f4971f233503448430449a2/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Tilidin",
+    "artist": "Capital Bra & Samra",
+    "year": 2019,
+    "url": "https://open.spotify.com/search/Capital%20Bra%20%26%20Samra%20Tilidin",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/4/f/a/0/4fafa7e426297d0cfe8dff3d43d72a53.mp3?hdnea=exp=1791195896~acl=/api/1/1/4/f/a/0/4fafa7e426297d0cfe8dff3d43d72a53.mp3*~data=user_id=0,application_id=42~hmac=a593b0a59b735e313fd5e9d1465a465eea36987bc344bbe7efe3f765f123c96e",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/c771055df562b28f8462a0866e4af04e/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "DNA",
+    "artist": "Capital Bra & KC Rebell",
+    "year": 2019,
+    "url": "https://open.spotify.com/search/Capital%20Bra%20%26%20KC%20Rebell%20DNA",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/c/9/8/0/c986f02b97765171b0c43bb777307dbd.mp3?hdnea=exp=1791195896~acl=/api/1/1/c/9/8/0/c986f02b97765171b0c43bb777307dbd.mp3*~data=user_id=0,application_id=42~hmac=8ae925cdb870063eedfabe04a9993bb0f41fbd0d4f64f67879238919f072dc86",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/a7e5546852d36866f33671a8af329183/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Heute mit mir",
+    "artist": "Nimo",
+    "year": 2017,
+    "url": "https://open.spotify.com/search/Nimo%20Heute%20mit%20mir",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/9/a/7/0/9a7be6c252adc6d35b13b997a8e19a6c.mp3?hdnea=exp=1791195896~acl=/api/1/1/9/a/7/0/9a7be6c252adc6d35b13b997a8e19a6c.mp3*~data=user_id=0,application_id=42~hmac=52ff9946a660144c01e689dcf2f1ae52bf56ebc0560233f6a655f05175ff876d",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/a2e27ff0ebf917de924977a85bb29307/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Nie wieder",
+    "artist": "Nimo",
+    "year": 2017,
+    "url": "https://open.spotify.com/search/Nimo%20Nie%20wieder",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/6/d/b/0/6db48f0e956f1519cc31f6366682cda8.mp3?hdnea=exp=1791195896~acl=/api/1/1/6/d/b/0/6db48f0e956f1519cc31f6366682cda8.mp3*~data=user_id=0,application_id=42~hmac=40646db73c7a438bf18ef1e807348fa0d6ba019825c931a9962310c9ef341042",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/4dc1fbc71a64fc0e972cfe47d0c8e9ac/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Karma",
+    "artist": "Nimo",
+    "year": 2019,
+    "url": "https://open.spotify.com/search/Nimo%20Karma",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/7/4/9/0/749d4b42ea4dae1df6de6504966ae80f.mp3?hdnea=exp=1791195896~acl=/api/1/1/7/4/9/0/749d4b42ea4dae1df6de6504966ae80f.mp3*~data=user_id=0,application_id=42~hmac=abcd7b56ecc06de7f22f202be65aa4ee69906552b871d899b6453d17f7107763",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/e074642f9676c8dc4e1450581024e28c/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Zoey",
+    "artist": "Nimo",
+    "year": 2020,
+    "url": "https://open.spotify.com/search/Nimo%20Zoey",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/a/2/0/0/a205cd5ffa2c1752d96b5d971732d48a.mp3?hdnea=exp=1791195896~acl=/api/1/1/a/2/0/0/a205cd5ffa2c1752d96b5d971732d48a.mp3*~data=user_id=0,application_id=42~hmac=230ac5a2674312b1ad706fabe25186a210f917eaadb5b4eefe535de41f7da6d0",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/45c28e04c5d954caf1751abe9088f8e3/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Habibi",
+    "artist": "Veysel",
+    "year": 2017,
+    "url": "https://open.spotify.com/search/Veysel%20Habibi",
+    "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/be/2d/10/be2d10dc-d2d6-8a4b-d899-26e415bc29a3/mzaf_10743777197864282756.plus.aac.p.m4a",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/bc/a3/ba/bca3bab2-a0fd-0de7-2317-29de6e64b1fd/889176103377.jpg/600x600bb.jpg"
+  },
+  {
+    "title": "Kleiner Cabrón",
+    "artist": "Veysel",
+    "year": 2017,
+    "url": "https://open.spotify.com/search/Veysel%20Kleiner%20Cabr%C3%B3n",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/8/a/b/0/8abf93cb22d85b7db484d9e52938e5e2.mp3?hdnea=exp=1791195897~acl=/api/1/1/8/a/b/0/8abf93cb22d85b7db484d9e52938e5e2.mp3*~data=user_id=0,application_id=42~hmac=5904c408ef599badcb3b07b34fe77449300e008675b8543cce3b32ec007eed6f",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/42f11f65d37f09f72e0600b7c5ad1661/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Uff",
+    "artist": "Veysel",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Veysel%20Uff",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/b/3/1/0/b3193259a11c375c3e64adc50aad353f.mp3?hdnea=exp=1791195897~acl=/api/1/1/b/3/1/0/b3193259a11c375c3e64adc50aad353f.mp3*~data=user_id=0,application_id=42~hmac=ce922fd4f607f4cfdfc129c1570016ae716b83cb7db79f4570a01c21179e9a83",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/e5b4fb0659a98de045667d29ee746153/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Palmen aus Plastik",
+    "artist": "Bonez MC & RAF Camora",
+    "year": 2016,
+    "url": "https://open.spotify.com/search/Bonez%20MC%20%26%20RAF%20Camora%20Palmen%20aus%20Plastik",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/6/b/2/0/6b26433ef5b88f71b5284f8d06db37a7.mp3?hdnea=exp=1791195897~acl=/api/1/1/6/b/2/0/6b26433ef5b88f71b5284f8d06db37a7.mp3*~data=user_id=0,application_id=42~hmac=4234a32b2ba5832ff2cbdbeb42b50a9cd8ca419e797d3bc74bacbc9ce9c30032",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/6b90f801a6a6678286874fa31ee2f134/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Ohne mein Team",
+    "artist": "Bonez MC & RAF Camora",
+    "year": 2016,
+    "url": "https://open.spotify.com/search/Bonez%20MC%20%26%20RAF%20Camora%20Ohne%20mein%20Team",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/8/6/a/0/86a2632a5ea16e7489b29e68b999c51d.mp3?hdnea=exp=1791195897~acl=/api/1/1/8/6/a/0/86a2632a5ea16e7489b29e68b999c51d.mp3*~data=user_id=0,application_id=42~hmac=6f7d0b39330772f410d82c869480207cdca14eba60f7620df2b9b4e714b5cf51",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/6b90f801a6a6678286874fa31ee2f134/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "500 PS",
+    "artist": "Bonez MC & RAF Camora",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Bonez%20MC%20%26%20RAF%20Camora%20500%20PS",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/5/7/9/0/57916ad83ded73b0b062288cb1ee7252.mp3?hdnea=exp=1791195898~acl=/api/1/1/5/7/9/0/57916ad83ded73b0b062288cb1ee7252.mp3*~data=user_id=0,application_id=42~hmac=01c2e941ad3d29c3aecc65c8ced9bb33e817fbd8282df3f18f77895d38c5c86e",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/bbdb643d80c9e59b90fcb72472a2543c/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Kokain",
+    "artist": "Bonez MC & RAF Camora",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Bonez%20MC%20%26%20RAF%20Camora%20Kokain",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/a/8/1/0/a81efb435a5daf6280ad618d0c99c42f.mp3?hdnea=exp=1791195898~acl=/api/1/1/a/8/1/0/a81efb435a5daf6280ad618d0c99c42f.mp3*~data=user_id=0,application_id=42~hmac=20cd1b4f82f563f4873fbdeba3e13f6d8304f6f787d3bbfd36a018a51efea4e6",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/dd523df25d272152aac94732dbf3687d/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Blaues Licht",
+    "artist": "RAF Camora & Bonez MC",
+    "year": 2021,
+    "url": "https://open.spotify.com/search/RAF%20Camora%20%26%20Bonez%20MC%20Blaues%20Licht",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/1/f/8/0/1f80e9eadeaa56a44062597f03c58457.mp3?hdnea=exp=1791195898~acl=/api/1/1/1/f/8/0/1f80e9eadeaa56a44062597f03c58457.mp3*~data=user_id=0,application_id=42~hmac=fc0a96caee1a4dffcb08e18c5b284e31bf933c1b36c7fd36bcd7e5ebf8600a43",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/a5c6dd795c688953e972e815474997b3/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Warum",
+    "artist": "Gzuz",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Gzuz%20Warum",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/0/6/7/0/0672ba3c2eba8cce3eea45e8a56e190a.mp3?hdnea=exp=1791195899~acl=/api/1/1/0/6/7/0/0672ba3c2eba8cce3eea45e8a56e190a.mp3*~data=user_id=0,application_id=42~hmac=abb4cd697f8c95940c14e3c910c2e42012eaef7f1147880ac1c88bbab646d1da",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/6db5c024f2661a9f761d4a1f99a30178/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Haus am See",
+    "artist": "Peter Fox",
+    "year": 2008,
+    "url": "https://open.spotify.com/search/Peter%20Fox%20Haus%20am%20See",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/0/3/e/0/03eb472d8f54ec3b5b6c53891aa51f00.mp3?hdnea=exp=1791195899~acl=/api/1/1/0/3/e/0/03eb472d8f54ec3b5b6c53891aa51f00.mp3*~data=user_id=0,application_id=42~hmac=27bee3b52bad7cc631b67dbdd9cf7e7fb980554a08e7247d197cf68f20327c63",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/6ace32e7503ad1dcf9177de09a248c11/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Alles neu",
+    "artist": "Peter Fox",
+    "year": 2008,
+    "url": "https://open.spotify.com/search/Peter%20Fox%20Alles%20neu",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/f/b/9/0/fb97cd66b690edf024f730d76ba25e16.mp3?hdnea=exp=1791195899~acl=/api/1/1/f/b/9/0/fb97cd66b690edf024f730d76ba25e16.mp3*~data=user_id=0,application_id=42~hmac=1440960fd94536b2a0d5fc49b528a33aac65aee151e1816fc32c2b850080c819",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/6ace32e7503ad1dcf9177de09a248c11/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Schüttel deinen Speck",
+    "artist": "Peter Fox",
+    "year": 2008,
+    "url": "https://open.spotify.com/search/Peter%20Fox%20Sch%C3%BCttel%20deinen%20Speck",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/4/8/d/0/48dd9e5c389b79194030f2f0029d2404.mp3?hdnea=exp=1791195899~acl=/api/1/1/4/8/d/0/48dd9e5c389b79194030f2f0029d2404.mp3*~data=user_id=0,application_id=42~hmac=cf87f975de2151455ccb5646284de43ba24835ec44aa278c2d26a68c9cde7f2d",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/6ace32e7503ad1dcf9177de09a248c11/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Bilder im Kopf",
+    "artist": "Sido",
+    "year": 2012,
+    "url": "https://open.spotify.com/search/Sido%20Bilder%20im%20Kopf",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/e/2/6/0/e2654f97588161ebb0903263025cb7fa.mp3?hdnea=exp=1791195900~acl=/api/1/1/e/2/6/0/e2654f97588161ebb0903263025cb7fa.mp3*~data=user_id=0,application_id=42~hmac=da50c93299dd1dea3b11ac05d3c8046d99aadda6863d8df488c3df7d87268f01",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/fd606e8457c03011c0af4d4205008896/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Mein Block",
+    "artist": "Sido",
+    "year": 2004,
+    "url": "https://open.spotify.com/search/Sido%20Mein%20Block",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/f/6/c/0/f6cebd0cb5211cd8afa113b47f7145f0.mp3?hdnea=exp=1791195900~acl=/api/1/1/f/6/c/0/f6cebd0cb5211cd8afa113b47f7145f0.mp3*~data=user_id=0,application_id=42~hmac=9e1c654912ae29e76337b0dd81dc2a052240c1feb18475db0e7786861e565c9b",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/63fc070cea3bc40c25d0eeac58be7d49/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Astronaut",
+    "artist": "Sido & Andreas Bourani",
+    "year": 2015,
+    "url": "https://open.spotify.com/search/Sido%20%26%20Andreas%20Bourani%20Astronaut",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/b/0/2/0/b02e3b1bae75a666721f95cfa29bbaeb.mp3?hdnea=exp=1791195900~acl=/api/1/1/b/0/2/0/b02e3b1bae75a666721f95cfa29bbaeb.mp3*~data=user_id=0,application_id=42~hmac=93d6d46ed058e0bb216fffd5e86968921f3aeec736ae8c881c8666454e5cf332",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/8fe93ddeb983ce159ecc124602847751/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Hurra die Welt geht unter",
+    "artist": "K.I.Z",
+    "year": 2015,
+    "url": "https://open.spotify.com/search/K.I.Z%20Hurra%20die%20Welt%20geht%20unter",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/a/3/1/0/a31a6938f88c5a657260e4ca7c483f4e.mp3?hdnea=exp=1791195900~acl=/api/1/1/a/3/1/0/a31a6938f88c5a657260e4ca7c483f4e.mp3*~data=user_id=0,application_id=42~hmac=a5772d4009d74b01c9af38ef3f5f73ffd5f96feba55a8d0c22757095751f22de",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/4ab86dc52a22bd33ccbefea170acda2b/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Ein Affe und ein Pferd",
+    "artist": "K.I.Z",
+    "year": 2013,
+    "url": "https://open.spotify.com/search/K.I.Z%20Ein%20Affe%20und%20ein%20Pferd",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/8/2/b/0/82bd7f720f6e93da5ef6e48b1fd331fa.mp3?hdnea=exp=1791195901~acl=/api/1/1/8/2/b/0/82bd7f720f6e93da5ef6e48b1fd331fa.mp3*~data=user_id=0,application_id=42~hmac=a6679bc91f2671004dd7b7111b810dbdff18ffc5efc29e78667cbb8937d2a9d1",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/d7df0a271e5da79dd669cb7e15ffacdc/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Spasst",
+    "artist": "K.I.Z",
+    "year": 2007,
+    "url": "https://open.spotify.com/search/K.I.Z%20Spasst",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/0/7/d/0/07d2c4f19169053f5bc6d2beac66df6d.mp3?hdnea=exp=1791195901~acl=/api/1/1/0/7/d/0/07d2c4f19169053f5bc6d2beac66df6d.mp3*~data=user_id=0,application_id=42~hmac=96ca9bb7c33956bc233d8aec7eba5ff06ab3bf9b3c3e85f7b93b868636812a41",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/f0aecd8574176d9ba25b9fba8e144644/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Lila Wolken",
+    "artist": "Marteria",
+    "year": 2012,
+    "url": "https://open.spotify.com/search/Marteria%20Lila%20Wolken",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/3/0/7/0/30735a6a33623ccda41663cbad108050.mp3?hdnea=exp=1791195902~acl=/api/1/1/3/0/7/0/30735a6a33623ccda41663cbad108050.mp3*~data=user_id=0,application_id=42~hmac=005a084806f36db6fd8ee4425eec28d5a0efc0a2e9ddeeac5194a92b689f7508",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/82af39e13cc30e98546235d91d92f34e/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Kids",
+    "artist": "Marteria",
+    "year": 2014,
+    "url": "https://open.spotify.com/search/Marteria%20Kids",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/0/4/f/0/04f1e873197319eb4adce162ae3683b2.mp3?hdnea=exp=1791195902~acl=/api/1/1/0/4/f/0/04f1e873197319eb4adce162ae3683b2.mp3*~data=user_id=0,application_id=42~hmac=dfcf1477c27dc01cd3e3ff48bf963b95d33749a26687b520ee487f677d10d461",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/f3aa6965e290fe828e8d802f1cb5fbce/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Willst du",
+    "artist": "Alligatoah",
+    "year": 2013,
+    "url": "https://open.spotify.com/search/Alligatoah%20Willst%20du",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/e/7/c/0/e7cc39152e175793ebfbb57b5b8b9d9f.mp3?hdnea=exp=1791195902~acl=/api/1/1/e/7/c/0/e7cc39152e175793ebfbb57b5b8b9d9f.mp3*~data=user_id=0,application_id=42~hmac=ed38a4a7c2219a185180de58f63ee4a2a8140389394febdbeca1b1a1b9a7199a",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/5d777ad538080992f718a8550f0f29d2/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Du bist schön",
+    "artist": "Alligatoah",
+    "year": 2015,
+    "url": "https://open.spotify.com/search/Alligatoah%20Du%20bist%20sch%C3%B6n",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/7/a/4/0/7a4f82c296c629db6ace5cbf40af573a.mp3?hdnea=exp=1791195902~acl=/api/1/1/7/a/4/0/7a4f82c296c629db6ace5cbf40af573a.mp3*~data=user_id=0,application_id=42~hmac=bc3846eaefb6722d19209badf908f0a73e091896f44384dbf5117841f458209b",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/81508ece80ff7b802790bd0d44bda4ff/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Wildberry Lillet",
+    "artist": "Nina Chuba",
+    "year": 2022,
+    "url": "https://open.spotify.com/search/Nina%20Chuba%20Wildberry%20Lillet",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/9/a/7/0/9a77c38e28fb4fb830c94657549394d5.mp3?hdnea=exp=1791195902~acl=/api/1/1/9/a/7/0/9a77c38e28fb4fb830c94657549394d5.mp3*~data=user_id=0,application_id=42~hmac=384e5a7176b3238858ea0ac6e489006373361fd60d50dc250cc8ab86c213ab18",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/934611d38d7eccbff8484c7195bbaae2/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Mangos mit Chili",
+    "artist": "Nina Chuba",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Nina%20Chuba%20Mangos%20mit%20Chili",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/d/f/4/0/df4a40a3dc632631ad9f1f7695b197f5.mp3?hdnea=exp=1791195902~acl=/api/1/1/d/f/4/0/df4a40a3dc632631ad9f1f7695b197f5.mp3*~data=user_id=0,application_id=42~hmac=0975227647fce52e5eb8d5caba5f9cc6975db849ba703a2b693a3374fe0f256c",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/298dd6a92db050f19c7a80b89ebe6344/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Airwaves",
+    "artist": "Pashanim",
+    "year": 2020,
+    "url": "https://open.spotify.com/search/Pashanim%20Airwaves",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/1/d/4/0/1d478da4efabf7985cc82a1780b0d0db.mp3?hdnea=exp=1791195902~acl=/api/1/1/1/d/4/0/1d478da4efabf7985cc82a1780b0d0db.mp3*~data=user_id=0,application_id=42~hmac=4291769a96c5df6a9831f1feec8dedd65e4a1c38512c79846a3f716bf05aa1e4",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/8fe0cbe64993adffa0d9ea8425d6c0d7/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Sommergewitter",
+    "artist": "Pashanim",
+    "year": 2021,
+    "url": "https://open.spotify.com/search/Pashanim%20Sommergewitter",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/5/a/1/0/5a1a4a1b6adf84ecdad2856abe69f908.mp3?hdnea=exp=1791195903~acl=/api/1/1/5/a/1/0/5a1a4a1b6adf84ecdad2856abe69f908.mp3*~data=user_id=0,application_id=42~hmac=9e985437b2d407d5f04da9ebcf5f555c1a2c524336910f3fbacee5d2f7dcd79b",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/05ff4ebb64ccb837a771aca759c8956a/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Hauseingang",
+    "artist": "Pashanim",
+    "year": 2020,
+    "url": "https://open.spotify.com/search/Pashanim%20Hauseingang",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/2/5/9/0/259ddf2d020b3a7d192c3ca28ef80e3b.mp3?hdnea=exp=1791195903~acl=/api/1/1/2/5/9/0/259ddf2d020b3a7d192c3ca28ef80e3b.mp3*~data=user_id=0,application_id=42~hmac=0ec9542d138002160bf9d0bf568d1c527927b09fc78740ce8574895950670878",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/e656a0bf9ebfbea4b0a9bcab166b475e/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Beautiful Girl",
+    "artist": "Luciano",
+    "year": 2022,
+    "url": "https://open.spotify.com/search/Luciano%20Beautiful%20Girl",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/2/7/e/0/27e7cafbb8329c9abdda131309cb2ead.mp3?hdnea=exp=1791195903~acl=/api/1/1/2/7/e/0/27e7cafbb8329c9abdda131309cb2ead.mp3*~data=user_id=0,application_id=42~hmac=44db90294fefb1e502c55e35bb4a616cc461947a11532b53b373c125d4f30c3c",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/3711343d1f538c0d48a5213ad255ff73/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Bamba",
+    "artist": "Luciano",
+    "year": 2022,
+    "url": "https://open.spotify.com/search/Luciano%20Bamba",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/5/6/f/0/56fc7b5a67ac9c9e4c566918a2ff6160.mp3?hdnea=exp=1791195903~acl=/api/1/1/5/6/f/0/56fc7b5a67ac9c9e4c566918a2ff6160.mp3*~data=user_id=0,application_id=42~hmac=67202ccf15ca1347563f82f48ce31dbfab891ab41328b1466845531c6d640d4e",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/c61f7b5700b9b3ed252a24d8f6e0bff4/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Was du Liebe nennst",
+    "artist": "Bausa",
+    "year": 2017,
+    "url": "https://open.spotify.com/search/Bausa%20Was%20du%20Liebe%20nennst",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/b/7/0/0/b708ae025211f25bf9c394d6a1a9ae58.mp3?hdnea=exp=1791195903~acl=/api/1/1/b/7/0/0/b708ae025211f25bf9c394d6a1a9ae58.mp3*~data=user_id=0,application_id=42~hmac=cb608e4ed60993f7dafb28d8f6e03f7e158cc62c0dde5174900afed84676ca0e",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/babfc839406b0d10ca0feafb332f950d/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Erfolg ist kein Glück",
+    "artist": "Kontra K",
+    "year": 2015,
+    "url": "https://open.spotify.com/search/Kontra%20K%20Erfolg%20ist%20kein%20Gl%C3%BCck",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/c/0/2/0/c029782c24b4cb07c4fd86830bd3bfa8.mp3?hdnea=exp=1791195903~acl=/api/1/1/c/0/2/0/c029782c24b4cb07c4fd86830bd3bfa8.mp3*~data=user_id=0,application_id=42~hmac=7c2c82e67895242846be6ee108e80278d70fe9a94848118d2ceeb9ad1bee437f",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/37ceac2a8ede7b0dd8ae3275857a5fbc/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Chabos wissen wer der Babo ist",
+    "artist": "Haftbefehl",
+    "year": 2012,
+    "url": "https://open.spotify.com/search/Haftbefehl%20Chabos%20wissen%20wer%20der%20Babo%20ist",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/f/d/6/0/fd6f9473b5f587be66b178d4276356c8.mp3?hdnea=exp=1791195903~acl=/api/1/1/f/d/6/0/fd6f9473b5f587be66b178d4276356c8.mp3*~data=user_id=0,application_id=42~hmac=718bdfd01b8dd3da2f9f97ca034a23be823115dbf63d80ec99d018fcce67595a",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/c3b566a4aa5f6af12d53c631805a2378/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "069",
+    "artist": "Haftbefehl",
+    "year": 2014,
+    "url": "https://open.spotify.com/search/Haftbefehl%20069",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/a/3/0/0/a307b9506b957cefbfa2d66898a67668.mp3?hdnea=exp=1791195903~acl=/api/1/1/a/3/0/0/a307b9506b957cefbfa2d66898a67668.mp3*~data=user_id=0,application_id=42~hmac=c2af12ce0fe83596b3a3c23e64670f334f24c1517028452ac9b04d82f6325159",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/746f5cd1815be47c9a9b02be4f922095/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Nuttööö",
+    "artist": "SSIO",
+    "year": 2013,
+    "url": "https://open.spotify.com/search/SSIO%20Nutt%C3%B6%C3%B6%C3%B6",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/f/f/5/0/ff5f6e166e248bb3a58afc6ab355c1b2.mp3?hdnea=exp=1791195904~acl=/api/1/1/f/f/5/0/ff5f6e166e248bb3a58afc6ab355c1b2.mp3*~data=user_id=0,application_id=42~hmac=9eb9750c677db521f4ea6f5cf5e060bc00a01f92c2c6a13ebefb89a72fe742ef",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/b1cbf0a01c9a4414176eedab0fb3e823/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Easy",
+    "artist": "Cro",
+    "year": 2011,
+    "url": "https://open.spotify.com/search/Cro%20Easy",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/5/e/d/0/5ed3437030a88866b4b38cad9501edd0.mp3?hdnea=exp=1791195904~acl=/api/1/1/5/e/d/0/5ed3437030a88866b4b38cad9501edd0.mp3*~data=user_id=0,application_id=42~hmac=e2fc31b6f132baefc9c7fb233c33e62f8273e4fe2d8b890c1d802d4c5cdca598",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/8c2e7612ff91aaee15a9b82c73a3ccb4/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Traum",
+    "artist": "Cro",
+    "year": 2014,
+    "url": "https://open.spotify.com/search/Cro%20Traum",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/e/e/e/0/eee5da5bd2af2efb96ac63bfbf49332d.mp3?hdnea=exp=1791195904~acl=/api/1/1/e/e/e/0/eee5da5bd2af2efb96ac63bfbf49332d.mp3*~data=user_id=0,application_id=42~hmac=6e9a833724228656246258ecd73df8603ef8d433f78876ecbd0759867bd8e8e5",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/36f8cafab1ca496c0a39f35c5493ab91/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Einmal um die Welt",
+    "artist": "Cro",
+    "year": 2012,
+    "url": "https://open.spotify.com/search/Cro%20Einmal%20um%20die%20Welt",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/e/f/a/0/efa00479ef7d4a3864801b03f6d9b9ee.mp3?hdnea=exp=1791195904~acl=/api/1/1/e/f/a/0/efa00479ef7d4a3864801b03f6d9b9ee.mp3*~data=user_id=0,application_id=42~hmac=5ed8b2a3afa917c65bb8ec801a5291dab4bbcb0e939c4ae9db8d506a6bc6c0c0",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/d6e36e01f191049c3755cc7da8df93f0/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Schrei nach Liebe",
+    "artist": "Die Ärzte",
+    "year": 1993,
+    "url": "https://open.spotify.com/search/Die%20%C3%84rzte%20Schrei%20nach%20Liebe",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/3/d/d/0/3ddc26ffd84dfc4e26a3e29177b6b5cb.mp3?hdnea=exp=1791195904~acl=/api/1/1/3/d/d/0/3ddc26ffd84dfc4e26a3e29177b6b5cb.mp3*~data=user_id=0,application_id=42~hmac=9c82dcfb4ec94eaa97d663751c744127a6bdab827295d73425949eed9cbf53f5",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/e08b750fe84f35d711357d46dc92c368/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Westerland",
+    "artist": "Die Ärzte",
+    "year": 1988,
+    "url": "https://open.spotify.com/search/Die%20%C3%84rzte%20Westerland",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/3/5/f/0/35f57239c74fcfde784bc5b4d1df8ad6.mp3?hdnea=exp=1791195904~acl=/api/1/1/3/5/f/0/35f57239c74fcfde784bc5b4d1df8ad6.mp3*~data=user_id=0,application_id=42~hmac=6df05176d2b0397c39ba8520bb42fe8ff7286cacda335e5bf93cf6349affee38",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/a43c4d893bfa5e62db38a91ac0f38542/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Junge",
+    "artist": "Die Ärzte",
+    "year": 2007,
+    "url": "https://open.spotify.com/search/Die%20%C3%84rzte%20Junge",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/2/a/c/0/2ac4e2e8743896fd1be81d4281855544.mp3?hdnea=exp=1791195904~acl=/api/1/1/2/a/c/0/2ac4e2e8743896fd1be81d4281855544.mp3*~data=user_id=0,application_id=42~hmac=c50f0d5d9948b8964d43b25a9cf0bceb0c99d1e33945c0dbf60037e85609a0b4",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/84b8b9f4d730082452e5f14515a985f8/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Tage wie diese",
+    "artist": "Die Toten Hosen",
+    "year": 2012,
+    "url": "https://open.spotify.com/search/Die%20Toten%20Hosen%20Tage%20wie%20diese",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/8/2/8/0/82857365ae2d43a1380319bc64e96c07.mp3?hdnea=exp=1791195905~acl=/api/1/1/8/2/8/0/82857365ae2d43a1380319bc64e96c07.mp3*~data=user_id=0,application_id=42~hmac=9d7486569b2c874595f2045fd63261b67083ab215be42cf2aa439c36481ba449",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/991f71e16ea750880a1400ba118c0886/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Altes Fieber",
+    "artist": "Die Toten Hosen",
+    "year": 2012,
+    "url": "https://open.spotify.com/search/Die%20Toten%20Hosen%20Altes%20Fieber",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/8/8/8/0/888e91d3a73c7089f4055267d91e8463.mp3?hdnea=exp=1791195905~acl=/api/1/1/8/8/8/0/888e91d3a73c7089f4055267d91e8463.mp3*~data=user_id=0,application_id=42~hmac=d1f8de387d6b6253017bc1a9ee609d7c4e5eda6051be414d6a1f123b6ad34a1c",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/7c71504bed81933dea1824ec43412592/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Männer",
+    "artist": "Herbert Grönemeyer",
+    "year": 1984,
+    "url": "https://open.spotify.com/search/Herbert%20Gr%C3%B6nemeyer%20M%C3%A4nner",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/d/0/b/0/d0b3e3db3f0987c9fd56ff269f747696.mp3?hdnea=exp=1791195905~acl=/api/1/1/d/0/b/0/d0b3e3db3f0987c9fd56ff269f747696.mp3*~data=user_id=0,application_id=42~hmac=49faa97c594705e9a119d6986cdcbf49a8d1d446d7e915120969941aae4a1c4d",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/41c7d29ca817eb0457929b5aca80ed73/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Major Tom",
+    "artist": "Peter Schilling",
+    "year": 1982,
+    "url": "https://open.spotify.com/search/Peter%20Schilling%20Major%20Tom",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/3/b/f/0/3bf179f1e52e694abed952d173e71972.mp3?hdnea=exp=1791195905~acl=/api/1/1/3/b/f/0/3bf179f1e52e694abed952d173e71972.mp3*~data=user_id=0,application_id=42~hmac=0adb1341b86889f025930aeb0cecb8004aa36b5f03f15d8d68d7a20abb4d0ada",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/f352968965a4023c66859f0670b913fd/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "99 Luftballons",
+    "artist": "Nena",
+    "year": 1983,
+    "url": "https://open.spotify.com/search/Nena%2099%20Luftballons",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/9/c/6/0/9c6cf87017c0972b0f630e3349405054.mp3?hdnea=exp=1791195905~acl=/api/1/1/9/c/6/0/9c6cf87017c0972b0f630e3349405054.mp3*~data=user_id=0,application_id=42~hmac=e0a6ab413574494add659fce3b28222778a9d55bf8c26717f91a2b0db9ec0a49",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/568fa4197d547efe4c6aec1c087ab57b/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Rock Me Amadeus",
+    "artist": "Falco",
+    "year": 1985,
+    "url": "https://open.spotify.com/search/Falco%20Rock%20Me%20Amadeus",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/f/6/6/0/f6612d62dbfba4b05f2a30478e1a8dd6.mp3?hdnea=exp=1791195905~acl=/api/1/1/f/6/6/0/f6612d62dbfba4b05f2a30478e1a8dd6.mp3*~data=user_id=0,application_id=42~hmac=0178b9d665e2e3bbc3306173f24ad5545f5209d27529c6d8906e501a8d39ec3f",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/e062529bd221fea4a68a020f0d046b14/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Hyper Hyper",
+    "artist": "Scooter",
+    "year": 1994,
+    "url": "https://open.spotify.com/search/Scooter%20Hyper%20Hyper",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/3/5/5/0/355e8b5c815921777b84aa49720e6655.mp3?hdnea=exp=1791195906~acl=/api/1/1/3/5/5/0/355e8b5c815921777b84aa49720e6655.mp3*~data=user_id=0,application_id=42~hmac=04f036b01df03bd96d8baa7c3f7ec6af87e188554c02dd49ddad20a910970bed",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/b59f0ab1628e28db545386acf53a6ff5/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Maria (I Like It Loud)",
+    "artist": "Scooter",
+    "year": 2003,
+    "url": "https://open.spotify.com/search/Scooter%20Maria%20%28I%20Like%20It%20Loud%29",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/3/f/8/0/3f80c614837d6025582b4696419d7fcf.mp3?hdnea=exp=1791195906~acl=/api/1/1/3/f/8/0/3f80c614837d6025582b4696419d7fcf.mp3*~data=user_id=0,application_id=42~hmac=14fdb9ae36afe95f72b6c4de767b10812e5d27a14a32206c03ae8e2b63f7abf3",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/b59f0ab1628e28db545386acf53a6ff5/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "How Much Is The Fish?",
+    "artist": "Scooter",
+    "year": 1998,
+    "url": "https://open.spotify.com/search/Scooter%20How%20Much%20Is%20The%20Fish%3F",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/7/4/8/0/7481ef16e3b1fea0017d1578df022d1b.mp3?hdnea=exp=1791195906~acl=/api/1/1/7/4/8/0/7481ef16e3b1fea0017d1578df022d1b.mp3*~data=user_id=0,application_id=42~hmac=c18d9bbcd4209815b8772e90b3a48427913b8a4cf379a9772680425acfda93fd",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/b59f0ab1628e28db545386acf53a6ff5/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Sky and Sand",
+    "artist": "Paul Kalkbrenner",
+    "year": 2008,
+    "url": "https://open.spotify.com/search/Paul%20Kalkbrenner%20Sky%20and%20Sand",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/0/4/b/0/04b2a3c34f44814a537d9b2699eeee1a.mp3?hdnea=exp=1791195906~acl=/api/1/1/0/4/b/0/04b2a3c34f44814a537d9b2699eeee1a.mp3*~data=user_id=0,application_id=42~hmac=227023f7f298e80fbb0f3b7632da193ae45cda228ea95385ce48343e71317e85",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/371f6446dc53da2bb4fa345868252042/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Herz an Herz",
+    "artist": "Blümchen",
+    "year": 1995,
+    "url": "https://open.spotify.com/search/Bl%C3%BCmchen%20Herz%20an%20Herz",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/a/9/7/0/a97cfac26c431cdf29473ad7f25feb8b.mp3?hdnea=exp=1791195906~acl=/api/1/1/a/9/7/0/a97cfac26c431cdf29473ad7f25feb8b.mp3*~data=user_id=0,application_id=42~hmac=74838cfce1bc1d1c9bcbc21b46abd9feaf43077d5d79ff5d67c7cc9e46211d67",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/64c147ded56d264f682c79358cd60832/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Boomerang",
+    "artist": "Blümchen",
+    "year": 1996,
+    "url": "https://open.spotify.com/search/Bl%C3%BCmchen%20Boomerang",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/b/b/d/0/bbd389ee1c4a58cf1d612c4cb5be4131.mp3?hdnea=exp=1791195906~acl=/api/1/1/b/b/d/0/bbd389ee1c4a58cf1d612c4cb5be4131.mp3*~data=user_id=0,application_id=42~hmac=218ffbc1891a417993609ab5099cabed6c24de6dbff9508e263e05d6151f2143",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/64c147ded56d264f682c79358cd60832/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "POLSKA JUMPSTYLE (Dead X Remix)",
+    "artist": "Mr. Polska",
+    "year": 2025,
+    "url": "https://open.spotify.com/search/Mr.%20Polska%20POLSKA%20JUMPSTYLE",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/1/5/a/0/15a086b7c05683481518bdad5c7b41d8.mp3?hdnea=exp=1791195985~acl=/api/1/1/1/5/a/0/15a086b7c05683481518bdad5c7b41d8.mp3*~data=user_id=0,application_id=42~hmac=bf2252cb61b4b9ad04811117224a584f602da652f5ba0e8df7ad1426c23ec3da",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/74a19c0e5cda2dba66f15dc6ebf9ffa2/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "TÖRKE TÖRKE",
+    "artist": "DJ TÖRKE",
+    "year": 2026,
+    "url": "https://open.spotify.com/search/DJ%20T%C3%96RKE%20T%C3%96RKE%20T%C3%96RKE",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/d/9/2/0/d928eced3685daa74ae740df49e6a36e.mp3?hdnea=exp=1791195985~acl=/api/1/1/d/9/2/0/d928eced3685daa74ae740df49e6a36e.mp3*~data=user_id=0,application_id=42~hmac=718d3274886b945bcf58aaef12bb1bdf8853bb135169473d3257327a677eafa8",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/25ae342ddfb6b7f579a1590f018a7e81/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "50 KUBiK",
+    "artist": "DJ TÖRKE",
+    "year": 2026,
+    "url": "https://open.spotify.com/search/DJ%20T%C3%96RKE%2050%20KUBiK",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/f/7/0/0/f70ee19ab47a319554a3dc906b429231.mp3?hdnea=exp=1791195986~acl=/api/1/1/f/7/0/0/f70ee19ab47a319554a3dc906b429231.mp3*~data=user_id=0,application_id=42~hmac=d5ddf697a8fc3a05e2b86febfa191d523ad410f8ff3a8761c26d982c389a8b82",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/76684aa63da5524fed288d82f7cd848f/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "50ccm",
+    "artist": "Tream",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Tream%2050ccm",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/a/1/1/0/a116ba863f3d11ace1218281793d9d96.mp3?hdnea=exp=1791195986~acl=/api/1/1/a/1/1/0/a116ba863f3d11ace1218281793d9d96.mp3*~data=user_id=0,application_id=42~hmac=4cc3608bed6278bacbe0154ed25dd960c904fb9410ea484e4d3c4d6c7e5ce79f",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/f505e21e7b2267dc7cb35b4406ef7bb8/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Der Osten feiert besser (feat. Sprechgesang)",
+    "artist": "Die Gebrüder Brett",
+    "year": 2018,
+    "url": "https://open.spotify.com/search/Die%20Gebr%C3%BCder%20Brett%20Der%20Osten%20feiert%20besser",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/1/c/9/0/1c90f53645e78946a0adab9ebb7ccf61.mp3?hdnea=exp=1791195987~acl=/api/1/1/1/c/9/0/1c90f53645e78946a0adab9ebb7ccf61.mp3*~data=user_id=0,application_id=42~hmac=8cc9be13c48903b86a32ac0a326b3277b96014b19a37e66cf1aa9593cba35176",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/d7ebaf103d57fd82d2b09ed1c0324b2e/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Panzerband & billiges Crack (Remix)",
+    "artist": "Crystal F",
+    "year": 2019,
+    "url": "https://open.spotify.com/search/Die%20Gebr%C3%BCder%20Brett%20Panzerband%20%26%20billiges%20Crack",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/6/7/6/0/676113cd17b50dc0464dd69ed970f532.mp3?hdnea=exp=1791195987~acl=/api/1/1/6/7/6/0/676113cd17b50dc0464dd69ed970f532.mp3*~data=user_id=0,application_id=42~hmac=160b6c03700fdc5097aac98fa1be66d03a72dca003c70b8215bd1daadcec6ae6",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/f7950b1bb28de54c70bf43181c79e4bc/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Wenn ich will (feat. Pränatal)",
+    "artist": "KomaCasper",
+    "year": 2024,
+    "url": "https://open.spotify.com/search/KomaCasper%20Wenn%20ich%20will",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/7/4/5/0/745aa8147e134581194589252865270e.mp3?hdnea=exp=1791195987~acl=/api/1/1/7/4/5/0/745aa8147e134581194589252865270e.mp3*~data=user_id=0,application_id=42~hmac=0660c5efd19761ed50a68ea21b19b3cd9a2712136e26b87088117fccc19486e3",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/7458f2e14b110f743b57cef5ab6e0594/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Over the Top",
+    "artist": "Zahni",
+    "year": 2022,
+    "url": "https://open.spotify.com/search/Zahni%20Over%20the%20Top",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/9/f/1/0/9f1a29375b637ecc3161bf7dccb067f3.mp3?hdnea=exp=1791195988~acl=/api/1/1/9/f/1/0/9f1a29375b637ecc3161bf7dccb067f3.mp3*~data=user_id=0,application_id=42~hmac=002356730081bacaca21b672060efc6254b655e68ecb6790e11e34acadae0a59",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/65e5f26b258633d6e71ec670017179ba/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Tekk",
+    "artist": "Nogge",
+    "year": 2025,
+    "url": "https://open.spotify.com/search/Nogge%20Tekk",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/2/6/f/0/26f485bc44cf9e03c8cecde4ef882ca8.mp3?hdnea=exp=1791195988~acl=/api/1/1/2/6/f/0/26f485bc44cf9e03c8cecde4ef882ca8.mp3*~data=user_id=0,application_id=42~hmac=b6fce53b31f64a71779d655a140ba24ff4c7400d5abd5893cd113d8f5bb61828",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/aa0d1dfbace57441b99794b63d158779/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "EWIGKEIT (REMIX)",
+    "artist": "erobé",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/erob%C3%A9%20EWIGKEIT%20%28REMIX%29",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/e/8/e/0/e8e423f0db181f31e6417c28a5d370b4.mp3?hdnea=exp=1791195989~acl=/api/1/1/e/8/e/0/e8e423f0db181f31e6417c28a5d370b4.mp3*~data=user_id=0,application_id=42~hmac=adf947868ac8e37200653f3d945dd00fea16c33fe3e867988b20f0b9d658044a",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/caa19e838a2b3795f879ab2f15a46381/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Miss You (Sped Up Version)",
+    "artist": "Southstar",
+    "year": 2022,
+    "url": "https://open.spotify.com/search/southstar%20Miss%20You",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/9/1/f/0/91fd78504db70819b619eed36b4e6aa0.mp3?hdnea=exp=1791195989~acl=/api/1/1/9/1/f/0/91fd78504db70819b619eed36b4e6aa0.mp3*~data=user_id=0,application_id=42~hmac=462f32eeee554852137ee0e133b0c218dc4dcbb735eed4bd06e4e70be2adc0b8",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/571f8f521c68ff8a796b68b198f4a1cf/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Vois sur ton chemin (Techno Mix)",
+    "artist": "Bennett",
+    "year": 2025,
+    "url": "https://open.spotify.com/search/Bennett%20Vois%20sur%20ton%20chemin%20%28Techno%20Mix%29",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/0/0/2/0/002de3b2c1745c7326628d8f7dcfd132.mp3?hdnea=exp=1791195989~acl=/api/1/1/0/0/2/0/002de3b2c1745c7326628d8f7dcfd132.mp3*~data=user_id=0,application_id=42~hmac=506cbcf616db2129bf31ce53619b5f0aa06553a0589ce28ad505ce34be82f2c0",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/e6b6c07c93b8586d5e149beb1e50006f/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Mädchen auf dem Pferd",
+    "artist": "Luca-Dante Spadafora",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Niklas%20Dee%20M%C3%A4dchen%20auf%20dem%20Pferd",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/7/8/d/0/78d4627d5dbe41ef5d9b9507a7e34817.mp3?hdnea=exp=1791195990~acl=/api/1/1/7/8/d/0/78d4627d5dbe41ef5d9b9507a7e34817.mp3*~data=user_id=0,application_id=42~hmac=46266a3d283140acb8872249036b5de193616640fe138de800224f9232eec599",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/e6d45c4151080027ba69095af413d95f/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Call Me",
+    "artist": "Marlon Hoffstadt",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Marlon%20Hoffstadt%20Call%20Me",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/4/2/2/0/42293b1b2a7436aa44090046e6445122.mp3?hdnea=exp=1791195990~acl=/api/1/1/4/2/2/0/42293b1b2a7436aa44090046e6445122.mp3*~data=user_id=0,application_id=42~hmac=68471ee578bac7479fb14cb0d6fa1e22ae11841d947d9857e830ec1ef46004c5",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/f0f71153eeb1a72869e45cb156ac9364/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Nessaja",
+    "artist": "Scooter",
+    "year": 2002,
+    "url": "https://open.spotify.com/search/Scooter%20Nessaja",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/5/8/f/0/58f8c7bc84a5fad823cb5b4b9d607b93.mp3?hdnea=exp=1791195991~acl=/api/1/1/5/8/f/0/58f8c7bc84a5fad823cb5b4b9d607b93.mp3*~data=user_id=0,application_id=42~hmac=8f578a185c4fb2ecaffff2fdb11abfcdc30dbfd59f07f5497829cf2ecf6c62d1",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/4b870b4a1bf0e662554a1535f97f4f02/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "The Logical Song",
+    "artist": "Scooter",
+    "year": 2023,
+    "url": "https://open.spotify.com/search/Scooter%20The%20Logical%20Song",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/c/5/c/0/c5cf93307535332c15956d0bc769af2d.mp3?hdnea=exp=1791195991~acl=/api/1/1/c/5/c/0/c5cf93307535332c15956d0bc769af2d.mp3*~data=user_id=0,application_id=42~hmac=dc58e91308f564b5db6abd7549d2a5bc81ea108be1d90b5b6a9d21b0dee57900",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/db6409c134aae289a50a4dff27ec499e/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Everytime We Touch",
+    "artist": "Cascada",
+    "year": 2010,
+    "url": "https://open.spotify.com/search/Cascada%20Everytime%20We%20Touch",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/6/0/2/0/6023be5f8ec82712db1fdf41c6ef81c5.mp3?hdnea=exp=1791195992~acl=/api/1/1/6/0/2/0/6023be5f8ec82712db1fdf41c6ef81c5.mp3*~data=user_id=0,application_id=42~hmac=ca1b1241b8af1a079e9f41adebdfab9e43e0ff218296c58b5812d3a3aeedc5f7",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/51515b40c93a2ac8b4aebb2505684802/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Moonlight Shadow",
+    "artist": "W&W",
+    "year": 2021,
+    "url": "https://open.spotify.com/search/Groove%20Coverage%20Moonlight%20Shadow",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/a/0/d/0/a0dd73a9abdd8289cf27865f246dc57d.mp3?hdnea=exp=1791195992~acl=/api/1/1/a/0/d/0/a0dd73a9abdd8289cf27865f246dc57d.mp3*~data=user_id=0,application_id=42~hmac=a6e6340461b69c83b516540480454e829e3d99727da7f96726b9ec3ade47c0f9",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/76e709ea65cc63a6e611089dd0f210f7/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "L'Amour Toujours",
+    "artist": "Gigi D'Agostino",
+    "year": 2000,
+    "url": "https://open.spotify.com/search/Gigi%20D%27Agostino%20L%27Amour%20Toujours",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/b/3/1/0/b310c8a19ab09895b2d53694adb5ad46.mp3?hdnea=exp=1791195992~acl=/api/1/1/b/3/1/0/b310c8a19ab09895b2d53694adb5ad46.mp3*~data=user_id=0,application_id=42~hmac=a742e5224fef805835c79f19446649cc90478d492493edd4ea6643d7e7ef401f",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/3febc57183cf6f301a3cff0a052b8639/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "9Pm (Till I Come)",
+    "artist": "ATB",
+    "year": 1999,
+    "url": "https://open.spotify.com/search/ATB%209%20PM%20%28Till%20I%20Come%29",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/6/a/b/0/6abef8941da51d51b5af40811fcbe268.mp3?hdnea=exp=1791195993~acl=/api/1/1/6/a/b/0/6abef8941da51d51b5af40811fcbe268.mp3*~data=user_id=0,application_id=42~hmac=cf1f60da3caaa4837c989bdc723d3301a14914c19dfc4726ab0c970b7ec17a62",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/06ad6042750464941103c80e5e02d1cc/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Better Off Alone",
+    "artist": "Alice DJ",
+    "year": 2020,
+    "url": "https://open.spotify.com/search/Alice%20Deejay%20Better%20Off%20Alone",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/a/d/d/0/add357b333c6d324aab0183ef56f467d.mp3?hdnea=exp=1791195993~acl=/api/1/1/a/d/d/0/add357b333c6d324aab0183ef56f467d.mp3*~data=user_id=0,application_id=42~hmac=10dcf81ab75915ac7c27185d4329903fb7971a6f1bb7cafd0173509f360e777d",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/758b1915fa74ad3cc01fc60362086e49/1000x1000-000000-80-0-0.jpg"
+  },
+  {
+    "title": "Sandstorm",
+    "artist": "Darude",
+    "year": 2000,
+    "url": "https://open.spotify.com/search/Darude%20Sandstorm",
+    "previewUrl": "https://cdnt-preview.dzcdn.net/api/1/1/0/3/5/0/0350d31fdd1b8c626c82f5250ab1afd4.mp3?hdnea=exp=1791195994~acl=/api/1/1/0/3/5/0/0350d31fdd1b8c626c82f5250ab1afd4.mp3*~data=user_id=0,application_id=42~hmac=18db7eb024254a25f8a49b4d8474c51338acbd545027ecd6471d3f05401a0281",
+    "coverUrl": "https://cdn-images.dzcdn.net/images/cover/4813de733c6fb05c90187ab5cf3e13c7/1000x1000-000000-80-0-0.jpg"
+  }
+]

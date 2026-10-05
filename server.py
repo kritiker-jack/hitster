@@ -391,6 +391,57 @@ class HitsterHandler(SimpleHTTPRequestHandler):
                 }, ensure_ascii=False).encode('utf-8'))
             return
 
+        if self.path == '/api/delete-deck':
+            content_length = int(self.headers.get('Content-Length', 0))
+            post_data = self.rfile.read(content_length).decode('utf-8')
+            try:
+                payload = json.loads(post_data)
+                deck_id = str(payload.get('deckId', '')).strip().lower()
+                idx_path = os.path.join(BASE_DIR, 'decks', 'index.json')
+                if not os.path.exists(idx_path):
+                    self.send_response(404)
+                    self.end_headers()
+                    return
+                with open(idx_path, 'r', encoding='utf-8') as f:
+                    idx = json.load(f)
+                new_idx = []
+                deleted_file = None
+                for d in idx:
+                    did = str(d.get('id', '')).lower()
+                    dslug = str(d.get('slug', '')).lower()
+                    dname = str(d.get('name', '')).lower()
+                    if deck_id in [did, dslug, dname]:
+                        fpath = os.path.join(BASE_DIR, d.get('file', ''))
+                        if os.path.exists(fpath):
+                            try:
+                                os.remove(fpath)
+                                deleted_file = fpath
+                            except Exception:
+                                pass
+                    else:
+                        new_idx.append(d)
+                with open(idx_path, 'w', encoding='utf-8') as f:
+                    json.dump(new_idx, f, ensure_ascii=False, indent=2)
+
+                try:
+                    import subprocess
+                    subprocess.run(['git', 'add', '-A', 'decks/'], cwd=BASE_DIR, capture_output=True, timeout=10)
+                    subprocess.run(['git', 'commit', '-m', f'Delete deck {deck_id}'], cwd=BASE_DIR, capture_output=True, timeout=10)
+                    subprocess.run(['git', 'push', 'origin', 'main'], cwd=BASE_DIR, capture_output=True, timeout=15)
+                except Exception:
+                    pass
+
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json; charset=utf-8')
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": True, "deleted": deleted_file, "remaining": len(new_idx)}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json; charset=utf-8')
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode('utf-8'))
+            return
+
         self.send_response(404)
         self.end_headers()
 
