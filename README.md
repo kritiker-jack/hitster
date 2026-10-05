@@ -8,19 +8,21 @@ Eine moderne, web-basierte Hitster-App im minimalistischen Apple-Design zur Gene
 
 ## 📱 Mobile Scanner App (Wie die originale Hitster-App)
 
-* **Direkt im Browser öffnen:** Rufe auf dem Smartphone einfach [kritiker-jack.github.io/hitster](https://kritiker-jack.github.io/hitster/) auf und tippe auf **„📱 Spiel-Scanner“** (oder direkt `#scanner`).
+* **Direkt im Browser öffnen:** Rufe auf dem Smartphone einfach [kritiker-jack.github.io/hitster](https://kritiker-jack.github.io/hitster/) auf und tippe auf **„📱 Scanner“** (oder direkt `#scanner`).
+* **Apple Dropdown-Menü:** Oben rechts über das moderne Klappmenü (**☰ Menü**) kann jederzeit schnell zwischen Scanner, Song-Editor, 3D-Karten und Druckbogen gewechselt werden.
 * **Vollbild-App-Modus:** Der Rest der Webseite wird komplett ausgeblendet. Oben links gibt es einen dezenten Zurück-Pfeil (‹ Studio), um wieder zur Übersicht zu gelangen.
 * **Laser-Scanner & Animationen:** 
   * Animierter Sucher-Rahmen mit Laser-Scanlinie und Apple-typischem Frosted-Glass-Design.
   * Beim Erkennen einer Karte ertönt ein angenehmer 2-Ton-Gong mit Haptik-Feedback (Vibration).
-* **Blind-Player Bottom-Sheet:**
-  * Ein elegantes Glas-Panel gleitet von unten hoch.
-  * Eine rotierende Vinyl-Schallplatte und Equalizer-Wellen starten die Wiedergabe.
-  * **100 % spoilerfrei:** Kein Songname, kein Künstler, kein Albumcover!
-  * 30-Sekunden-Countdown läuft herunter.
+  * **Kamera schaltet sofort ab:** Sobald eine Karte erfasst ist, schaltet die Kamera-Hardware komplett ab (keine störende Kamera mehr im Hintergrund!).
+* **100 % Spoilerfreier Blind-Player:**
+  * Eine rotierende Vinyl-Schallplatte und Equalizer-Wellen visualisieren die Wiedergabe.
+  * Robuster Client-Side Audio-Resolver (30s-Vorschau ohne Backend, direkt im Browser).
+  * **Absolut spoilerfrei:** Kein Songname, kein Künstler, kein Albumcover während des Ratens!
+  * 30-Sekunden-Countdown läuft herunter mit Pause/Play/Restart-Steuerung.
 * **Lösung aufdecken:**
   * Erst wenn alle geraten haben, tippt man auf **„👁️ Lösung aufdecken“**.
-  * Das **Erscheinungsjahr** springt in riesiger goldener Typografie auf den Bildschirm, darunter Songtitel und Interpret.
+  * Das **große HD-Albumcover (Titelbild)** wird eingeblendet, gemeinsam mit dem **Erscheinungsjahr** in riesiger goldener Typografie sowie Songtitel und Interpret.
   * Ein Tipp auf **„Nächste Karte scannen“** schließt die Ansicht und die Kamera ist sofort wieder bereit für die nächste Runde.
 
 ---

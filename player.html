@@ -15,15 +15,21 @@
   <style>
     :root {
       --bg-dark: #0a0b12;
-      --bg-glass: rgba(18, 22, 38, 0.75);
+      --bg-surface: #121524;
+      --bg-glass: rgba(18, 22, 38, 0.78);
+      --bg-glass-card: rgba(22, 27, 46, 0.75);
+      
       --accent-pink: #ff2a7a;
       --accent-cyan: #00f2fe;
       --accent-purple: #7928ca;
       --accent-yellow: #ffde59;
+      --accent-green: #10b981;
+      
       --text-main: #f5f6fa;
       --text-muted: #9499b3;
       --border-glass: rgba(255, 255, 255, 0.08);
-      --border-glass-bright: rgba(255, 255, 255, 0.16);
+      --border-glass-bright: rgba(255, 255, 255, 0.18);
+      --shadow-apple: 0 10px 35px rgba(0, 0, 0, 0.5);
       --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Outfit", sans-serif;
     }
 
@@ -38,7 +44,7 @@
       font-family: var(--font-system);
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 50% 15%, rgba(121, 40, 202, 0.22) 0%, transparent 55%),
+        radial-gradient(circle at 50% 12%, rgba(121, 40, 202, 0.22) 0%, transparent 55%),
         radial-gradient(circle at 85% 85%, rgba(0, 242, 254, 0.12) 0%, transparent 40%),
         radial-gradient(circle at 15% 80%, rgba(255, 42, 122, 0.1) 0%, transparent 45%);
       background-attachment: fixed;
@@ -49,7 +55,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: max(env(safe-area-inset-top, 16px), 16px) 16px max(env(safe-area-inset-bottom, 20px), 20px);
+      padding: max(env(safe-area-inset-top, 14px), 14px) 16px max(env(safe-area-inset-bottom, 18px), 18px);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
@@ -69,17 +75,17 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-glass);
-      padding: 6px 14px;
+      padding: 7px 14px;
       border-radius: 980px;
       display: flex;
       align-items: center;
       gap: 8px;
       font-weight: 800;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
     }
 
-    .btn-scanner-link {
+    .btn-top-nav {
       background: var(--bg-glass);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -90,25 +96,26 @@
       font-size: 0.82rem;
       font-weight: 600;
       text-decoration: none;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       transition: all 0.2s;
+      cursor: pointer;
     }
 
-    .btn-scanner-link:active {
-      transform: scale(0.92);
+    .btn-top-nav:active {
+      transform: scale(0.93);
       background: rgba(255, 255, 255, 0.2);
     }
 
     /* MAIN PLAYER CONTAINER */
     main {
       width: 100%;
-      max-width: 400px;
+      max-width: 410px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.2rem;
+      gap: 1.1rem;
       margin: auto 0;
     }
 
@@ -317,22 +324,44 @@
       transform: scale(0.97);
     }
 
-    /* REVEALED SOLUTION CARD */
+    /* REVEALED SOLUTION CARD (APPLE GLASS STYLE) */
     .solution-card {
       width: 100%;
       background: linear-gradient(145deg, #1b2038 0%, #121524 100%);
       border: 2px solid var(--accent-pink);
-      border-radius: 20px;
+      border-radius: 24px;
       padding: 1.6rem 1.4rem;
       text-align: center;
       display: none;
-      animation: springPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      box-shadow: 0 10px 40px rgba(255, 42, 122, 0.3);
+      animation: springPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      box-shadow: 0 15px 45px rgba(255, 42, 122, 0.35);
     }
 
     @keyframes springPop {
       0% { opacity: 0; transform: scale(0.85); }
       100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* LARGE ALBUM ARTWORK CONTAINER */
+    .sol-cover-art-container {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 1.2rem;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 242, 254, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sol-cover-art-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .sol-tag {
@@ -357,15 +386,15 @@
     }
 
     .sol-title {
-      font-size: 1.3rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: #fff;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.25rem;
       line-height: 1.3;
     }
 
     .sol-artist {
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       color: var(--accent-cyan);
       font-weight: 600;
       margin-bottom: 1.4rem;
@@ -382,13 +411,14 @@
       color: black;
       font-weight: 800;
       padding: 13px;
-      border-radius: 12px;
+      border-radius: 14px;
       text-decoration: none;
       font-size: 0.95rem;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4);
     }
 
     .btn-next-scan-apple {
@@ -397,7 +427,7 @@
       color: white;
       font-weight: 700;
       padding: 13px;
-      border-radius: 12px;
+      border-radius: 14px;
       text-decoration: none;
       font-size: 0.95rem;
       display: flex;
@@ -411,8 +441,8 @@
       border: 3px solid rgba(255, 255, 255, 0.1);
       border-top: 3px solid var(--accent-cyan);
       border-radius: 50%;
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       animation: spin 0.8s linear infinite;
       margin: 1.5rem auto;
     }
@@ -432,11 +462,14 @@
 
   <!-- TOP HEADER -->
   <header>
+    <a href="index.html#scanner" class="btn-top-nav">
+      <span style="font-size: 1.1rem; line-height: 1;">‹</span> Scanner
+    </a>
     <div class="brand-pill">
       <span>💿</span> HITSTER PLAYER
     </div>
-    <a href="index.html#scanner" class="btn-scanner-link">
-      <span>📷</span> Scanner
+    <a href="index.html#scanner" class="btn-top-nav" title="Nächste Karte">
+      <span>📷</span>
     </a>
   </header>
 
@@ -446,14 +479,14 @@
     <!-- LOADING STATE -->
     <div id="loading-state" style="text-align: center; padding: 2rem 0;">
       <div class="loading-spinner"></div>
-      <p style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Lade Song...</p>
+      <p style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Lade Song & Audio...</p>
     </div>
 
-    <!-- ACTIVE BLIND GAME STATE -->
-    <div id="game-state" style="display: none; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.2rem;">
+    <!-- ACTIVE BLIND GAME STATE (100% SPOILER-FREE DURING GUESSING) -->
+    <div id="game-state" style="display: none; width: 100%; flex-direction: column; align-items: center; gap: 1.2rem;">
       
       <!-- ROTATING VINYL -->
-      <div class="vinyl-container">
+      <div id="vinyl-wrapper" class="vinyl-container">
         <div id="vinyl-disc" class="vinyl">
           <div class="vinyl-label">
             <div class="vinyl-hole"></div>
@@ -475,7 +508,7 @@
 
       <!-- STATUS TEXT -->
       <div style="text-align: center;">
-        <div id="status-title" style="font-size: 1.2rem; font-weight: 800; color: #fff;">🎶 Song läuft...</div>
+        <div id="status-title" style="font-size: 1.25rem; font-weight: 800; color: #fff;">🎶 Song läuft...</div>
         <div id="status-sub" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Erratet das Erscheinungsjahr!</div>
       </div>
 
@@ -499,25 +532,18 @@
         <button class="btn-control-circle" onclick="stopAudio()" title="Stopp">⏹️</button>
       </div>
 
-      <!-- SPOTIFY EMBED WITH BLIND SHIELD -->
-      <div id="spotify-player-box" style="width: 100%; position: relative; margin-top: 5px; display: none;">
-        <div id="spotify-cover-shield" style="position: absolute; top: 0; left: 0; width: calc(100% - 85px); height: 80px; background: #151826; border: 1px solid var(--border-glass); border-radius: 12px; z-index: 10; display: flex; align-items: center; padding: 0 15px; gap: 10px; pointer-events: none;">
-          <span style="font-size: 1.3rem;">🔒</span>
-          <div>
-            <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-pink);">HITSTER BLIND-MODUS</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Tippe rechts auf ▶️ Play</div>
-          </div>
-        </div>
-        <iframe id="spotify-iframe" src="" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius: 12px; border: none; display: block;"></iframe>
-      </div>
-
       <!-- REVEAL HERO BUTTON -->
       <button id="btn-reveal-solution" class="btn-reveal-hero" onclick="revealSolution()">
         <span>👁️</span> Lösung aufdecken
       </button>
 
-      <!-- REVEALED SOLUTION CARD -->
+      <!-- REVEALED SOLUTION CARD (BIG COVER ART, YEAR, TITLE & ARTIST) -->
       <div id="solution-card" class="solution-card">
+        <!-- BIG ALBUM COVER IMAGE -->
+        <div id="sol-cover-box" class="sol-cover-art-container" style="display: none;">
+          <img id="sol-cover-img" src="" alt="Album Cover">
+        </div>
+
         <div class="sol-tag">🏆 Erscheinungsjahr</div>
         <div id="sol-year" class="sol-year">----</div>
         <div id="sol-title" class="sol-title">---</div>
@@ -552,6 +578,7 @@
   <script>
     const audio = document.getElementById('audio-player');
     const vinyl = document.getElementById('vinyl-disc');
+    const vinylWrapper = document.getElementById('vinyl-wrapper');
     const eqBars = document.querySelectorAll('.eq-bar');
     const playIcon = document.getElementById('play-icon');
     const statusTitle = document.getElementById('status-title');
@@ -560,6 +587,8 @@
     const progressFill = document.getElementById('progress-fill');
     const solutionCard = document.getElementById('solution-card');
     const btnReveal = document.getElementById('btn-reveal-solution');
+    const solCoverBox = document.getElementById('sol-cover-box');
+    const solCoverImg = document.getElementById('sol-cover-img');
 
     let currentTrack = null;
     let isPlaying = false;
@@ -572,88 +601,142 @@
     const paramTitle = params.get('t');
     const paramArtist = params.get('a');
 
-    async function initTrack() {
-      // 1. Static GitHub Pages Mode (all parameters embedded in QR code URL!)
-      if (paramYear && paramTitle) {
-        document.getElementById('loading-state').style.display = 'none';
-        document.getElementById('game-state').style.display = 'flex';
+    // JSONP SEARCH HELPER FOR ITUNES (100% CLIENT-SIDE & CORS-FREE)
+    function searchItunesJsonpSingle(query) {
+      return new Promise((resolve) => {
+        const cbName = 'itunes_player_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+        const script = document.createElement('script');
         
+        const timeout = setTimeout(() => {
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          resolve(null);
+        }, 3000);
+
+        window[cbName] = function(data) {
+          clearTimeout(timeout);
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          if (data && data.results && data.results.length > 0) {
+            const it = data.results[0];
+            const previewUrl = it.previewUrl || null;
+            let artworkUrl = it.artworkUrl100 || null;
+            if (artworkUrl) artworkUrl = artworkUrl.replace('100x100bb.jpg', '600x600bb.jpg');
+            resolve({ previewUrl, artworkUrl });
+          } else {
+            resolve(null);
+          }
+        };
+
+        script.src = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=1&callback=${cbName}`;
+        document.body.appendChild(script);
+      });
+    }
+
+    async function fetchRobustClientAudioAndArtwork(artist, title) {
+      function clean(s) {
+        if (!s) return '';
+        return s.replace(/\(.*?\)|\[.*?\]/g, '')
+                .replace(/\s*-\s*.*$/, '')
+                .replace(/\s+(?:feat|ft)\.?\s+.*$/i, '')
+                .trim();
+      }
+
+      const q1 = `${clean(artist)} ${clean(title)}`.trim();
+      const q2 = `${artist.split(',')[0].split('&')[0].trim()} ${clean(title)}`.trim();
+      const q3 = `${clean(title)}`.trim();
+      const q4 = `${clean(artist)}`.trim();
+
+      const queries = [q1, q2, q3, q4];
+
+      for (const q of queries) {
+        if (!q) continue;
+        const res = await searchItunesJsonpSingle(q);
+        if (res && res.previewUrl) {
+          return res;
+        }
+      }
+      return { previewUrl: null, artworkUrl: null };
+    }
+
+    async function initTrack() {
+      // 1. Static GitHub Pages Mode (parameters in URL)
+      if (paramYear && paramTitle) {
         currentTrack = {
           id: trackId,
           year: paramYear,
           title: decodeURIComponent(paramTitle),
           artist: decodeURIComponent(paramArtist || ''),
-          url: trackId ? `https://open.spotify.com/track/${trackId}` : ''
+          url: trackId ? `https://open.spotify.com/track/${trackId}` : `https://open.spotify.com/search/${encodeURIComponent((paramArtist||'') + ' ' + paramTitle)}`,
+          previewUrl: null,
+          artworkUrl: null
         };
 
-        document.getElementById('sol-year').textContent = currentTrack.year;
-        document.getElementById('sol-title').textContent = currentTrack.title;
-        document.getElementById('sol-artist').textContent = currentTrack.artist;
-        document.getElementById('sol-spotify-link').href = currentTrack.url;
-
-        // Try to fetch audio preview
-        fetchAudioPreview(currentTrack.artist, currentTrack.title);
+        setupGameRound(currentTrack);
         return;
       }
 
-      // 2. Fallback mode: query via server
-      if (!trackId) {
-        showError("Keine Song-ID im Link gefunden.");
-        return;
+      // 2. Query track info if ID is present
+      if (trackId) {
+        try {
+          const resp = await fetch(`/api/track-info?id=${encodeURIComponent(trackId)}`);
+          const data = await resp.json();
+          if (data && data.success) {
+            currentTrack = {
+              id: data.id || trackId,
+              year: data.year || '----',
+              title: data.title || 'Unbekannter Titel',
+              artist: data.artist || 'Unbekannter Künstler',
+              url: `https://open.spotify.com/track/${data.id || trackId}`,
+              previewUrl: data.previewUrl || null,
+              artworkUrl: data.coverUrl || null
+            };
+            setupGameRound(currentTrack);
+            return;
+          }
+        } catch (e) {}
       }
 
-      try {
-        const resp = await fetch(`/api/track-info?id=${encodeURIComponent(trackId)}`);
-        const data = await resp.json();
-
-        if (!data.success && !data.id) {
-          throw new Error(data.error || "Songdaten konnten nicht geladen werden.");
-        }
-
-        currentTrack = data;
-        document.getElementById('loading-state').style.display = 'none';
-        document.getElementById('game-state').style.display = 'flex';
-
-        document.getElementById('sol-year').textContent = data.year || "----";
-        document.getElementById('sol-title').textContent = data.title || "Unbekannter Titel";
-        document.getElementById('sol-artist').textContent = data.artist || "Unbekannter Künstler";
-        document.getElementById('sol-spotify-link').href = `https://open.spotify.com/track/${data.id}`;
-
-        if (data.previewUrl) {
-          audio.src = data.previewUrl;
-          playAudio();
-        } else {
-          showSpotifyEmbed(data.id);
-        }
-
-      } catch (err) {
-        showError(err.message);
-      }
+      // If no params and cannot resolve
+      showError("Keine Songdaten im Link gefunden. Bitte scanne eine Hitster-Karte.");
     }
 
-    async function fetchAudioPreview(artist, title) {
-      let previewUrl = null;
-      try {
-        const resp = await fetch(`/api/preview?artist=${encodeURIComponent(artist)}&title=${encodeURIComponent(title)}`);
-        const data = await resp.json();
-        if (data.previewUrl) previewUrl = data.previewUrl;
-      } catch (e) {}
+    async function setupGameRound(track) {
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('game-state').style.display = 'flex';
+      
+      // Ensure solution card is hidden
+      solutionCard.style.display = 'none';
+      solCoverBox.style.display = 'none';
+      vinylWrapper.style.display = 'block';
+      btnReveal.style.display = 'flex';
 
-      if (previewUrl) {
-        audio.src = previewUrl;
+      // Prefill hidden solution values
+      document.getElementById('sol-year').textContent = track.year;
+      document.getElementById('sol-title').textContent = track.title;
+      document.getElementById('sol-artist').textContent = track.artist;
+      document.getElementById('sol-spotify-link').href = track.url;
+
+      // Status during blind guessing
+      statusTitle.textContent = "🎵 Song wird vorbereitet...";
+      statusSub.textContent = "Hört genau hin und erratet das Jahr!";
+
+      // Resolve audio & cover art via multi-tier JSONP
+      const media = await fetchRobustClientAudioAndArtwork(track.artist, track.title);
+      if (media.artworkUrl) {
+        track.artworkUrl = media.artworkUrl;
+        solCoverImg.src = media.artworkUrl;
+      }
+      if (media.previewUrl) {
+        track.previewUrl = media.previewUrl;
+      }
+
+      if (track.previewUrl) {
+        audio.src = track.previewUrl;
         playAudio();
       } else {
-        showSpotifyEmbed(trackId);
-      }
-    }
-
-    function showSpotifyEmbed(tId) {
-      if (tId) {
-        document.getElementById('spotify-player-box').style.display = 'block';
-        document.getElementById('spotify-iframe').src = `https://open.spotify.com/embed/track/${tId}?utm_source=generator&theme=0`;
         statusTitle.textContent = "🎵 Song bereit";
-        statusSub.textContent = "Tippe rechts im Spotify-Player auf ▶️ Play!";
-        vinyl.classList.add('spinning');
+        statusSub.textContent = "Tippe auf Play oder decke die Lösung auf!";
         startTimer(30);
       }
     }
@@ -665,15 +748,21 @@
     }
 
     function playAudio() {
+      if (!audio.src) return;
       audio.play().then(() => {
         isPlaying = true;
         vinyl.classList.add('spinning');
         eqBars.forEach(b => b.classList.add('active'));
         playIcon.textContent = '⏸️';
         statusTitle.textContent = '🎶 Song läuft...';
-        statusSub.textContent = 'Welches Jahr ist es?';
+        statusSub.textContent = 'Welches Erscheinungsjahr ist es?';
         startTimer(audio.duration || 30);
-      }).catch(() => {});
+      }).catch((err) => {
+        console.warn("Autoplay blocked:", err);
+        playIcon.textContent = '▶️';
+        statusTitle.textContent = '🎵 Song bereit';
+        statusSub.textContent = 'Tippe auf Play zum Starten!';
+      });
     }
 
     function pauseAudio() {
@@ -731,10 +820,15 @@
     };
 
     function revealSolution() {
+      // HIDE VINYL DISC, REVEAL BIG ALBUM COVER AND FULL SOLUTION
+      vinylWrapper.style.display = 'none';
       solutionCard.style.display = 'block';
       btnReveal.style.display = 'none';
-      const shield = document.getElementById('spotify-cover-shield');
-      if (shield) shield.style.display = 'none';
+
+      if (currentTrack && currentTrack.artworkUrl) {
+        solCoverBox.style.display = 'flex';
+      }
+
       solutionCard.scrollIntoView({ behavior: 'smooth' });
 
       if (navigator.vibrate) {

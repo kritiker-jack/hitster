@@ -19,9 +19,9 @@
     :root {
       --bg-dark: #0a0b12;
       --bg-surface: #121524;
-      --bg-glass: rgba(18, 22, 38, 0.75);
-      --bg-glass-card: rgba(22, 27, 46, 0.65);
-      --bg-glass-input: rgba(28, 34, 58, 0.65);
+      --bg-glass: rgba(18, 22, 38, 0.78);
+      --bg-glass-card: rgba(22, 27, 46, 0.7);
+      --bg-glass-input: rgba(28, 34, 58, 0.7);
       
       --accent-pink: #ff2a7a;
       --accent-cyan: #00f2fe;
@@ -32,8 +32,8 @@
       --text-main: #f5f6fa;
       --text-muted: #9499b3;
       --border-glass: rgba(255, 255, 255, 0.08);
-      --border-glass-bright: rgba(255, 255, 255, 0.16);
-      --shadow-apple: 0 10px 30px rgba(0, 0, 0, 0.45);
+      --border-glass-bright: rgba(255, 255, 255, 0.18);
+      --shadow-apple: 0 10px 35px rgba(0, 0, 0, 0.5);
       --radius-sm: 10px;
       --radius-md: 16px;
       --radius-lg: 24px;
@@ -52,7 +52,7 @@
       font-family: var(--font-system);
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 15% 10%, rgba(121, 40, 202, 0.2) 0%, transparent 45%),
+        radial-gradient(circle at 15% 10%, rgba(121, 40, 202, 0.22) 0%, transparent 45%),
         radial-gradient(circle at 85% 85%, rgba(0, 242, 254, 0.14) 0%, transparent 40%),
         radial-gradient(circle at 50% 50%, rgba(255, 42, 122, 0.09) 0%, transparent 50%);
       background-attachment: fixed;
@@ -65,7 +65,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* FULLSCREEN SCANNER APP STATE (HIDES ENTIRE STUDIO) */
+    /* FULLSCREEN SCANNER STATE */
     body.scanner-app-active {
       overflow: hidden !important;
     }
@@ -75,45 +75,44 @@
       display: none !important;
     }
 
-    /* APPLE-STYLE HEADER */
+    /* APPLE-STYLE HEADER WITH DROPDOWN MENU */
     header {
       position: sticky;
       top: 0;
-      z-index: 100;
-      background: rgba(10, 11, 18, 0.82);
+      z-index: 500;
+      background: rgba(10, 11, 18, 0.85);
       backdrop-filter: blur(25px) saturate(180%);
       -webkit-backdrop-filter: blur(25px) saturate(180%);
       border-bottom: 1px solid var(--border-glass);
-      padding: 0.75rem 1.2rem;
+      padding: 0.8rem 1.4rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.8rem;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.7rem;
+      gap: 0.75rem;
       cursor: pointer;
     }
 
     .brand-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
       background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 16px rgba(255, 42, 122, 0.4);
+      font-size: 1.25rem;
+      box-shadow: 0 4px 16px rgba(255, 42, 122, 0.45);
       color: #fff;
     }
 
     .brand-title h1 {
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       font-weight: 800;
       letter-spacing: -0.3px;
       background: linear-gradient(90deg, #ffffff, var(--accent-cyan));
@@ -121,102 +120,161 @@
       -webkit-text-fill-color: transparent;
     }
 
-    .brand-title p {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    @media (max-width: 600px) {
-      .brand-title p { display: none; }
-    }
-
-    /* SEGMENTED CONTROL (HORIZONTALLY SCROLLABLE ON MOBILE) */
-    .segmented-scroll-container {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      padding: 2px 0;
-    }
-
-    .segmented-scroll-container::-webkit-scrollbar {
-      display: none;
-    }
-
-    .segmented-control {
+    .header-right {
       display: flex;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 3px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-glass);
-      gap: 2px;
-      white-space: nowrap;
+      align-items: center;
+      gap: 10px;
     }
 
-    .seg-btn {
-      padding: 7px 14px;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
+    /* HERO SCANNER BUTTON IN HEADER */
+    .btn-quick-scanner {
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+      color: #fff;
       font-family: inherit;
-      font-weight: 600;
-      font-size: 0.82rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(255, 42, 122, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-quick-scanner:active {
+      transform: scale(0.94);
+    }
+
+    /* APPLE DROPDOWN MENU TOGGLE BUTTON */
+    .btn-menu-toggle {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-glass-bright);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 8px 15px;
       border-radius: var(--radius-pill);
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s;
     }
 
-    .seg-btn:hover {
-      color: #fff;
+    .btn-menu-toggle:active {
+      transform: scale(0.94);
+      background: rgba(255, 255, 255, 0.16);
     }
 
-    .seg-btn.active {
-      background: rgba(255, 255, 255, 0.15);
-      color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    /* DROPDOWN MENU OVERLAY (APPLE GLASS DRAWER) */
+    .dropdown-menu-overlay {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 490;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      animation: fadeIn 0.2s ease-out;
     }
 
-    .seg-btn-scanner-pill {
-      background: linear-gradient(135deg, rgba(255, 42, 122, 0.3), rgba(121, 40, 202, 0.3)) !important;
-      color: #fff !important;
-      border: 1px solid rgba(255, 42, 122, 0.4);
+    .dropdown-menu-overlay.open {
+      display: block;
     }
 
-    .btn-apple-print {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border-glass-bright);
-      color: #fff;
+    .dropdown-menu-sheet {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(18, 22, 38, 0.95);
+      backdrop-filter: blur(35px) saturate(190%);
+      -webkit-backdrop-filter: blur(35px) saturate(190%);
+      border-bottom: 1px solid var(--border-glass-bright);
+      border-radius: 0 0 24px 24px;
+      padding: 1.2rem 1.4rem 1.6rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .menu-section-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+      padding-left: 8px;
+    }
+
+    .menu-item-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      color: var(--text-main);
       font-family: inherit;
+      font-size: 0.98rem;
       font-weight: 600;
-      font-size: 0.82rem;
-      padding: 7px 13px;
-      border-radius: var(--radius-pill);
-      cursor: pointer;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
-      gap: 5px;
-      transition: all 0.2s;
-      white-space: nowrap;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
     }
 
-    .btn-apple-print:active {
-      transform: scale(0.94);
+    .menu-item-btn:hover, .menu-item-btn:active {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--border-glass);
+    }
+
+    .menu-item-btn.hero-highlight {
+      background: linear-gradient(135deg, rgba(255, 42, 122, 0.18), rgba(121, 40, 202, 0.18));
+      border: 1px solid rgba(255, 42, 122, 0.35);
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+
+    .menu-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-divider {
+      height: 1px;
+      background: var(--border-glass);
+      margin: 0.8rem 0;
     }
 
     /* MAIN CONTAINER (MOBILE FIRST) */
     main {
       flex: 1;
       padding: 1.2rem 1rem;
-      max-width: 1100px;
+      max-width: 1000px;
       margin: 0 auto;
       width: 100%;
     }
 
     @media (min-width: 768px) {
-      main { padding: 1.8rem 1.5rem; }
+      main { padding: 1.8rem 1.4rem; }
     }
 
     .tab-content {
@@ -246,7 +304,7 @@
     }
 
     @media (min-width: 768px) {
-      .glass-panel { padding: 1.8rem; margin-bottom: 1.8rem; }
+      .glass-panel { padding: 1.8rem; }
     }
 
     .panel-header-row {
@@ -914,7 +972,7 @@
 
     @media print {
       body { background: white !important; color: black !important; }
-      header, .glass-panel, .collapsible-glass, .song-list-panel, #tab-editor, #tab-preview, .no-print {
+      header, .dropdown-menu-overlay, .glass-panel, .collapsible-glass, .song-list-panel, #tab-editor, #tab-preview, .no-print {
         display: none !important;
       }
       main { padding: 0 !important; max-width: none !important; }
@@ -1136,7 +1194,7 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    /* VIEW 2: GAME ROUND PLAYER (NO CAMERA IN BACKGROUND!) */
+    /* VIEW 2: GAME ROUND PLAYER (CAMERA IS SHUT DOWN & INVISIBLE!) */
     #scanner-player-screen {
       display: none;
       position: absolute;
@@ -1369,16 +1427,17 @@
       transform: scale(0.96);
     }
 
+    /* REVEALED SOLUTION CARD WITH BIG ALBUM ARTWORK */
     .sheet-solution-card {
       width: 100%;
       background: linear-gradient(145deg, #1b2038 0%, #121524 100%);
       border: 2px solid var(--accent-pink);
       border-radius: var(--radius-lg);
-      padding: 1.6rem 1.4rem;
+      padding: 1.4rem 1.2rem;
       text-align: center;
       display: none;
       animation: springPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      box-shadow: 0 10px 40px rgba(255, 42, 122, 0.3);
+      box-shadow: 0 10px 40px rgba(255, 42, 122, 0.35);
     }
 
     @keyframes springPop {
@@ -1386,20 +1445,44 @@
       100% { opacity: 1; transform: scale(1); }
     }
 
+    /* BIG ALBUM COVER IMAGE */
+    .solution-cover-art-container {
+      width: 220px;
+      height: 220px;
+      max-width: 72vw;
+      max-height: 72vw;
+      margin: 0 auto 1.2rem;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 242, 254, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.18);
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .solution-cover-art-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .sheet-sol-year {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 4.2rem;
+      font-size: 3.8rem;
       font-weight: 900;
       line-height: 1;
       letter-spacing: -2px;
       background: linear-gradient(135deg, #ffffff 0%, var(--accent-yellow) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin: 0.2rem 0 0.8rem;
+      margin: 0.2rem 0 0.6rem;
     }
 
     .sheet-sol-title {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 800;
       color: #fff;
       margin-bottom: 0.2rem;
@@ -1407,10 +1490,10 @@
     }
 
     .sheet-sol-artist {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--accent-cyan);
       font-weight: 600;
-      margin-bottom: 1.3rem;
+      margin-bottom: 1.2rem;
     }
 
     .sheet-sol-actions {
@@ -1456,40 +1539,97 @@
 </head>
 <body>
 
-  <!-- STUDIO HEADER -->
+  <!-- STUDIO HEADER WITH APPLE DROPDOWN MENU -->
   <header>
     <div class="brand" onclick="switchTab('editor')">
       <div class="brand-logo">H</div>
       <div class="brand-title">
         <h1>HITSTER</h1>
-        <p>Eigene Karten & Duplex</p>
       </div>
     </div>
 
-    <!-- HORIZONTALLY SCROLLABLE APPLE SEGMENTED CONTROL -->
-    <div class="segmented-scroll-container">
-      <div class="segmented-control">
-        <button class="seg-btn active" onclick="switchTab('editor')">
-          <span>✏️</span> Songs
-        </button>
-        <button class="seg-btn" onclick="switchTab('preview')">
-          <span>🃏</span> 3D Vorschau
-        </button>
-        <button class="seg-btn" onclick="switchTab('print')">
-          <span>🖨️</span> A4 Druck
-        </button>
-        <button class="seg-btn seg-btn-scanner-pill" onclick="enterScannerMode()">
-          <span>📱</span> Spiel-Scanner
-        </button>
-      </div>
-    </div>
+    <div class="header-right">
+      <button class="btn-quick-scanner" onclick="enterScannerMode()">
+        <span>📱</span> Scanner
+      </button>
 
-    <div>
-      <button class="btn-apple-print" onclick="triggerPrint()">
-        <span>🖨️</span> Drucken
+      <button id="btn-menu-trigger" class="btn-menu-toggle" onclick="toggleDropdownMenu()">
+        <span id="menu-icon">☰</span> Menü
       </button>
     </div>
   </header>
+
+  <!-- DROPDOWN MENU OVERLAY (APPLE GLASS DRAWER) -->
+  <div id="dropdown-overlay" class="dropdown-menu-overlay" onclick="closeDropdownMenu()">
+    <div class="dropdown-menu-sheet" onclick="event.stopPropagation()">
+      <div class="menu-section-title">Navigation</div>
+      
+      <button class="menu-item-btn hero-highlight" onclick="menuNavigateTo('scanner')">
+        <div class="menu-item-left">
+          <span style="font-size: 1.25rem;">📱</span>
+          <span>Spiel-Scanner & Buzzer</span>
+        </div>
+        <span style="font-size: 0.75rem; background: var(--accent-pink); color: #fff; padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 800;">LIVE</span>
+      </button>
+
+      <button class="menu-item-btn" onclick="menuNavigateTo('editor')">
+        <div class="menu-item-left">
+          <span style="font-size: 1.15rem;">✏️</span>
+          <span>Songs & Playlist Editor</span>
+        </div>
+        <span>›</span>
+      </button>
+
+      <button class="menu-item-btn" onclick="menuNavigateTo('preview')">
+        <div class="menu-item-left">
+          <span style="font-size: 1.15rem;">🃏</span>
+          <span>3D Karten-Vorschau</span>
+        </div>
+        <span>›</span>
+      </button>
+
+      <button class="menu-item-btn" onclick="menuNavigateTo('print')">
+        <div class="menu-item-left">
+          <span style="font-size: 1.15rem;">🖨️</span>
+          <span>A4 Druckbogen & PDF</span>
+        </div>
+        <span>›</span>
+      </button>
+
+      <div class="menu-divider"></div>
+      <div class="menu-section-title">Karten-Verwaltung</div>
+
+      <button class="menu-item-btn" onclick="exportDeckJson(); closeDropdownMenu();">
+        <div class="menu-item-left">
+          <span style="font-size: 1.15rem;">💾</span>
+          <span>Deck exportieren (JSON)</span>
+        </div>
+      </button>
+
+      <button class="menu-item-btn" onclick="document.getElementById('import-deck-file').click(); closeDropdownMenu();">
+        <div class="menu-item-left">
+          <span style="font-size: 1.15rem;">📂</span>
+          <span>Deck laden (JSON)</span>
+        </div>
+      </button>
+
+      <button class="menu-item-btn" onclick="loadSampleSongs(); closeDropdownMenu();">
+        <div class="menu-item-left">
+          <span style="font-size: 1.15rem;">✨</span>
+          <span>18 Beispiel-Hits laden</span>
+        </div>
+      </button>
+
+      <button class="menu-item-btn" style="color: #ff6b6b;" onclick="clearAllSongs(); closeDropdownMenu();">
+        <div class="menu-item-left">
+          <span style="font-size: 1.15rem;">🗑️</span>
+          <span>Alle Songs löschen</span>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <input type="file" id="import-deck-file" accept=".json" style="display: none;" onchange="importDeckJson(event)">
 
   <!-- STUDIO MAIN CONTENT -->
   <main>
@@ -1607,10 +1747,8 @@
 
         <div class="table-footer-actions">
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn-ghost" onclick="loadSampleSongs()">✨ 18 Beispiel-Hits</button>
             <button class="btn-ghost" onclick="exportDeckJson()">💾 Deck exportieren</button>
             <button class="btn-ghost" onclick="document.getElementById('import-deck-file').click()">📂 Deck laden</button>
-            <input type="file" id="import-deck-file" accept=".json" style="display: none;" onchange="importDeckJson(event)">
           </div>
           <div>
             <button class="btn-ghost" onclick="clearAllSongs()" style="color: #ff6b6b; border-color: rgba(255, 107, 107, 0.3);">🗑️ Alle löschen</button>
@@ -1655,7 +1793,6 @@
 
     <!-- VIEW 1: LIVE CAMERA VIEWFINDER -->
     <div id="scanner-viewfinder-screen">
-      <!-- TOP FLOATING BAR -->
       <div class="scanner-top-bar">
         <button class="scanner-nav-btn" onclick="exitScannerMode()">
           <span style="font-size: 1.2rem; line-height: 1;">‹</span> Studio
@@ -1670,13 +1807,11 @@
         </button>
       </div>
 
-      <!-- CAMERA VIEWPORT -->
       <div class="scanner-camera-viewport">
         <video id="app-camera-video" playsinline muted autoplay></video>
         <canvas id="app-camera-canvas" style="display: none;"></canvas>
       </div>
 
-      <!-- HUD OVERLAY -->
       <div class="scanner-hud-overlay">
         <div class="scan-reticle">
           <div class="scan-reticle-c2"></div>
@@ -1688,9 +1823,8 @@
       </div>
     </div>
 
-    <!-- VIEW 2: GAME ROUND PLAYER (NO CAMERA IN BACKGROUND!) -->
+    <!-- VIEW 2: GAME ROUND PLAYER (CAMERA IS SHUT DOWN & INVISIBLE!) -->
     <div id="scanner-player-screen">
-      <!-- TOP BAR IN GAME ROUND -->
       <div style="width: 100%; max-width: 400px; display: flex; justify-content: space-between; align-items: center;">
         <button class="scanner-nav-btn" onclick="exitScannerMode()">
           <span style="font-size: 1.2rem; line-height: 1;">‹</span> Studio
@@ -1706,8 +1840,8 @@
       </div>
 
       <div class="player-content-container">
-        <!-- ROTATING VINYL -->
-        <div class="sheet-vinyl-container">
+        <!-- ROTATING VINYL (SHOWN WHILE GUESSING) -->
+        <div id="app-vinyl-wrapper" class="sheet-vinyl-container">
           <div id="app-sheet-vinyl" class="sheet-vinyl">
             <div class="sheet-vinyl-label">
               <div class="sheet-vinyl-hole"></div>
@@ -1727,7 +1861,7 @@
           <div class="sheet-eq-bar"></div>
         </div>
 
-        <!-- STATUS TITLE (BLIND / SPOILER-FREE) -->
+        <!-- STATUS TITLE (100% BLIND / SPOILER-FREE) -->
         <div style="text-align: center;">
           <div id="app-status-title" style="font-size: 1.2rem; font-weight: 800; color: #fff;">🎶 Song wird abgespielt...</div>
           <div id="app-status-sub" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Erratet das Erscheinungsjahr!</div>
@@ -1751,22 +1885,18 @@
           <button class="sheet-btn-circle" onclick="stopAppAudio()" title="Stopp">⏹️</button>
         </div>
 
-        <!-- SPOTIFY EMBED BACKUP -->
-        <div id="app-spotify-box" style="width: 100%; display: none; position: relative;">
-          <div id="app-spotify-shield" style="position: absolute; top: 0; left: 0; width: calc(100% - 85px); height: 80px; background: #121524; border: 1px solid var(--border-glass); border-radius: 12px; z-index: 10; display: flex; align-items: center; padding: 0 14px; gap: 8px; pointer-events: none;">
-            <span>🔒</span>
-            <div style="font-size: 0.82rem; font-weight: 800; color: var(--accent-pink);">HITSTER BLIND-PLAYER</div>
-          </div>
-          <iframe id="app-spotify-iframe" src="" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius: 12px; border: none; display: block;"></iframe>
-        </div>
-
         <!-- REVEAL HERO BUTTON -->
         <button id="app-btn-reveal" class="sheet-btn-reveal" onclick="revealAppSolution()">
           <span>👁️</span> Lösung aufdecken
         </button>
 
-        <!-- REVEALED SOLUTION CARD -->
+        <!-- REVEALED SOLUTION CARD (BIG COVER ART, YEAR, TITLE & ARTIST) -->
         <div id="app-solution-card" class="sheet-solution-card">
+          <!-- BIG ALBUM COVER IMAGE -->
+          <div id="app-sol-cover-box" class="solution-cover-art-container" style="display: none;">
+            <img id="app-sol-cover-img" src="" alt="Album Cover">
+          </div>
+
           <div style="font-size: 0.72rem; font-weight: 800; letter-spacing: 2px; color: var(--accent-cyan); text-transform: uppercase;">🏆 Erscheinungsjahr</div>
           <div id="app-sol-year" class="sheet-sol-year">----</div>
           <div id="app-sol-title" class="sheet-sol-title">---</div>
@@ -1847,6 +1977,34 @@
         .catch(() => {});
     }
 
+    /* DROPDOWN MENU FUNCTIONS */
+    let isMenuOpen = false;
+    function toggleDropdownMenu() {
+      if (isMenuOpen) closeDropdownMenu();
+      else openDropdownMenu();
+    }
+
+    function openDropdownMenu() {
+      isMenuOpen = true;
+      document.getElementById('dropdown-overlay').classList.add('open');
+      document.getElementById('menu-icon').textContent = '✕';
+    }
+
+    function closeDropdownMenu() {
+      isMenuOpen = false;
+      document.getElementById('dropdown-overlay').classList.remove('open');
+      document.getElementById('menu-icon').textContent = '☰';
+    }
+
+    function menuNavigateTo(tabId) {
+      closeDropdownMenu();
+      if (tabId === 'scanner') {
+        enterScannerMode();
+      } else {
+        switchTab(tabId);
+      }
+    }
+
     function saveSongs() {
       localStorage.setItem('hitster_custom_songs', JSON.stringify(songs));
       renderAll();
@@ -1887,14 +2045,10 @@
     }
 
     function switchTab(tabId) {
-      document.querySelectorAll('.seg-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
 
       const targetTab = document.getElementById(`tab-${tabId}`);
       if (targetTab) targetTab.classList.add('active');
-
-      const activeBtn = Array.from(document.querySelectorAll('.seg-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
-      if (activeBtn) activeBtn.classList.add('active');
 
       if (tabId === 'preview') renderInteractivePreview();
       else if (tabId === 'print') renderPrintSheets();
@@ -1967,7 +2121,12 @@
       }
     }
 
-        function exportDeckJson() {
+    function loadSampleSongs() {
+      songs = [...sampleHits];
+      saveSongs();
+    }
+
+    function exportDeckJson() {
       if (songs.length === 0) {
         alert("Keine Songs zum Exportieren vorhanden.");
         return;
@@ -2001,11 +2160,6 @@
       };
       reader.readAsText(file);
       e.target.value = '';
-    }
-
-    function loadSampleSongs() {
-      songs = [...sampleHits];
-      saveSongs();
     }
 
     function addSongFromForm(e) {
@@ -2174,7 +2328,6 @@
         const startIdx = p * CARDS_PER_PAGE;
         const pageSongs = songs.slice(startIdx, startIdx + CARDS_PER_PAGE);
 
-        // Page A: Front sides (QR Codes)
         const frontSheet = document.createElement('div');
         frontSheet.className = 'a4-sheet';
         frontSheet.innerHTML = `
@@ -2225,7 +2378,6 @@
           frontGrid.appendChild(dummy);
         }
 
-        // Page B: Back sides (Mirrored horizontally for Duplex printing)
         const backSheet = document.createElement('div');
         backSheet.className = 'a4-sheet';
         backSheet.innerHTML = `
@@ -2280,6 +2432,7 @@
     let appTimerInterval = null;
     let appBarcodeDetector = null;
     let appScanCooldown = false;
+    let activeGameSong = null;
 
     if ('BarcodeDetector' in window) {
       try {
@@ -2295,7 +2448,6 @@
       appContainer.classList.add('active');
       window.location.hash = 'scanner';
 
-      // Show Viewfinder screen, hide player screen
       document.getElementById('scanner-viewfinder-screen').style.display = 'flex';
       document.getElementById('scanner-player-screen').classList.remove('active');
 
@@ -2422,35 +2574,62 @@
       } catch (e) {}
     }
 
-    // CLIENT-SIDE FREE ITUNES PREVIEW RESOLVER (JSONP: 100% CORS-FREE ON GITHUB PAGES)
-    function fetchClientItunesAudio(artist, title) {
+    // MULTI-TIER ROBUST CLIENT-SIDE ITUNES AUDIO & ARTWORK RESOLVER (JSONP: 100% CORS-FREE)
+    function searchItunesJsonpSingle(query) {
       return new Promise((resolve) => {
-        const cleanT = title.replace(/\(.*?\)|\[.*?\]/g, '').replace(/ - .*$/, '').trim();
-        const cleanA = artist.split(',')[0].split('&')[0].trim();
-        const query = encodeURIComponent(`${cleanA} ${cleanT}`);
-        const cbName = 'itunes_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
-
+        const cbName = 'itunes_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
         const script = document.createElement('script');
+        
         const timeout = setTimeout(() => {
           delete window[cbName];
           if (script.parentNode) script.parentNode.removeChild(script);
           resolve(null);
-        }, 2500);
+        }, 2800);
 
         window[cbName] = function(data) {
           clearTimeout(timeout);
           delete window[cbName];
           if (script.parentNode) script.parentNode.removeChild(script);
-          if (data && data.results && data.results.length > 0 && data.results[0].previewUrl) {
-            resolve(data.results[0].previewUrl);
+          if (data && data.results && data.results.length > 0) {
+            const it = data.results[0];
+            const previewUrl = it.previewUrl || null;
+            let artworkUrl = it.artworkUrl100 || null;
+            if (artworkUrl) artworkUrl = artworkUrl.replace('100x100bb.jpg', '600x600bb.jpg');
+            resolve({ previewUrl, artworkUrl });
           } else {
             resolve(null);
           }
         };
 
-        script.src = `https://itunes.apple.com/search?term=${query}&entity=song&limit=1&callback=${cbName}`;
+        script.src = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=1&callback=${cbName}`;
         document.body.appendChild(script);
       });
+    }
+
+    async function fetchRobustClientAudioAndArtwork(artist, title) {
+      function clean(s) {
+        if (!s) return '';
+        return s.replace(/\(.*?\)|\[.*?\]/g, '')
+                .replace(/\s*-\s*.*$/, '')
+                .replace(/\s+(?:feat|ft)\.?\s+.*$/i, '')
+                .trim();
+      }
+
+      const q1 = `${clean(artist)} ${clean(title)}`.trim();
+      const q2 = `${(artist || '').split(',')[0].split('&')[0].trim()} ${clean(title)}`.trim();
+      const q3 = `${clean(title)}`.trim();
+      const q4 = `${clean(artist)}`.trim();
+
+      const queries = [q1, q2, q3, q4];
+
+      for (const q of queries) {
+        if (!q) continue;
+        const res = await searchItunesJsonpSingle(q);
+        if (res && res.previewUrl) {
+          return res;
+        }
+      }
+      return { previewUrl: null, artworkUrl: null };
     }
 
     async function handleAppQrRecognized(qrData) {
@@ -2501,78 +2680,75 @@
         } catch (e) {}
       }
 
-      const songObj = {
+      activeGameSong = {
         id: trackId,
         year: trackYear || "----",
         title: trackTitle ? decodeURIComponent(trackTitle) : "Unbekannter Titel",
         artist: trackArtist ? decodeURIComponent(trackArtist) : "Unbekannter Künstler",
-        url: trackId ? `https://open.spotify.com/track/${trackId}` : qrData
+        url: trackId ? `https://open.spotify.com/track/${trackId}` : qrData,
+        artworkUrl: null,
+        previewUrl: null
       };
 
-      // 3. SHOW FULLSCREEN GAME ROUND SCREEN
-      openGameRoundScreen(songObj);
+      // 3. SHOW FULLSCREEN GAME ROUND SCREEN (100% BLIND!)
+      openGameRoundScreen(activeGameSong);
     }
 
     async function openGameRoundScreen(song) {
       const playerScreen = document.getElementById('scanner-player-screen');
+      
+      // HIDE SOLUTION CARD COMPLETELY (NO TITLE, NO ARTIST, NO YEAR, NO COVER!)
       document.getElementById('app-solution-card').style.display = 'none';
+      document.getElementById('app-sol-cover-box').style.display = 'none';
       document.getElementById('app-btn-reveal').style.display = 'flex';
+      document.getElementById('app-vinyl-wrapper').style.display = 'block';
 
+      // RESET LABELS TO BLIND STATE
+      document.getElementById('app-status-title').textContent = "🎵 Song wird geladen...";
+      document.getElementById('app-status-sub').textContent = "Hört genau hin und erratet das Jahr!";
+
+      playerScreen.classList.add('active');
+
+      // Resolve audio & cover in background via robust multi-tier resolver
+      const media = await fetchRobustClientAudioAndArtwork(song.artist, song.title);
+      song.previewUrl = media.previewUrl;
+      song.artworkUrl = media.artworkUrl;
+
+      // Fill hidden solution elements for later
       document.getElementById('app-sol-year').textContent = song.year;
       document.getElementById('app-sol-title').textContent = song.title;
       document.getElementById('app-sol-artist').textContent = song.artist;
       document.getElementById('app-sol-spotify-link').href = song.url;
-
-      playerScreen.classList.add('active');
-
-      // Fetch audio preview via client-side JSONP or server
-      let audioUrl = null;
-      if (song.artist && song.title) {
-        audioUrl = await fetchClientItunesAudio(song.artist, song.title);
+      if (song.artworkUrl) {
+        document.getElementById('app-sol-cover-img').src = song.artworkUrl;
       }
 
-      if (!audioUrl) {
-        try {
-          const resp = await fetch(`/api/preview?artist=${encodeURIComponent(song.artist)}&title=${encodeURIComponent(song.title)}`);
-          const d = await resp.json();
-          if (d.previewUrl) audioUrl = d.previewUrl;
-        } catch (e) {}
-      }
-
-      if (audioUrl) {
-        appAudio.src = audioUrl;
+      if (song.previewUrl) {
+        appAudio.src = song.previewUrl;
         startAppAudioPlayback();
-      } else if (song.id) {
-        // Fallback: show Spotify Embed with Blind Shield
-        document.getElementById('app-spotify-box').style.display = 'block';
-        document.getElementById('app-spotify-iframe').src = `https://open.spotify.com/embed/track/${song.id}?utm_source=generator&theme=0`;
-        document.getElementById('app-status-title').textContent = "🎵 Song bereit";
-        document.getElementById('app-status-sub').textContent = "Tippe rechts im Player auf ▶️ Play!";
-        document.getElementById('app-sheet-vinyl').classList.add('spinning');
-        startAppTimer(30);
       } else {
-        document.getElementById('app-status-title').textContent = "🎵 Bereit zum Raten";
-        document.getElementById('app-status-sub').textContent = "Welches Erscheinungsjahr ist es?";
-        document.getElementById('app-sheet-vinyl').classList.add('spinning');
+        document.getElementById('app-status-title').textContent = "🎵 Song bereit zum Raten";
+        document.getElementById('app-status-sub').textContent = "Tippe auf Play zum Anhören!";
         startAppTimer(30);
       }
     }
 
     let isAppAudioPlaying = false;
     function startAppAudioPlayback() {
+      if (!appAudio.src) return;
       appAudio.play().then(() => {
         isAppAudioPlaying = true;
         document.getElementById('app-sheet-vinyl').classList.add('spinning');
         document.querySelectorAll('#app-sheet-eq .sheet-eq-bar').forEach(b => b.classList.add('active'));
         document.getElementById('app-btn-play').textContent = '⏸️';
-        document.getElementById('app-status-title').textContent = '🎶 Song wird abgespielt...';
-        document.getElementById('app-status-sub').textContent = 'Welches Jahr ist es?';
+        document.getElementById('app-status-title').textContent = '🎶 Song läuft...';
+        document.getElementById('app-status-sub').textContent = 'Welches Erscheinungsjahr ist es?';
         startAppTimer(appAudio.duration || 30);
       }).catch(err => {
         console.warn("Autoplay needs tap:", err);
         document.getElementById('app-btn-play').textContent = '▶️';
         document.getElementById('app-status-title').textContent = '🎵 Song bereit';
-        document.getElementById('app-status-sub').textContent = 'Tippe auf Play zum Anhören!';
+        document.getElementById('app-status-sub').textContent = 'Tippe auf Play zum Starten!';
       });
     }
 
@@ -2639,10 +2815,15 @@
     };
 
     function revealAppSolution() {
+      // HIDE VINYL DISC, REVEAL BIG ALBUM COVER AND FULL SOLUTION
+      document.getElementById('app-vinyl-wrapper').style.display = 'none';
       document.getElementById('app-solution-card').style.display = 'block';
       document.getElementById('app-btn-reveal').style.display = 'none';
-      const shield = document.getElementById('app-spotify-shield');
-      if (shield) shield.style.display = 'none';
+
+      if (activeGameSong && activeGameSong.artworkUrl) {
+        document.getElementById('app-sol-cover-box').style.display = 'flex';
+      }
+
       document.getElementById('app-solution-card').scrollIntoView({ behavior: 'smooth' });
 
       if (navigator.vibrate) {
@@ -2652,7 +2833,6 @@
 
     function dismissPlayerAndScanNext() {
       stopAppAudio();
-      document.getElementById('app-spotify-box').style.display = 'none';
       document.getElementById('scanner-player-screen').classList.remove('active');
       document.getElementById('scanner-viewfinder-screen').style.display = 'flex';
       appScanCooldown = false;
