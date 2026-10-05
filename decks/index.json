@@ -12,5 +12,12 @@
     "name": "🇩🇪 Deutsche Hits & Party-Klassiker",
     "count": 14,
     "file": "decks/german_hits.json"
+  },
+  {
+    "id": "hasenbau",
+    "slug": "hasenbau",
+    "name": "Hasenbau",
+    "count": 100,
+    "file": "decks/hasenbau.json"
   }
 ]
