@@ -785,17 +785,12 @@
         </div>
 
         <!-- AUDIO CONTROL -->
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 0.8rem;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 1.2rem;">
           <button class="btn-apple-secondary" onclick="toggleHostAudio()" style="width: auto; padding: 10px 18px; font-weight: 800;">
             <span id="btn-audio-icon">⏸️</span> Musik Pause/Play
           </button>
           <button class="btn-apple-secondary" onclick="restartHostAudio()" style="width: auto; padding: 10px 18px; font-weight: 800;">
             ⏮️ Von vorne (Timer Reset)
-          </button>
-        </div>
-        <div id="host-audio-tap-start-container" style="display: none; margin-bottom: 1rem;">
-          <button id="host-audio-tap-start" class="btn-apple" onclick="manuallyStartHostAudio()" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-weight: 900;">
-            ▶️ Musik manuell starten (Autoplay freigeben)
           </button>
         </div>
 
@@ -1298,6 +1293,24 @@
       if (savedName) {
         const nameInput = document.getElementById('user-player-name');
         if (nameInput) nameInput.value = savedName;
+      }
+
+      // Attach automatic error recovery for host audio
+      const hostAudioEl = document.getElementById('host-game-audio');
+      if (hostAudioEl) {
+        hostAudioEl.onerror = () => {
+          const song = deckSongs[(currentSongIndex - 1 + deckSongs.length) % deckSongs.length];
+          if (song && !isRevealed) {
+            console.warn("Audio stream error, auto-resolving fresh preview...");
+            ensureSongPreviewUrl(song).then(fresh => {
+              if (fresh && hostAudioEl.src !== fresh) {
+                hostAudioEl.src = fresh;
+                hostAudioEl.currentTime = 0;
+                hostAudioEl.play().catch(e => console.warn(e));
+              }
+            });
+          }
+        };
       }
     });
 
@@ -2020,16 +2033,8 @@
       const song = deckSongs[currentSongIndex % deckSongs.length];
       currentSongIndex++;
 
-      // Warm up audio directly on user click gesture
-      const audio = document.getElementById('host-game-audio');
-      if (audio && song && song.previewUrl) {
-        audio.src = song.previewUrl;
-        audio.load();
-        const p = audio.play();
-        if (p !== undefined) {
-          p.catch(() => {});
-        }
-      }
+      // Immediately trigger audio playback inside the user's click gesture!
+      playSongAudioImmediately(song);
 
       // Spin 3D Discoball
       const ball = document.getElementById('discoball');
@@ -2039,8 +2044,123 @@
       setTimeout(() => {
         ball.classList.remove('spinning');
         drawCategoriesForRound(song);
-        startHostRoundTimer(song);
+        startHostRoundCountdown();
       }, 1200);
+    }
+
+    function playSongAudioImmediately(song) {
+      const audio = document.getElementById('host-game-audio');
+      if (!audio || !song) return;
+
+      if (song.previewUrl) {
+        if (audio.src !== song.previewUrl) {
+          audio.src = song.previewUrl;
+        }
+        audio.currentTime = 0;
+        const p = audio.play();
+        if (p !== undefined) {
+          p.then(() => {
+            document.getElementById('btn-audio-icon').textContent = '⏸️';
+          }).catch(err => {
+            console.warn("Audio autoplay attempt:", err);
+            ensureSongPreviewUrl(song).then(freshUrl => {
+              if (freshUrl && audio.src !== freshUrl) {
+                audio.src = freshUrl;
+                audio.currentTime = 0;
+                audio.play().then(() => {
+                  document.getElementById('btn-audio-icon').textContent = '⏸️';
+                }).catch(e => console.warn("Retry failed:", e));
+              }
+            });
+          });
+        }
+      } else {
+        ensureSongPreviewUrl(song).then(freshUrl => {
+          if (freshUrl) {
+            audio.src = freshUrl;
+            audio.currentTime = 0;
+            audio.play().then(() => {
+              document.getElementById('btn-audio-icon').textContent = '⏸️';
+            }).catch(e => console.warn(e));
+          }
+        });
+      }
+    }
+
+    function searchDeezerJsonp(query) {
+      return new Promise((resolve) => {
+        const cbName = 'dz_bingo_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+        const script = document.createElement('script');
+        const timeout = setTimeout(() => {
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          resolve(null);
+        }, 3000);
+        window[cbName] = function(data) {
+          clearTimeout(timeout);
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          if (data && data.data && data.data.length > 0) resolve(data.data);
+          else resolve(null);
+        };
+        script.src = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=5&output=jsonp&callback=${cbName}`;
+        document.body.appendChild(script);
+      });
+    }
+
+    function searchItunesJsonp(query) {
+      return new Promise((resolve) => {
+        const cbName = 'it_bingo_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+        const script = document.createElement('script');
+        const timeout = setTimeout(() => {
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          resolve(null);
+        }, 3000);
+        window[cbName] = function(data) {
+          clearTimeout(timeout);
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          if (data && data.results && data.results.length > 0) resolve(data.results);
+          else resolve(null);
+        };
+        script.src = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=5&country=DE&callback=${cbName}`;
+        document.body.appendChild(script);
+      });
+    }
+
+    async function ensureSongPreviewUrl(song) {
+      if (!song) return null;
+      const q = `${song.artist || ''} ${song.title || ''}`.trim();
+      if (!q) return song.previewUrl || null;
+
+      try {
+        const it = await searchItunesJsonp(q);
+        if (it && it.length > 0) {
+          const match = it.find(r => r.previewUrl);
+          if (match) {
+            song.previewUrl = match.previewUrl;
+            if (match.artworkUrl100) song.coverUrl = match.artworkUrl100.replace('100x100bb', '600x600bb');
+            return song.previewUrl;
+          }
+        }
+      } catch (e) {}
+
+      try {
+        const dz = await searchDeezerJsonp(q);
+        if (dz && dz.length > 0) {
+          const match = dz.find(r => r.preview);
+          if (match) {
+            song.previewUrl = match.preview;
+            if (match.album && (match.album.cover_xl || match.album.cover_big)) {
+              song.coverUrl = match.album.cover_xl || match.album.cover_big;
+            }
+            return song.previewUrl;
+          }
+        }
+      } catch (e) {}
+
+      return song.previewUrl || null;
     }
 
     function drawCategoriesForRound(song) {
@@ -2183,37 +2303,19 @@
     /* ========================================================
        TIMER CONTROLS (STOPS ON PAUSE, RESETS ON REWIND, 30s LIMIT)
        ======================================================== */
-    function startHostRoundTimer(song) {
+    function startHostRoundCountdown() {
       const audio = document.getElementById('host-game-audio');
-      const tapStartCont = document.getElementById('host-audio-tap-start-container');
-      if (tapStartCont) tapStartCont.style.display = 'none';
-
-      if (song && song.previewUrl) {
-        if (audio.src !== song.previewUrl) {
-          audio.src = song.previewUrl;
-        }
-        audio.currentTime = 0;
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            document.getElementById('btn-audio-icon').textContent = '⏸️';
-            if (tapStartCont) tapStartCont.style.display = 'none';
-          }).catch(err => {
-            console.warn("Autoplay blocked by browser:", err);
-            document.getElementById('btn-audio-icon').textContent = '▶️';
-            if (tapStartCont) tapStartCont.style.display = 'block';
-          });
-        }
-      }
 
       // Automatically reveal & pause music if audio ends
-      audio.onended = () => {
-        if (!isRevealed) {
-          audio.pause();
-          document.getElementById('btn-audio-icon').textContent = '▶️';
-          hostRevealSong();
-        }
-      };
+      if (audio) {
+        audio.onended = () => {
+          if (!isRevealed) {
+            audio.pause();
+            document.getElementById('btn-audio-icon').textContent = '▶️';
+            hostRevealSong();
+          }
+        };
+      }
 
       roundTimer = 30; // 30-Second round duration
       clearInterval(timerInterval);
@@ -2226,33 +2328,23 @@
         if (roundTimer <= 0) {
           clearInterval(timerInterval);
           timerInterval = null;
-          audio.pause();
+          if (audio) audio.pause();
           document.getElementById('btn-audio-icon').textContent = '▶️';
           hostRevealSong();
         }
       }, 1000);
     }
 
-    function manuallyStartHostAudio() {
-      const audio = document.getElementById('host-game-audio');
-      if (audio) {
-        audio.play().then(() => {
-          const tapStartCont = document.getElementById('host-audio-tap-start-container');
-          if (tapStartCont) tapStartCont.style.display = 'none';
-          document.getElementById('btn-audio-icon').textContent = '⏸️';
-        }).catch(e => {
-          console.warn("Manual audio start failed:", e);
-        });
-      }
+    function startHostRoundTimer(song) {
+      startHostRoundCountdown();
     }
 
     function toggleHostAudio() {
       const audio = document.getElementById('host-game-audio');
+      if (!audio) return;
       if (audio.paused) {
-        audio.play();
+        audio.play().catch(e => console.warn(e));
         document.getElementById('btn-audio-icon').textContent = '⏸️';
-        const tapStartCont = document.getElementById('host-audio-tap-start-container');
-        if (tapStartCont) tapStartCont.style.display = 'none';
         // RESUME TIMER!
         if (!isRevealed && roundTimer > 0 && !timerInterval) {
           timerInterval = setInterval(() => {
@@ -2278,11 +2370,11 @@
 
     function restartHostAudio() {
       const audio = document.getElementById('host-game-audio');
-      audio.currentTime = 0;
-      audio.play().catch(() => {});
-      document.getElementById('btn-audio-icon').textContent = '⏸️';
-      const tapStartCont = document.getElementById('host-audio-tap-start-container');
-      if (tapStartCont) tapStartCont.style.display = 'none';
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(e => console.warn(e));
+        document.getElementById('btn-audio-icon').textContent = '⏸️';
+      }
 
       // RESET TIMER BACK TO 30 SECONDS!
       roundTimer = 30;
@@ -2295,7 +2387,7 @@
           if (roundTimer <= 0) {
             clearInterval(timerInterval);
             timerInterval = null;
-            audio.pause();
+            if (audio) audio.pause();
             document.getElementById('btn-audio-icon').textContent = '▶️';
             hostRevealSong();
           }
