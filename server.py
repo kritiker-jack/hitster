@@ -16,6 +16,7 @@ except Exception:
 
 PORT = 5055
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BINGO_ROOMS = {}
 
 BROWSER_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
@@ -334,6 +335,34 @@ class HitsterHandler(SimpleHTTPRequestHandler):
             self.wfile.write(json.dumps({"success": True, "previewUrl": preview}).encode('utf-8'))
             return
 
+        # 4. Bingo Room State (for Multiplayer Sync)
+        if path == '/api/bingo/state':
+            room_code = query.get('room', [''])[0].strip().upper()
+            role = query.get('role', ['player'])[0].strip()
+            room = BINGO_ROOMS.get(room_code)
+            if not room:
+                self.send_response(404)
+                self.send_header('Content-Type', 'application/json; charset=utf-8')
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "Raum nicht gefunden"}).encode('utf-8'))
+                return
+
+            state_data = dict(room)
+            # If round is active and player is requesting, censor solution to prevent cheating
+            if role != 'host' and state_data.get('status') == 'guessing':
+                censored_song = dict(state_data.get('activeSong') or {})
+                censored_song['title'] = '???'
+                censored_song['artist'] = '???'
+                censored_song['year'] = '????'
+                censored_song['coverUrl'] = ''
+                state_data['activeSong'] = censored_song
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "room": state_data}, ensure_ascii=False).encode('utf-8'))
+            return
+
         # 4. Mobile Blind Player Page
         if path == '/play':
             player_file = os.path.join(BASE_DIR, 'player.html')
@@ -342,6 +371,17 @@ class HitsterHandler(SimpleHTTPRequestHandler):
                 self.send_header('Content-Type', 'text/html; charset=utf-8')
                 self.end_headers()
                 with open(player_file, 'rb') as f:
+                    self.wfile.write(f.read())
+                return
+
+        # 5. Hitster Bingo Page
+        if path in ('/bingo', '/bingo.html'):
+            bingo_file = os.path.join(BASE_DIR, 'bingo.html')
+            if os.path.exists(bingo_file):
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html; charset=utf-8')
+                self.end_headers()
+                with open(bingo_file, 'rb') as f:
                     self.wfile.write(f.read())
                 return
 
@@ -435,6 +475,136 @@ class HitsterHandler(SimpleHTTPRequestHandler):
                 self.send_header('Content-Type', 'application/json; charset=utf-8')
                 self.end_headers()
                 self.wfile.write(json.dumps({"success": True, "deleted": deleted_file, "remaining": len(new_idx)}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json; charset=utf-8')
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode('utf-8'))
+            return
+
+        # 3. Bingo Multiplayer Action Router
+        if self.path == '/api/bingo/action':
+            content_length = int(self.headers.get('Content-Length', 0))
+            post_data = self.rfile.read(content_length).decode('utf-8')
+            try:
+                payload = json.loads(post_data)
+                action = payload.get('action')
+                room_code = str(payload.get('room', '')).strip().upper()
+
+                if action == 'create':
+                    mode = payload.get('mode', 'easy')
+                    cat_count = payload.get('catCount', 1)
+                    host_id = payload.get('hostId', 'host')
+                    BINGO_ROOMS[room_code] = {
+                        "room": room_code,
+                        "hostId": host_id,
+                        "mode": mode,
+                        "catCount": cat_count,
+                        "round": 0,
+                        "status": "lobby",
+                        "activeSong": None,
+                        "activeCategories": [],
+                        "players": {},
+                        "winner": None
+                    }
+                    res = {"success": True, "room": BINGO_ROOMS[room_code]}
+
+                elif action == 'join':
+                    if room_code not in BINGO_ROOMS:
+                        self.send_response(404)
+                        self.send_header('Content-Type', 'application/json; charset=utf-8')
+                        self.end_headers()
+                        self.wfile.write(json.dumps({"success": False, "error": "Raum existiert nicht"}).encode('utf-8'))
+                        return
+                    p_id = payload.get('playerId')
+                    p_name = payload.get('name', 'Gast')
+                    p_board = payload.get('board', [])
+                    BINGO_ROOMS[room_code]["players"][p_id] = {
+                        "id": p_id,
+                        "name": p_name,
+                        "board": p_board,
+                        "answer": None,
+                        "hasBingo": False
+                    }
+                    res = {"success": True, "room": BINGO_ROOMS[room_code]}
+
+                elif action == 'start_round':
+                    if room_code in BINGO_ROOMS:
+                        r = BINGO_ROOMS[room_code]
+                        r["round"] += 1
+                        r["status"] = "guessing"
+                        r["activeSong"] = payload.get('song')
+                        r["activeCategories"] = payload.get('categories', [])
+                        for pid in r["players"]:
+                            r["players"][pid]["answer"] = None
+                        res = {"success": True, "room": r}
+                    else:
+                        res = {"success": False, "error": "Raum nicht gefunden"}
+
+                elif action == 'submit_answer':
+                    if room_code in BINGO_ROOMS:
+                        r = BINGO_ROOMS[room_code]
+                        pid = payload.get('playerId')
+                        if pid in r["players"]:
+                            r["players"][pid]["answer"] = {
+                                "category": payload.get('category'),
+                                "answer": payload.get('answer'),
+                                "approved": None
+                            }
+                        res = {"success": True}
+                    else:
+                        res = {"success": False, "error": "Raum nicht gefunden"}
+
+                elif action == 'reveal':
+                    if room_code in BINGO_ROOMS:
+                        r = BINGO_ROOMS[room_code]
+                        r["status"] = "revealed"
+                        res = {"success": True, "room": r}
+                    else:
+                        res = {"success": False, "error": "Raum nicht gefunden"}
+
+                elif action == 'approve':
+                    if room_code in BINGO_ROOMS:
+                        r = BINGO_ROOMS[room_code]
+                        pid = payload.get('playerId')
+                        approved = payload.get('approved')
+                        if pid in r["players"] and r["players"][pid].get("answer"):
+                            r["players"][pid]["answer"]["approved"] = approved
+                        res = {"success": True}
+                    else:
+                        res = {"success": False, "error": "Raum nicht gefunden"}
+
+                elif action == 'mark_cell':
+                    if room_code in BINGO_ROOMS:
+                        r = BINGO_ROOMS[room_code]
+                        pid = payload.get('playerId')
+                        cell_idx = payload.get('cellIndex')
+                        if pid in r["players"]:
+                            b = r["players"][pid]["board"]
+                            if 0 <= cell_idx < len(b):
+                                b[cell_idx]["marked"] = True
+                        res = {"success": True}
+                    else:
+                        res = {"success": False, "error": "Raum nicht gefunden"}
+
+                elif action == 'bingo':
+                    if room_code in BINGO_ROOMS:
+                        r = BINGO_ROOMS[room_code]
+                        pid = payload.get('playerId')
+                        if pid in r["players"]:
+                            r["players"][pid]["hasBingo"] = True
+                            r["winner"] = r["players"][pid]["name"]
+                        res = {"success": True}
+                    else:
+                        res = {"success": False, "error": "Raum nicht gefunden"}
+
+                else:
+                    res = {"success": False, "error": f"Unbekannte Aktion {action}"}
+
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json; charset=utf-8')
+                self.end_headers()
+                self.wfile.write(json.dumps(res, ensure_ascii=False).encode('utf-8'))
             except Exception as e:
                 self.send_response(500)
                 self.send_header('Content-Type', 'application/json; charset=utf-8')

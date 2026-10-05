@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0a0b12">
+  <title>Hitster Bingo 🪩 Online Multiplayer</title>
+  
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="apple-touch-icon" href="logo.svg">
+
+  <script src="qrcode.min.js"></script>
+  <!-- Confetti library for Bingo celebrations -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0a0b12;
+      --bg-surface: #121524;
+      --bg-glass: rgba(18, 22, 38, 0.78);
+      --bg-glass-card: rgba(22, 27, 46, 0.75);
+      --bg-glass-input: rgba(28, 34, 58, 0.7);
+
+      /* The 5 Official Bingo Category Colors */
+      --cat-green: #10b981;   /* Epoche & Zeit */
+      --cat-pink: #ff2a7a;    /* Künstler & Besetzung */
+      --cat-purple: #9333ea;  /* Jahreszahl-Schätzung */
+      --cat-cyan: #00f2fe;    /* Titel & Lyrics */
+      --cat-yellow: #ffde59;  /* Discokugel / Joker */
+
+      --text-main: #f5f6fa;
+      --text-muted: #9499b3;
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --border-glass-bright: rgba(255, 255, 255, 0.18);
+      --shadow-apple: 0 10px 35px rgba(0, 0, 0, 0.5);
+      --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Outfit", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-system);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 10%, rgba(147, 51, 234, 0.22) 0%, transparent 50%),
+        radial-gradient(circle at 85% 85%, rgba(0, 242, 254, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 15% 80%, rgba(255, 42, 122, 0.12) 0%, transparent 45%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(10, 11, 18, 0.85);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 0.8rem 1.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-logo-img {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(255, 42, 122, 0.45);
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      background: linear-gradient(90deg, #fff, var(--cat-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 980px;
+      background: linear-gradient(135deg, var(--cat-pink), var(--cat-purple));
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    main {
+      flex: 1;
+      padding: 1.2rem 1rem 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* SCREEN VIEWS */
+    .view-screen {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .view-screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* GLASS CARD */
+    .glass-card {
+      background: var(--bg-glass-card);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-apple);
+      margin-bottom: 1.4rem;
+    }
+
+    /* BUTTONS */
+    .btn-apple {
+      background: linear-gradient(135deg, var(--cat-pink), var(--cat-purple));
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 13px 22px;
+      border-radius: 980px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(255, 42, 122, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 100%;
+      text-decoration: none;
+    }
+
+    .btn-apple:active {
+      transform: scale(0.97);
+    }
+
+    .btn-apple-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-glass-bright);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.92rem;
+      padding: 11px 18px;
+      border-radius: 980px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s;
+      width: 100%;
+    }
+
+    .btn-apple-secondary:active {
+      transform: scale(0.97);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* INPUTS */
+    .input-apple {
+      width: 100%;
+      background: var(--bg-glass-input);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 12px 16px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-apple:focus {
+      border-color: var(--cat-cyan);
+      box-shadow: 0 0 16px rgba(0, 242, 254, 0.25);
+    }
+
+    /* 3D ROTATING DISCO BALL */
+    .discoball-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 0 1rem;
+    }
+
+    .discoball-orb {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ffffff 0%, #a855f7 35%, #18122c 70%, #05030a 100%);
+      position: relative;
+      box-shadow: 
+        0 0 35px rgba(168, 85, 247, 0.5),
+        0 0 80px rgba(0, 242, 254, 0.3),
+        inset 0 0 15px rgba(255, 255, 255, 0.6);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .discoball-orb.spinning {
+      animation: discoSpin 1.4s infinite linear, discoHue 3s infinite linear;
+    }
+
+    @keyframes discoSpin {
+      0% { transform: rotate(0deg) scale(1.05); }
+      50% { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1.05); }
+    }
+
+    @keyframes discoHue {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .category-drawn-badge {
+      margin-top: 1rem;
+      padding: 8px 18px;
+      border-radius: 980px;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* BINGO 4x4 BOARD */
+    .bingo-board-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .bingo-cell {
+      aspect-ratio: 1 / 1;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      text-align: center;
+      font-size: 0.74rem;
+      font-weight: 700;
+      line-height: 1.25;
+      cursor: pointer;
+      position: relative;
+      border: 2px solid transparent;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      color: #fff;
+    }
+
+    .bingo-cell:active {
+      transform: scale(0.93);
+    }
+
+    /* Cell Colors */
+    .bingo-cell.col-gruen {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #6ee7b7;
+    }
+    .bingo-cell.col-pink {
+      background: rgba(255, 42, 122, 0.16);
+      border-color: rgba(255, 42, 122, 0.4);
+      color: #fca5a5;
+    }
+    .bingo-cell.col-lila {
+      background: rgba(147, 51, 234, 0.18);
+      border-color: rgba(147, 51, 234, 0.45);
+      color: #d8b4fe;
+    }
+    .bingo-cell.col-hellblau {
+      background: rgba(0, 242, 254, 0.15);
+      border-color: rgba(0, 242, 254, 0.4);
+      color: #7dd3fc;
+    }
+    .bingo-cell.col-gelb {
+      background: rgba(255, 222, 89, 0.16);
+      border-color: rgba(255, 222, 89, 0.45);
+      color: #fde047;
+    }
+
+    /* Pulsing highlight when current round color matches */
+    .bingo-cell.pulsing-target {
+      box-shadow: 0 0 18px currentColor;
+      transform: scale(1.04);
+      animation: cellPulse 1.2s infinite ease-in-out;
+    }
+
+    @keyframes cellPulse {
+      0%, 100% { transform: scale(1.03); opacity: 1; }
+      50% { transform: scale(1.08); opacity: 0.85; }
+    }
+
+    /* Marked Cell (Crossed out with golden check) */
+    .bingo-cell.marked {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.4)) !important;
+      border-color: #fff !important;
+      color: #fff !important;
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.4);
+    }
+
+    .bingo-cell.marked::after {
+      content: '✕';
+      position: absolute;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--cat-yellow);
+      text-shadow: 0 0 12px rgba(255, 222, 89, 0.9), 0 2px 5px rgba(0,0,0,0.8);
+      animation: stamp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes stamp {
+      0% { transform: scale(2.2); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* CHOICE BUTTONS (MULTIPLE CHOICE) */
+    .choices-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 1.2rem 0;
+    }
+
+    .btn-choice {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass-bright);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 18px;
+      border-radius: 14px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s;
+    }
+
+    .btn-choice:active {
+      transform: scale(0.98);
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .btn-choice.selected {
+      background: linear-gradient(135deg, var(--cat-cyan), var(--cat-purple));
+      border-color: #fff;
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(0, 242, 254, 0.35);
+    }
+
+    /* ROUND COUNTDOWN TIMER */
+    .round-timer-bar {
+      height: 8px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 980px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .round-timer-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--cat-cyan), var(--cat-pink));
+      transition: width 0.25s linear;
+    }
+
+    /* PLAYER ANSWER REVIEW CARD */
+    .player-answer-row {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    /* BINGO POPUP OVERLAY */
+    .bingo-win-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem;
+      text-align: center;
+      animation: fadeIn 0.3s;
+    }
+
+    .bingo-win-overlay.show {
+      display: flex;
+    }
+
+    .trophy-bounce {
+      font-size: 5rem;
+      animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-16px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header>
+    <a href="index.html" class="brand">
+      <img src="logo.svg" alt="Hitster Logo" class="brand-logo-img">
+      <div class="brand-title">HITSTER BINGO</div>
+    </a>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span class="header-badge" id="lobby-badge">🪩 LOBBY</span>
+      <a href="index.html" class="btn-apple-secondary" style="width: auto; padding: 6px 12px; font-size: 0.8rem; text-decoration: none;">Studio</a>
+    </div>
+  </header>
+
+  <!-- AUDIO ELEMENT (RUNS ON HOST ONLY!) -->
+  <audio id="host-game-audio" preload="auto"></audio>
+
+  <main>
+
+    <!-- ==========================================
+         VIEW 1: LOBBY & SETUP SCREEN
+         ========================================== -->
+    <div id="screen-lobby" class="view-screen active">
+      <div class="glass-card" style="text-align: center; padding: 2rem 1.5rem;">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🪩</div>
+        <h1 style="font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 0.4rem;">
+          Hitster Bingo Online
+        </h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+          Das musikalische Party-Bingo mit Freunden. Musik spielt über die Anlage des Hosts – jeder tippt auf dem eigenen Handy!
+        </p>
+
+        <!-- GAME SETTINGS -->
+        <div style="background: rgba(0,0,0,0.25); border-radius: 16px; padding: 1rem; text-align: left; margin-bottom: 1.5rem;">
+          <label style="font-size: 0.82rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">
+            Schwierigkeit
+          </label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem;">
+            <button id="btn-mode-easy" class="btn-choice selected" onclick="setBingoMode('easy')" style="padding: 10px; justify-content: center; font-size: 0.88rem;">
+              🟢 Einsteiger
+            </button>
+            <button id="btn-mode-pro" class="btn-choice" onclick="setBingoMode('pro')" style="padding: 10px; justify-content: center; font-size: 0.88rem;">
+              🔥 Profi
+            </button>
+          </div>
+
+          <label style="font-size: 0.82rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">
+            Kategorien pro Runde
+          </label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button id="btn-cats-1" class="btn-choice selected" onclick="setCatCount(1)" style="padding: 10px; justify-content: center; font-size: 0.88rem;">
+              1 Kategorie (Alle)
+            </button>
+            <button id="btn-cats-2" class="btn-choice" onclick="setCatCount(2)" style="padding: 10px; justify-content: center; font-size: 0.88rem;">
+              2 zur Auswahl
+            </button>
+          </div>
+        </div>
+
+        <!-- HOST / JOIN BUTTONS -->
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn-apple" onclick="startHostLobby()">
+            <span>👑</span> Als Host (DJ) starten
+          </button>
+
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="join-room-code" class="input-apple" placeholder="4-Stelliger Code (z.B. JACK)" maxlength="6" style="text-transform: uppercase; font-family: monospace; font-weight: 700; text-align: center;">
+            <button class="btn-apple-secondary" onclick="joinPlayerLobby()" style="width: 140px;">
+              <span>🎮</span> Beitreten
+            </button>
+          </div>
+
+          <!-- SOLO 1-CLICK DEMO (SIMULATION) -->
+          <div style="margin-top: 0.8rem; border-top: 1px solid var(--border-glass); padding-top: 1.2rem;">
+            <button class="btn-apple-secondary" onclick="startSoloDemo()" style="background: linear-gradient(135deg, rgba(255, 222, 89, 0.15), rgba(147, 51, 234, 0.2)); border-color: var(--cat-yellow); color: #fff;">
+              <span>⚡</span> Sofort-Test (Demo mit 2 Bot-Mitspielern)
+            </button>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+              Testet sofort den gesamten Host-Ablauf, Discokugel, Antworten & Bingo in einem Tab!
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- COLOR CATEGORY LEGEND -->
+      <div class="glass-card">
+        <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 0.8rem;">🎨 Die 5 Bingo-Kategorien</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; font-size: 0.8rem;">
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid var(--cat-green); border-radius: 10px; padding: 8px; color: #a7f3d0;">
+            <strong>🟢 Epoche & Zeit</strong><br>Vor / Nach 2015, Jahrzehnt
+          </div>
+          <div style="background: rgba(255, 42, 122, 0.15); border: 1px solid var(--cat-pink); border-radius: 10px; padding: 8px; color: #fecdd3;">
+            <strong>🌸 Künstler</strong><br>Solo vs. Band, Feature, Name
+          </div>
+          <div style="background: rgba(147, 51, 234, 0.15); border: 1px solid var(--cat-purple); border-radius: 10px; padding: 8px; color: #e9d5ff;">
+            <strong>🟣 Jahr-Schätzung</strong><br>Jahr ± 3 Jahre, Exaktes Jahr
+          </div>
+          <div style="background: rgba(0, 242, 254, 0.15); border: 1px solid var(--cat-cyan); border-radius: 10px; padding: 8px; color: #bae6fd;">
+            <strong>🩵 Songtitel</strong><br>1-Wort Titel, Deutscher Titel
+          </div>
+          <div style="background: rgba(255, 222, 89, 0.15); border: 1px solid var(--cat-yellow); border-radius: 10px; padding: 8px; color: #fef08a;">
+            <strong>🟡 Discokugel-Joker</strong><br>Freies Feld bei Song-Erkennung
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==========================================
+         VIEW 2: HOST / DJ SCREEN (PARTY SCREEN)
+         ========================================== -->
+    <div id="screen-host" class="view-screen">
+      
+      <!-- HOST TOP BAR -->
+      <div class="glass-card" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.4rem;">
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Lobby-Code</div>
+          <div id="host-room-display" style="font-family: monospace; font-size: 1.6rem; font-weight: 900; color: var(--cat-cyan);">JACK</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Mitspieler</div>
+          <div id="host-player-count" style="font-size: 1.2rem; font-weight: 800;">1 Spieler</div>
+        </div>
+      </div>
+
+      <!-- QR-CODE INVITE FOR MOBILE PLAYERS -->
+      <div id="host-qr-card" class="glass-card" style="text-align: center; padding: 1.2rem;">
+        <div style="font-size: 0.95rem; font-weight: 800; margin-bottom: 4px; color: #fff;">
+          📱 Mitspieler per QR-Code einladen
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+          Lass deine Freunde diesen QR-Code mit der Handykamera scannen, um direkt beizutreten:
+        </div>
+        <div id="host-qr-container" style="display: inline-block; background: #fff; padding: 10px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);"></div>
+        <div id="host-qr-url" style="font-family: monospace; font-size: 0.8rem; color: var(--cat-cyan); margin-top: 8px;"></div>
+      </div>
+
+      <!-- DISCOBALL & CATEGORY DISPLAY -->
+      <div class="glass-card" style="text-align: center;">
+        <div class="discoball-container">
+          <div id="discoball" class="discoball-orb"></div>
+          <div id="host-category-pill" class="category-drawn-badge" style="background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-glass-bright); color: #fff;">
+            Bereit für Runde 1
+          </div>
+        </div>
+
+        <!-- 25S COUNTDOWN BAR -->
+        <div class="round-timer-bar">
+          <div id="host-timer-fill" class="round-timer-fill" style="width: 100%;"></div>
+        </div>
+
+        <div id="host-timer-text" style="font-size: 1.1rem; font-weight: 800; font-family: monospace; margin-bottom: 1rem;">
+          00:25
+        </div>
+
+        <!-- AUDIO CONTROL -->
+        <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 1rem;">
+          <button class="btn-apple-secondary" onclick="toggleHostAudio()" style="width: auto; padding: 8px 16px;">
+            <span id="btn-audio-icon">⏸️</span> Musik Pause/Play
+          </button>
+          <button class="btn-apple-secondary" onclick="restartHostAudio()" style="width: auto; padding: 8px 16px;">
+            ⏮️ Von vorne
+          </button>
+        </div>
+
+        <!-- ROUND ACTION BUTTONS -->
+        <div style="display: flex; gap: 8px; justify-content: center;">
+          <button id="btn-host-action" class="btn-apple" onclick="hostNextRound()" style="max-width: 320px;">
+            <span>🪩</span> Nächster Song & Kugel drehen
+          </button>
+          <button id="btn-host-reveal" class="btn-apple-secondary" onclick="hostRevealSong()" style="max-width: 180px; display: none; background: linear-gradient(135deg, var(--cat-green), #059669);">
+            <span>🔍</span> Lösung aufdecken
+          </button>
+        </div>
+      </div>
+
+      <!-- REVEALED SONG SOLUTION (HIDDEN DURING BLIND GUESSING) -->
+      <div id="host-solution-card" class="glass-card" style="display: none; animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <img id="host-sol-cover" src="" alt="Album Cover" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+          <div>
+            <div id="host-sol-year" style="display: inline-block; background: var(--cat-green); color: #000; font-weight: 900; font-size: 0.85rem; padding: 2px 8px; border-radius: 6px; margin-bottom: 4px;">2019</div>
+            <div id="host-sol-title" style="font-size: 1.2rem; font-weight: 800; color: #fff;">Roller</div>
+            <div id="host-sol-artist" style="font-size: 0.95rem; color: var(--text-muted);">Apache 207</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLAYER ANSWERS REVIEW & APPROVAL LIST -->
+      <div class="glass-card">
+        <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 0.8rem; display: flex; justify-content: space-between;">
+          <span>📝 Antworten der Mitspieler</span>
+          <span id="host-answers-count" style="font-size: 0.8rem; color: var(--cat-cyan);">0 abgegeben</span>
+        </h3>
+        <div id="host-answers-list">
+          <div style="color: var(--text-muted); font-size: 0.88rem; text-align: center; padding: 1rem;">
+            Warte auf den Start der Spielrunde...
+          </div>
+        </div>
+      </div>
+
+      <!-- LEADERBOARD / BINGO PROGRESS -->
+      <div class="glass-card">
+        <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 0.8rem;">🏆 Bingo-Rangliste</h3>
+        <div id="host-leaderboard-list"></div>
+      </div>
+
+      <!-- HOST'S OWN 4x4 BINGO BOARD & INTERACTIVE PLAY PANEL -->
+      <div class="glass-card" id="host-own-board-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+          <h3 style="font-size: 1rem; font-weight: 800;">📋 Dein eigener 4×4 Spielschein (Du als Host)</h3>
+          <span id="host-my-score" style="font-weight: 800; color: var(--cat-yellow); font-size: 0.95rem;">0 / 16 Kreuze</span>
+        </div>
+
+        <div id="host-player-interaction-box" style="background: rgba(0,0,0,0.25); border-radius: 14px; padding: 12px; margin-bottom: 1rem;">
+          <div id="host-interaction-title" style="font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 6px;">
+            Warte auf Rundenstart...
+          </div>
+          <!-- Choices container for host -->
+          <div id="host-interactive-mc" class="choices-stack" style="display: none; margin: 0.5rem 0;"></div>
+          <!-- Text input container for host -->
+          <div id="host-interactive-text" style="display: none; margin-top: 0.5rem;">
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="host-interactive-text-input" class="input-apple" placeholder="Deine Antwort als Host eingeben...">
+              <button class="btn-apple" onclick="hostSubmitOwnTextAnswer()" style="width: auto; padding: 10px 18px;">🔒 Tippen</button>
+            </div>
+          </div>
+          <div id="host-own-locked-status" style="display: none; color: var(--cat-green); font-weight: 700; font-size: 0.85rem; margin-top: 6px;">
+            ✅ Dein Tipp ist eingeloggt!
+          </div>
+          <div id="host-own-mark-instruction" style="display: none; color: var(--cat-yellow); font-weight: 800; font-size: 0.88rem; margin-top: 8px;">
+            👆 Deine Antwort war richtig! Tippe auf ein passendes freies Feld unten, um dein Kreuz zu setzen!
+          </div>
+        </div>
+
+        <div id="host-bingo-board-grid" class="bingo-board-grid"></div>
+      </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         VIEW 3: PLAYER SCREEN (SMARTPHONE VIEW)
+         ========================================== -->
+    <div id="screen-player" class="view-screen">
+      
+      <!-- PLAYER STATUS HEADER -->
+      <div class="glass-card" style="padding: 1rem 1.2rem; margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Spieler</div>
+            <div id="player-name-display" style="font-size: 1.15rem; font-weight: 800; color: #fff;">Jack</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Deine Kreuze</div>
+            <div id="player-score-display" style="font-size: 1.15rem; font-weight: 800; color: var(--cat-yellow);">0 / 16</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVE CATEGORY & QUESTION (PULSING) -->
+      <div id="player-question-card" class="glass-card" style="text-align: center; border-color: var(--border-glass-bright);">
+        <div id="player-cat-pill" class="category-drawn-badge" style="margin-top: 0; margin-bottom: 0.6rem;">
+          Warte auf DJ...
+        </div>
+        <div id="player-question-text" style="font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 0.8rem;">
+          Der Host wählt gleich den nächsten Song
+        </div>
+
+        <!-- CATEGORY SELECTION (IF 2 CATEGORIES TO CHOOSE FROM) -->
+        <div id="player-category-choice-box" style="display: none; margin-bottom: 1rem;">
+          <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px;">Wähle, welche Frage du beantworten möchtest:</div>
+          <div id="player-category-choice-buttons" style="display: flex; gap: 8px;"></div>
+        </div>
+
+        <!-- MULTIPLE CHOICE ANSWERS -->
+        <div id="player-mc-box" class="choices-stack" style="display: none;"></div>
+
+        <!-- OPEN TEXT OR NUMBER INPUT -->
+        <div id="player-text-box" style="display: none; margin-top: 0.8rem;">
+          <input type="text" id="player-text-input" class="input-apple" placeholder="Deine Antwort eingeben..." style="margin-bottom: 10px;">
+          <button class="btn-apple" onclick="playerSubmitTextAnswer()">
+            <span>🔒</span> Antwort einloggen
+          </button>
+        </div>
+
+        <!-- STATUS AFTER LOCKING IN -->
+        <div id="player-locked-status" style="display: none; color: var(--cat-green); font-weight: 700; padding: 10px; font-size: 0.95rem;">
+          ✅ Deine Antwort ist eingeloggt! Warte auf die Auflösung...
+        </div>
+      </div>
+
+      <!-- PLAYER 4x4 BINGO BOARD -->
+      <div class="glass-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+          <h3 style="font-size: 0.95rem; font-weight: 800;">📋 Deine 4×4 Bingo-Tafel</h3>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">4 in einer Reihe = BINGO!</span>
+        </div>
+
+        <div id="player-bingo-board" class="bingo-board-grid"></div>
+
+        <div id="player-mark-instruction" style="text-align: center; margin-top: 1rem; font-size: 0.85rem; font-weight: 700; color: var(--cat-yellow); display: none;">
+          👆 Tippe auf ein freies passendes Feld, um dein Kreuz zu setzen!
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ==========================================
+       BINGO WIN CONGRATULATIONS OVERLAY
+       ========================================== -->
+  <div id="bingo-modal" class="bingo-win-overlay">
+    <div class="trophy-bounce">🏆</div>
+    <h1 style="font-size: 3rem; font-weight: 900; background: linear-gradient(90deg, #ffde59, #ff2a7a, #00f2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0.5rem 0;">
+      BINGO!
+    </h1>
+    <h2 id="bingo-winner-name" style="font-size: 1.5rem; color: #fff; margin-bottom: 1.5rem;">
+      Du hast 4 in einer Reihe!
+    </h2>
+    <button class="btn-apple" onclick="closeBingoModal()" style="max-width: 240px;">
+      Weiterspielen 🎉
+    </button>
+  </div>
+
+  <!-- BINGO LOGIC SCRIPT -->
+  <script>
+    /* ========================================================
+       GAME STATE & CONFIGURATION
+       ======================================================== */
+    let currentMode = 'easy'; // 'easy' | 'pro'
+    let categoryChoiceCount = 1; // 1 or 2
+    let role = 'lobby'; // 'lobby' | 'host' | 'player'
+    let roomCode = 'DEMO';
+    let playerName = 'Spieler 1';
+    let deckSongs = [];
+    let currentSongIndex = 0;
+    let currentRound = 0;
+    let roundTimer = 25;
+    let timerInterval = null;
+    let activeCategories = [];
+    let selectedPlayerCategory = null;
+    let hasAnswered = false;
+    let isRevealed = false;
+    let hasBingo = false;
+
+    // Connected Players in Host Mode
+    let players = [];
+
+    // Player's 4x4 Bingo Board (16 Cells)
+    let myBoard = [];
+
+    // The 5 Official Category Definitions
+    const CATEGORIES = [
+      {
+        id: 'green_epoch_2015',
+        name: '🟢 Vor oder nach 2015?',
+        color: 'gruen',
+        type: 'choice',
+        choices: ['⏮️ Vor 2015', '⏭️ 2015 oder neuer'],
+        eval: (song) => song.year < 2015 ? '⏮️ Vor 2015' : '⏭️ 2015 oder neuer'
+      },
+      {
+        id: 'green_decade',
+        name: '🟢 Welches Jahrzehnt?',
+        color: 'gruen',
+        type: 'choice',
+        choices: ['80er & älter', '90er Jahre', '2000er Jahre', '2010er Jahre', '2020er Hits'],
+        eval: (song) => {
+          if (song.year < 1990) return '80er & älter';
+          if (song.year < 2000) return '90er Jahre';
+          if (song.year < 2010) return '2000er Jahre';
+          if (song.year < 2020) return '2010er Jahre';
+          return '2020er Hits';
+        }
+      },
+      {
+        id: 'pink_artist_type',
+        name: '🌸 Solo oder Gruppe / Band?',
+        color: 'pink',
+        type: 'choice',
+        choices: ['👤 Solo-Künstler/in', '👥 Gruppe / Band / Duo'],
+        eval: (song) => {
+          const a = song.artist.toLowerCase();
+          const isGroup = a.includes('&') || a.includes('feat') || a.includes('band') || a.includes('k.i.z') || a.includes('die ') || a.includes('fettes brot') || a.includes('beginner') || a.includes('scooter') || a.includes('01099') || a.includes('seeed') || a.includes('atzen');
+          return isGroup ? '👥 Gruppe / Band / Duo' : '👤 Solo-Künstler/in';
+        }
+      },
+      {
+        id: 'pink_artist_name',
+        name: '🌸 Wer ist der Interpret / die Band?',
+        color: 'pink',
+        type: 'text',
+        evalText: (song, answer) => {
+          const a = song.artist.toLowerCase();
+          const ans = (answer || '').toLowerCase().trim();
+          return a.includes(ans) || ans.includes(a);
+        }
+      },
+      {
+        id: 'purple_year_est',
+        name: '🟣 Jahr schätzen (± 3 Jahre Toleranz!)',
+        color: 'lila',
+        type: 'number',
+        evalNum: (song, guess) => Math.abs(parseInt(guess, 10) - song.year) <= 3
+      },
+      {
+        id: 'cyan_word_count',
+        name: '🩵 Songtitel: 1 Wort oder mehrere?',
+        color: 'hellblau',
+        type: 'choice',
+        choices: ['1️⃣ Nur 1 Wort (z. B. Roller)', '🔢 Mehrere Wörter'],
+        eval: (song) => {
+          const words = song.title.trim().split(/\s+/);
+          return words.length === 1 ? '1️⃣ Nur 1 Wort (z. B. Roller)' : '🔢 Mehrere Wörter';
+        }
+      },
+      {
+        id: 'cyan_title_name',
+        name: '🩵 Wie heißt der Songtitel?',
+        color: 'hellblau',
+        type: 'text',
+        evalText: (song, answer) => {
+          const t = song.title.toLowerCase();
+          const ans = (answer || '').toLowerCase().trim();
+          return t.includes(ans) || ans.includes(t);
+        }
+      },
+      {
+        id: 'yellow_joker',
+        name: '🟡 DISCOKUGEL-JOKER (Freie Wahl)',
+        color: 'gelb',
+        type: 'choice',
+        choices: ['✨ Joker einsetzen (Song erkannt)', '⏭️ Auslassen'],
+        eval: () => '✨ Joker einsetzen (Song erkannt)'
+      }
+    ];
+
+    /* ========================================================
+       INITIALIZATION
+       ======================================================== */
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Load 573 Deutschrap & Tekk deck for songs
+      try {
+        const resp = await fetch('decks/deutschrap_tekk_party.json?_t=' + Date.now());
+        if (resp.ok) {
+          deckSongs = await resp.json();
+          // Shuffle deck for fresh party order
+          deckSongs.sort(() => Math.random() - 0.5);
+        }
+      } catch (e) {
+        console.warn('Using fallback songs');
+      }
+
+      // Check URL parameters for direct join: e.g. bingo.html?room=JACK
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('room')) {
+        document.getElementById('join-room-code').value = params.get('room').toUpperCase();
+      }
+    });
+
+    function setBingoMode(mode) {
+      currentMode = mode;
+      document.getElementById('btn-mode-easy').classList.toggle('selected', mode === 'easy');
+      document.getElementById('btn-mode-pro').classList.toggle('selected', mode === 'pro');
+    }
+
+    function setCatCount(count) {
+      categoryChoiceCount = count;
+      document.getElementById('btn-cats-1').classList.toggle('selected', count === 1);
+      document.getElementById('btn-cats-2').classList.toggle('selected', count === 2);
+    }
+
+    function switchScreen(screenId) {
+      document.querySelectorAll('.view-screen').forEach(s => s.classList.remove('active'));
+      const sc = document.getElementById(`screen-${screenId}`);
+      if (sc) sc.classList.add('active');
+    }
+
+    /* ========================================================
+       4x4 BINGO BOARD GENERATOR
+       ======================================================== */
+    function generate4x4Board() {
+      // 16 cells: 3 Green, 3 Pink, 3 Purple, 3 Cyan, 4 Yellow (Joker)
+      const colors = [
+        'gruen', 'gruen', 'gruen',
+        'pink', 'pink', 'pink',
+        'lila', 'lila', 'lila',
+        'hellblau', 'hellblau', 'hellblau',
+        'gelb', 'gelb', 'gelb', 'gelb'
+      ];
+      colors.sort(() => Math.random() - 0.5);
+
+      const labels = {
+        'gruen': 'Epoche',
+        'pink': 'Künstler',
+        'lila': 'Jahr ±3J',
+        'hellblau': 'Songtitel',
+        'gelb': '★ JOKER'
+      };
+
+      const board = [];
+      for (let i = 0; i < 16; i++) {
+        const col = colors[i];
+        board.push({
+          idx: i,
+          color: col,
+          label: labels[col],
+          marked: false
+        });
+      }
+      return board;
+    }
+
+    function renderPlayerBoard() {
+      const grid = document.getElementById('player-bingo-board');
+      grid.innerHTML = '';
+
+      myBoard.forEach(cell => {
+        const div = document.createElement('div');
+        div.className = `bingo-cell col-${cell.color} ${cell.marked ? 'marked' : ''}`;
+        div.textContent = cell.label;
+        div.onclick = () => playerClickCell(cell.idx);
+        grid.appendChild(div);
+      });
+
+      const markedCount = myBoard.filter(c => c.marked).length;
+      document.getElementById('player-score-display').textContent = `${markedCount} / 16`;
+    }
+
+    /* ========================================================
+       HOST LOBBY & SOLO DEMO MODE
+       ======================================================== */
+    let hostPollTimer = null;
+    let playerPollTimer = null;
+    let myPlayerId = 'host-player';
+
+    async function startHostLobby() {
+      role = 'host';
+      myPlayerId = 'host-player';
+      roomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
+      document.getElementById('host-room-display').textContent = roomCode;
+      document.getElementById('lobby-badge').textContent = `👑 HOST (${roomCode})`;
+
+      players = [
+        { id: 'host-player', name: 'Du (Host)', score: 0, board: generate4x4Board(), answer: null, isBot: false }
+      ];
+      myBoard = players[0].board;
+
+      // Register room with backend server
+      try {
+        await fetch('/api/bingo/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'create',
+            room: roomCode,
+            mode: currentMode,
+            catCount: categoryChoiceCount,
+            hostId: myPlayerId
+          })
+        });
+      } catch (e) {}
+
+      // Generate join QR code
+      generateHostQRCode();
+
+      updateHostPlayerList();
+      renderHostOwnBoard();
+      switchScreen('host');
+
+      // Start host sync polling for joined players
+      startHostSyncPoll();
+    }
+
+    async function generateHostQRCode() {
+      let hostUrl = window.location.origin;
+      try {
+        const res = await fetch('/api/system-info');
+        if (res.ok) {
+          const sys = await res.json();
+          if (sys.hostUrl) hostUrl = sys.hostUrl;
+        }
+      } catch (e) {}
+
+      const joinUrl = `${hostUrl}/bingo.html?room=${roomCode}`;
+      const qrEl = document.getElementById('host-qr-container');
+      if (qrEl) {
+        qrEl.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          new QRCode(qrEl, {
+            text: joinUrl,
+            width: 140,
+            height: 140,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        }
+        document.getElementById('host-qr-url').textContent = joinUrl;
+      }
+    }
+
+    function startHostSyncPoll() {
+      if (hostPollTimer) clearInterval(hostPollTimer);
+      hostPollTimer = setInterval(async () => {
+        if (role !== 'host' || roomCode === 'DEMO') return;
+        try {
+          const resp = await fetch(`/api/bingo/state?room=${roomCode}&role=host`);
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data.success && data.room && data.room.players) {
+              const serverPlayers = data.room.players;
+              Object.keys(serverPlayers).forEach(pid => {
+                const existing = players.find(p => p.id === pid);
+                if (!existing) {
+                  players.push(serverPlayers[pid]);
+                } else {
+                  if (serverPlayers[pid].answer && !existing.answer) {
+                    existing.answer = serverPlayers[pid].answer;
+                  }
+                  if (serverPlayers[pid].board) {
+                    existing.board = serverPlayers[pid].board;
+                  }
+                }
+              });
+              updateHostPlayerList();
+              const submittedCount = players.filter(p => p.answer).length;
+              const countEl = document.getElementById('host-answers-count');
+              if (countEl) countEl.textContent = `${submittedCount} / ${players.length} abgegeben`;
+            }
+          }
+        } catch (e) {}
+      }, 1500);
+    }
+
+    function startSoloDemo() {
+      // 1-Click test with 2 simulated bot players
+      role = 'host';
+      myPlayerId = 'player-1';
+      roomCode = 'DEMO';
+      document.getElementById('host-room-display').textContent = 'DEMO';
+      document.getElementById('lobby-badge').textContent = '⚡ DEMO-MODUS';
+
+      players = [
+        { id: 'player-1', name: '👑 Du (Host)', score: 0, board: generate4x4Board(), answer: null, isBot: false },
+        { id: 'player-2', name: '🔥 Felix (Bot)', score: 0, board: generate4x4Board(), answer: null, isBot: true },
+        { id: 'player-3', name: '✨ Laura (Bot)', score: 0, board: generate4x4Board(), answer: null, isBot: true }
+      ];
+      myBoard = players[0].board;
+
+      updateHostPlayerList();
+      renderHostOwnBoard();
+
+      // Hide QR invite in solo demo
+      const qrCard = document.getElementById('host-qr-card');
+      if (qrCard) qrCard.style.display = 'none';
+
+      switchScreen('host');
+    }
+
+    async function joinPlayerLobby() {
+      const code = document.getElementById('join-room-code').value.trim().toUpperCase();
+      if (!code) {
+        alert("Bitte gib einen 4-stelligen Raumcode ein.");
+        return;
+      }
+      const name = prompt("Wie heißt du?", "Gast") || "Gast";
+      role = 'player';
+      playerName = name;
+      roomCode = code;
+      myPlayerId = 'player_' + Math.random().toString(36).substring(2, 8);
+
+      document.getElementById('player-name-display').textContent = playerName;
+      document.getElementById('lobby-badge').textContent = `🎮 ${roomCode}`;
+
+      myBoard = generate4x4Board();
+      renderPlayerBoard();
+      switchScreen('player');
+
+      // Register player on server
+      try {
+        await fetch('/api/bingo/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'join',
+            room: roomCode,
+            playerId: myPlayerId,
+            name: playerName,
+            board: myBoard
+          })
+        });
+      } catch (e) {}
+
+      // Start player polling
+      startPlayerSyncPoll();
+    }
+
+    function startPlayerSyncPoll() {
+      if (playerPollTimer) clearInterval(playerPollTimer);
+      let lastRound = -1;
+      let lastStatus = '';
+
+      playerPollTimer = setInterval(async () => {
+        if (role !== 'player') return;
+        try {
+          const resp = await fetch(`/api/bingo/state?room=${roomCode}&playerId=${myPlayerId}&role=player`);
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data.success && data.room) {
+              const r = data.room;
+              if (r.status === 'guessing' && r.round !== lastRound) {
+                lastRound = r.round;
+                lastStatus = 'guessing';
+                isRevealed = false;
+                hasAnswered = false;
+                activeCategories = r.activeCategories || [];
+                renderPlayerQuestionScreen(r.activeSong || {});
+              } else if (r.status === 'revealed' && lastStatus !== 'revealed') {
+                lastStatus = 'revealed';
+                isRevealed = true;
+                const meOnServer = r.players && r.players[myPlayerId];
+                if (meOnServer) {
+                  const me = players.find(p => p.id === myPlayerId) || { id: myPlayerId, answer: meOnServer.answer };
+                  if (!players.includes(me)) players.push(me);
+                  if (meOnServer.answer) {
+                    me.answer = meOnServer.answer;
+                  }
+                  playerShowResolution(r.activeSong || {});
+                }
+              }
+            }
+          }
+        } catch (e) {}
+      }, 1200);
+    }
+
+    function updateHostPlayerList() {
+      document.getElementById('host-player-count').textContent = `${players.length} Spieler`;
+      const lb = document.getElementById('host-leaderboard-list');
+      lb.innerHTML = '';
+      players.forEach(p => {
+        const row = document.createElement('div');
+        row.className = 'player-answer-row';
+        const marked = p.board.filter(c => c.marked).length;
+        row.innerHTML = `
+          <div style="font-weight: 700; color: #fff;">${escapeHtml(p.name)}</div>
+          <div style="font-weight: 800; color: var(--cat-yellow);">${marked} / 16 Kreuze</div>
+        `;
+        lb.appendChild(row);
+      });
+    }
+
+    function renderHostOwnBoard() {
+      const grid = document.getElementById('host-bingo-board-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      myBoard.forEach(cell => {
+        const div = document.createElement('div');
+        div.className = `bingo-cell col-${cell.color} ${cell.marked ? 'marked' : ''}`;
+        div.textContent = cell.label;
+        div.onclick = () => hostClickCell(cell.idx);
+        grid.appendChild(div);
+      });
+
+      const markedCount = myBoard.filter(c => c.marked).length;
+      const scoreEl = document.getElementById('host-my-score');
+      if (scoreEl) scoreEl.textContent = `${markedCount} / 16 Kreuze`;
+    }
+
+    /* ========================================================
+       ROUND FLOW & DISCOBALL DRAW
+       ======================================================== */
+    function hostNextRound() {
+      if (deckSongs.length === 0) {
+        alert("Keine Songs im Deck geladen!");
+        return;
+      }
+
+      currentRound++;
+      isRevealed = false;
+      hasAnswered = false;
+      document.getElementById('host-solution-card').style.display = 'none';
+      document.getElementById('btn-host-reveal').style.display = 'inline-flex';
+      document.getElementById('btn-host-action').style.display = 'none';
+
+      // 1. Pick next song
+      const song = deckSongs[currentSongIndex % deckSongs.length];
+      currentSongIndex++;
+
+      // 2. Spin Discoball & Draw 1 or 2 categories
+      const ball = document.getElementById('discoball');
+      ball.classList.add('spinning');
+
+      playSynthSound('spin');
+
+      setTimeout(() => {
+        ball.classList.remove('spinning');
+        drawCategoriesForRound(song);
+        startHostRoundTimer(song);
+
+        // Notify server of new round
+        if (roomCode !== 'DEMO') {
+          fetch('/api/bingo/action', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'start_round',
+              room: roomCode,
+              song: song,
+              categories: activeCategories
+            })
+          }).catch(() => {});
+        }
+      }, 1200);
+    }
+
+    function drawCategoriesForRound(song) {
+      const pool = currentMode === 'easy' 
+        ? CATEGORIES.filter(c => c.id !== 'pink_artist_name' && c.id !== 'cyan_title_name' && c.id !== 'green_decade')
+        : CATEGORIES;
+
+      pool.sort(() => Math.random() - 0.5);
+
+      if (categoryChoiceCount === 2) {
+        activeCategories = [pool[0], pool[1]];
+      } else {
+        activeCategories = [pool[0]];
+      }
+
+      // Display on Host Header
+      const pill = document.getElementById('host-category-pill');
+      if (activeCategories.length === 1) {
+        pill.textContent = activeCategories[0].name;
+        pill.style.background = `var(--cat-${activeCategories[0].color})`;
+        pill.style.color = '#000';
+      } else {
+        pill.innerHTML = `<span>1️⃣ ${activeCategories[0].name}</span> &nbsp;|&nbsp; <span>2️⃣ ${activeCategories[1].name}</span>`;
+        pill.style.background = `linear-gradient(135deg, var(--cat-${activeCategories[0].color}), var(--cat-${activeCategories[1].color}))`;
+        pill.style.color = '#fff';
+      }
+
+      // Render Host interactive guessing panel
+      renderHostInteractivePlay();
+
+      // If in Solo Demo, simulate bot answers
+      simulateBotAnswers(song);
+
+      // Render Player questions
+      renderPlayerQuestionScreen(song);
+    }
+
+    function renderHostInteractivePlay() {
+      const box = document.getElementById('host-player-interaction-box');
+      if (!box) return;
+
+      document.getElementById('host-own-locked-status').style.display = 'none';
+      document.getElementById('host-own-mark-instruction').style.display = 'none';
+      document.getElementById('host-interactive-mc').style.display = 'none';
+      document.getElementById('host-interactive-text').style.display = 'none';
+
+      const cat = activeCategories[0];
+      document.getElementById('host-interaction-title').innerHTML = `Deine Aufgabe als Host: <strong style="color: var(--cat-${cat.color});">${cat.name}</strong>`;
+
+      if (cat.type === 'choice') {
+        const mc = document.getElementById('host-interactive-mc');
+        mc.style.display = 'flex';
+        mc.innerHTML = '';
+        cat.choices.forEach(ch => {
+          const btn = document.createElement('button');
+          btn.className = 'btn-choice';
+          btn.style.padding = '10px 14px';
+          btn.style.fontSize = '0.9rem';
+          btn.textContent = ch;
+          btn.onclick = () => hostSubmitOwnChoiceAnswer(ch, cat, btn);
+          mc.appendChild(btn);
+        });
+      } else {
+        const tb = document.getElementById('host-interactive-text');
+        tb.style.display = 'block';
+        const input = document.getElementById('host-interactive-text-input');
+        input.value = '';
+        input.placeholder = cat.type === 'number' ? 'Jahreszahl (z. B. 2012)...' : 'Deine Antwort (z. B. Titel oder Künstler)...';
+      }
+    }
+
+    function hostSubmitOwnChoiceAnswer(choiceText, cat, btn) {
+      document.querySelectorAll('#host-interactive-mc .btn-choice').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      players[0].answer = {
+        category: cat,
+        answer: choiceText,
+        approved: null
+      };
+      document.getElementById('host-own-locked-status').style.display = 'block';
+      updateHostPlayerList();
+    }
+
+    function hostSubmitOwnTextAnswer() {
+      const input = document.getElementById('host-interactive-text-input');
+      const val = input.value.trim();
+      if (!val) {
+        alert("Bitte gib eine Antwort ein.");
+        return;
+      }
+      const cat = activeCategories[0];
+      players[0].answer = {
+        category: cat,
+        answer: val,
+        approved: null
+      };
+      document.getElementById('host-own-locked-status').style.display = 'block';
+      updateHostPlayerList();
+    }
+
+    function startHostRoundTimer(song) {
+      // Play Audio on Host only!
+      const audio = document.getElementById('host-game-audio');
+      if (song.previewUrl) {
+        audio.src = song.previewUrl;
+        audio.play().catch(() => {});
+        document.getElementById('btn-audio-icon').textContent = '⏸️';
+      }
+
+      roundTimer = 25;
+      clearInterval(timerInterval);
+      const timerFill = document.getElementById('host-timer-fill');
+      const timerText = document.getElementById('host-timer-text');
+
+      timerInterval = setInterval(() => {
+        roundTimer--;
+        const pct = (roundTimer / 25) * 100;
+        timerFill.style.width = `${pct}%`;
+        timerText.textContent = `00:${String(roundTimer).padStart(2, '0')}`;
+
+        if (roundTimer <= 0) {
+          clearInterval(timerInterval);
+          hostRevealSong();
+        }
+      }, 1000);
+    }
+
+    function toggleHostAudio() {
+      const audio = document.getElementById('host-game-audio');
+      if (audio.paused) {
+        audio.play();
+        document.getElementById('btn-audio-icon').textContent = '⏸️';
+      } else {
+        audio.pause();
+        document.getElementById('btn-audio-icon').textContent = '▶️';
+      }
+    }
+
+    function restartHostAudio() {
+      const audio = document.getElementById('host-game-audio');
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+      document.getElementById('btn-audio-icon').textContent = '⏸️';
+    }
+
+    /* ========================================================
+       REVEAL & ANSWER EVALUATION
+       ======================================================== */
+    function hostRevealSong() {
+      clearInterval(timerInterval);
+      isRevealed = true;
+      const song = deckSongs[(currentSongIndex - 1 + deckSongs.length) % deckSongs.length];
+
+      document.getElementById('btn-host-reveal').style.display = 'none';
+      document.getElementById('btn-host-action').style.display = 'inline-flex';
+      document.getElementById('btn-host-action').innerHTML = '<span>🪩</span> Nächste Runde starten';
+
+      // Show Solution Card on Host
+      const sol = document.getElementById('host-solution-card');
+      sol.style.display = 'block';
+      document.getElementById('host-sol-cover').src = song.coverUrl || 'logo.svg';
+      document.getElementById('host-sol-year').textContent = song.year;
+      document.getElementById('host-sol-title').textContent = song.title;
+      document.getElementById('host-sol-artist').textContent = song.artist;
+
+      playSynthSound('reveal');
+
+      // Auto-evaluate answers and display list
+      renderHostAnswersList(song);
+
+      // Check Host's own answer
+      const hostP = players[0];
+      if (hostP && hostP.answer && hostP.answer.approved) {
+        document.getElementById('host-own-mark-instruction').style.display = 'block';
+        playSynthSound('correct');
+
+        const col = hostP.answer.category.color;
+        document.querySelectorAll(`#host-bingo-board-grid .bingo-cell.col-${col}:not(.marked)`).forEach(el => {
+          el.classList.add('pulsing-target');
+        });
+      }
+
+      // Notify player screen of resolution
+      playerShowResolution(song);
+
+      // Notify server of reveal
+      if (roomCode !== 'DEMO') {
+        fetch('/api/bingo/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'reveal',
+            room: roomCode
+          })
+        }).catch(() => {});
+      }
+    }
+
+    function simulateBotAnswers(song) {
+      players.forEach(p => {
+        if (!p.isBot) return;
+        const cat = activeCategories[Math.floor(Math.random() * activeCategories.length)];
+        let ans = '';
+
+        if (cat.type === 'choice') {
+          if (Math.random() < 0.8 && cat.eval) {
+            ans = cat.eval(song);
+          } else {
+            ans = cat.choices[Math.floor(Math.random() * cat.choices.length)];
+          }
+        } else if (cat.type === 'number') {
+          ans = song.year + (Math.floor(Math.random() * 5) - 2);
+        } else {
+          ans = song.artist;
+        }
+
+        p.answer = {
+          category: cat,
+          answer: ans,
+          approved: null
+        };
+      });
+    }
+
+    function renderHostAnswersList(song) {
+      const container = document.getElementById('host-answers-list');
+      container.innerHTML = '';
+
+      players.forEach(p => {
+        const row = document.createElement('div');
+        row.className = 'player-answer-row';
+
+        const ansObj = p.answer || { category: activeCategories[0], answer: 'Keine Antwort', approved: false };
+        let isCorrect = false;
+
+        // Auto-Check
+        if (ansObj.category && ansObj.category.type === 'choice' && ansObj.category.eval) {
+          isCorrect = (ansObj.answer === ansObj.category.eval(song));
+          ansObj.approved = isCorrect;
+        } else if (ansObj.category && ansObj.category.type === 'number' && ansObj.category.evalNum) {
+          isCorrect = ansObj.category.evalNum(song, ansObj.answer);
+          ansObj.approved = isCorrect;
+        } else if (ansObj.approved !== null) {
+          isCorrect = ansObj.approved;
+        } else {
+          if (ansObj.category && ansObj.category.evalText) {
+            isCorrect = ansObj.category.evalText(song, ansObj.answer);
+            ansObj.approved = isCorrect;
+          }
+        }
+
+        const catCol = ansObj.category ? ansObj.category.color : 'gruen';
+        const catName = ansObj.category ? ansObj.category.name : '';
+
+        row.innerHTML = `
+          <div>
+            <div style="font-weight: 700; color: #fff;">${escapeHtml(p.name)}</div>
+            <div style="font-size: 0.85rem; color: var(--cat-${catCol});">
+              [${catName}] <strong>${escapeHtml(String(ansObj.answer))}</strong>
+            </div>
+          </div>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <button class="btn-apple-secondary" onclick="hostSetAnswerApproval('${p.id}', true)" style="width: auto; padding: 4px 10px; font-size: 0.85rem; border-color: ${ansObj.approved === true ? 'var(--cat-green)' : 'transparent'}; background: ${ansObj.approved === true ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.08)'};">
+              ✅ Richtig
+            </button>
+            <button class="btn-apple-secondary" onclick="hostSetAnswerApproval('${p.id}', false)" style="width: auto; padding: 4px 10px; font-size: 0.85rem; border-color: ${ansObj.approved === false ? '#ef4444' : 'transparent'}; background: ${ansObj.approved === false ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.08)'};">
+              ❌ Falsch
+            </button>
+          </div>
+        `;
+        container.appendChild(row);
+
+        // If bot was correct, automatically mark a matching cell on bot's board!
+        if (p.isBot && ansObj.approved && ansObj.category) {
+          botMarkBoard(p, ansObj.category.color);
+        }
+      });
+
+      updateHostPlayerList();
+    }
+
+    function hostSetAnswerApproval(playerId, approved) {
+      const p = players.find(x => x.id === playerId);
+      if (p && p.answer) {
+        p.answer.approved = approved;
+        const song = deckSongs[(currentSongIndex - 1 + deckSongs.length) % deckSongs.length];
+        renderHostAnswersList(song);
+
+        // Sync approval to server
+        if (roomCode !== 'DEMO') {
+          fetch('/api/bingo/action', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'approve',
+              room: roomCode,
+              playerId: playerId,
+              approved: approved
+            })
+          }).catch(() => {});
+        }
+      }
+    }
+
+    function botMarkBoard(player, color) {
+      const freeCell = player.board.find(c => c.color === color && !c.marked);
+      if (freeCell) {
+        freeCell.marked = true;
+        checkBingoForPlayer(player);
+      }
+    }
+
+    function hostClickCell(cellIndex) {
+      if (!isRevealed) {
+        alert("Warte zuerst auf die Auflösung des Songs!");
+        return;
+      }
+
+      const hostP = players[0];
+      if (!hostP || !hostP.answer || !hostP.answer.approved) {
+        alert("Du kannst nur ein Feld markieren, wenn deine Host-Antwort in dieser Runde als richtig gewertet wurde!");
+        return;
+      }
+
+      const cell = myBoard[cellIndex];
+      const targetCat = hostP.answer.category || activeCategories[0];
+      const targetColor = targetCat.color;
+
+      // Gelber Joker erlaubt freie Wahl oder gelbe Zelle
+      if (targetColor !== 'gelb' && cell.color !== targetColor) {
+        alert(`Dieses Feld hat die falsche Farbe! Du musst ein Feld der Farbe [${targetColor.toUpperCase()}] wählen (oder einen gelben Joker nutzen).`);
+        return;
+      }
+
+      if (cell.marked) {
+        alert("Dieses Feld ist bereits markiert!");
+        return;
+      }
+
+      const colorCells = myBoard.filter(c => c.color === targetColor);
+      const freeColorCells = colorCells.filter(c => !c.marked);
+      if (targetColor !== 'gelb' && freeColorCells.length === 0) {
+        alert(`Alle Felder der Farbe [${targetColor.toUpperCase()}] sind bereits voll gekreuzt! (Hier passiert nichts mehr).`);
+        return;
+      }
+
+      cell.marked = true;
+      document.querySelectorAll('#host-bingo-board-grid .bingo-cell').forEach(el => el.classList.remove('pulsing-target'));
+      document.getElementById('host-own-mark-instruction').style.display = 'none';
+
+      playSynthSound('mark');
+      if (navigator.vibrate) navigator.vibrate(100);
+
+      renderHostOwnBoard();
+      updateHostPlayerList();
+      checkBingoForPlayer(hostP);
+    }
+
+    /* ========================================================
+       PLAYER SCREEN LOGIC & BOARD MARKING
+       ======================================================== */
+    function renderPlayerQuestionScreen(song) {
+      document.getElementById('player-locked-status').style.display = 'none';
+      document.getElementById('player-mark-instruction').style.display = 'none';
+
+      if (activeCategories.length === 2) {
+        const choiceBox = document.getElementById('player-category-choice-box');
+        const choiceBtns = document.getElementById('player-category-choice-buttons');
+        choiceBox.style.display = 'block';
+        choiceBtns.innerHTML = '';
+        activeCategories.forEach((cat, i) => {
+          const btn = document.createElement('button');
+          btn.className = `btn-choice ${i === 0 ? 'selected' : ''}`;
+          btn.style.fontSize = '0.85rem';
+          btn.style.padding = '8px 12px';
+          btn.textContent = cat.name;
+          btn.onclick = () => selectCategoryForPlayer(cat, btn);
+          choiceBtns.appendChild(btn);
+        });
+        selectedPlayerCategory = activeCategories[0];
+      } else {
+        document.getElementById('player-category-choice-box').style.display = 'none';
+        selectedPlayerCategory = activeCategories[0];
+      }
+
+      displayPlayerActiveQuestion();
+    }
+
+    function selectCategoryForPlayer(cat, btn) {
+      selectedPlayerCategory = cat;
+      document.querySelectorAll('#player-category-choice-buttons .btn-choice').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      displayPlayerActiveQuestion();
+    }
+
+    function displayPlayerActiveQuestion() {
+      const cat = selectedPlayerCategory;
+      const pill = document.getElementById('player-cat-pill');
+      pill.textContent = cat.name;
+      pill.style.background = `var(--cat-${cat.color})`;
+      pill.style.color = '#00f';
+
+      document.getElementById('player-question-text').textContent = "Höre den Song & wähle deine Antwort:";
+
+      const mcBox = document.getElementById('player-mc-box');
+      const textBox = document.getElementById('player-text-box');
+
+      if (cat.type === 'choice') {
+        mcBox.style.display = 'flex';
+        textBox.style.display = 'none';
+        mcBox.innerHTML = '';
+        cat.choices.forEach(ch => {
+          const btn = document.createElement('button');
+          btn.className = 'btn-choice';
+          btn.textContent = ch;
+          btn.onclick = () => playerSelectChoice(ch, btn);
+          mcBox.appendChild(btn);
+        });
+      } else {
+        mcBox.style.display = 'none';
+        textBox.style.display = 'block';
+        document.getElementById('player-text-input').value = '';
+      }
+    }
+
+    function playerSelectChoice(choiceText, btn) {
+      document.querySelectorAll('#player-mc-box .btn-choice').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      submitAnswerToHost(choiceText);
+    }
+
+    function playerSubmitTextAnswer() {
+      const val = document.getElementById('player-text-input').value.trim();
+      if (!val) {
+        alert("Bitte gib eine Antwort ein.");
+        return;
+      }
+      submitAnswerToHost(val);
+    }
+
+    function submitAnswerToHost(answerText) {
+      hasAnswered = true;
+      document.getElementById('player-mc-box').style.display = 'none';
+      document.getElementById('player-text-box').style.display = 'none';
+      document.getElementById('player-locked-status').style.display = 'block';
+
+      const me = players.find(p => p.id === myPlayerId || p.name === playerName);
+      if (me) {
+        me.answer = {
+          category: selectedPlayerCategory,
+          answer: answerText,
+          approved: null
+        };
+      }
+
+      if (role === 'player') {
+        fetch('/api/bingo/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'submit_answer',
+            room: roomCode,
+            playerId: myPlayerId,
+            category: selectedPlayerCategory,
+            answer: answerText
+          })
+        }).catch(() => {});
+      }
+    }
+
+    function playerShowResolution(song) {
+      const me = players.find(p => p.id === myPlayerId || p.name === playerName);
+      const isCorrect = me && me.answer && me.answer.approved;
+
+      const qText = document.getElementById('player-question-text');
+      if (isCorrect) {
+        qText.innerHTML = `🎉 <strong style="color: var(--cat-green);">RICHTIG!</strong> (${song.artist} - ${song.title}, ${song.year})`;
+        document.getElementById('player-mark-instruction').style.display = 'block';
+        playSynthSound('correct');
+        if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+
+        const col = selectedPlayerCategory ? selectedPlayerCategory.color : 'gruen';
+        document.querySelectorAll(`.bingo-cell.col-${col}:not(.marked)`).forEach(el => {
+          el.classList.add('pulsing-target');
+        });
+      } else {
+        qText.innerHTML = `❌ <strong style="color: #ef4444;">Leider falsch!</strong> (${song.artist} - ${song.title}, ${song.year})`;
+        document.getElementById('player-mark-instruction').style.display = 'none';
+      }
+    }
+
+    function playerClickCell(cellIndex) {
+      if (!isRevealed) {
+        alert("Warte zuerst auf die Auflösung des Songs!");
+        return;
+      }
+
+      const me = players.find(p => p.id === myPlayerId || p.name === playerName);
+      if (!me || !me.answer || !me.answer.approved) {
+        alert("Du kannst nur ein Feld markieren, wenn deine Antwort in dieser Runde richtig war!");
+        return;
+      }
+
+      const cell = myBoard[cellIndex];
+      const targetColor = (selectedPlayerCategory || activeCategories[0]).color;
+
+      // Gelber Discokugel-Joker erlaubt freie Wahl oder gelbe Zelle
+      if (targetColor !== 'gelb' && cell.color !== targetColor) {
+        alert(`Dieses Feld hat die falsche Farbe! Du musst ein Feld der Farbe [${targetColor.toUpperCase()}] wählen (oder einen gelben Joker einsetzen).`);
+        return;
+      }
+
+      if (cell.marked) {
+        alert("Dieses Feld ist bereits markiert!");
+        return;
+      }
+
+      const colorCells = myBoard.filter(c => c.color === targetColor);
+      const freeColorCells = colorCells.filter(c => !c.marked);
+      if (targetColor !== 'gelb' && freeColorCells.length === 0) {
+        alert(`Alle Felder der Farbe [${targetColor.toUpperCase()}] sind bereits voll gekreuzt! (Hier passiert nichts mehr).`);
+        return;
+      }
+
+      cell.marked = true;
+      document.querySelectorAll('#player-bingo-board .bingo-cell').forEach(el => el.classList.remove('pulsing-target'));
+      document.getElementById('player-mark-instruction').style.display = 'none';
+
+      playSynthSound('mark');
+      if (navigator.vibrate) navigator.vibrate(100);
+
+      renderPlayerBoard();
+      updateHostPlayerList();
+
+      if (role === 'player') {
+        fetch('/api/bingo/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'mark_cell',
+            room: roomCode,
+            playerId: myPlayerId,
+            cellIndex: cellIndex
+          })
+        }).catch(() => {});
+      }
+
+      checkBingoForPlayer(me);
+    }
+
+    /* ========================================================
+       4x4 BINGO WINNER DETECTION
+       ======================================================== */
+    function checkBingoForPlayer(player) {
+      if (player.hasBingo) return;
+      const b = player.board;
+
+      // 4 Rows
+      for (let r = 0; r < 4; r++) {
+        if (b[r*4].marked && b[r*4+1].marked && b[r*4+2].marked && b[r*4+3].marked) {
+          triggerBingo(player);
+          return;
+        }
+      }
+
+      // 4 Columns
+      for (let c = 0; c < 4; c++) {
+        if (b[c].marked && b[c+4].marked && b[c+8].marked && b[c+12].marked) {
+          triggerBingo(player);
+          return;
+        }
+      }
+
+      // 2 Diagonals
+      if (b[0].marked && b[5].marked && b[10].marked && b[15].marked) {
+        triggerBingo(player);
+        return;
+      }
+      if (b[3].marked && b[6].marked && b[9].marked && b[12].marked) {
+        triggerBingo(player);
+        return;
+      }
+    }
+
+    function triggerBingo(player) {
+      player.hasBingo = true;
+      playSynthSound('bingo');
+
+      // Trigger Confetti
+      if (window.confetti) {
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+      }
+
+      document.getElementById('bingo-winner-name').textContent = `${player.name} hat BINGO erreicht!`;
+      document.getElementById('bingo-modal').classList.add('show');
+    }
+
+    function closeBingoModal() {
+      document.getElementById('bingo-modal').classList.remove('show');
+    }
+
+    /* ========================================================
+       SYNTH SOUND EFFECTS (WEB AUDIO API - ZERO ASSETS)
+       ======================================================== */
+    function playSynthSound(type) {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (type === 'spin') {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.connect(g); g.connect(ctx.destination);
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(220, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3);
+          g.gain.setValueAtTime(0.2, ctx.currentTime);
+          g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3);
+          osc.start(); osc.stop(ctx.currentTime + 0.3);
+        } else if (type === 'correct' || type === 'mark') {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.connect(g); g.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+          osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // E5
+          g.gain.setValueAtTime(0.25, ctx.currentTime);
+          g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.25);
+          osc.start(); osc.stop(ctx.currentTime + 0.25);
+        } else if (type === 'reveal') {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.connect(g); g.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.2);
+          g.gain.setValueAtTime(0.3, ctx.currentTime);
+          g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.2);
+          osc.start(); osc.stop(ctx.currentTime + 0.2);
+        } else if (type === 'bingo') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const g = ctx.createGain();
+            osc.connect(g); g.connect(ctx.destination);
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, ctx.currentTime + (i * 0.1));
+            g.gain.setValueAtTime(0.3, ctx.currentTime + (i * 0.1));
+            g.gain.linearRampToValueAtTime(0, ctx.currentTime + (i * 0.1) + 0.3);
+            osc.start(ctx.currentTime + (i * 0.1));
+            osc.stop(ctx.currentTime + (i * 0.1) + 0.3);
+          });
+        }
+      } catch (e) {}
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+      }[m]));
+    }
+  </script>
+</body>
+</html>
