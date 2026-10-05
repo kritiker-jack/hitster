@@ -2574,62 +2574,185 @@
       } catch (e) {}
     }
 
-    // MULTI-TIER ROBUST CLIENT-SIDE ITUNES AUDIO & ARTWORK RESOLVER (JSONP: 100% CORS-FREE)
-    function searchItunesJsonpSingle(query) {
+    // SMART CLIENT-SIDE AUDIO & ARTWORK RESOLVER (DEEZER + ITUNES DE + SPOTIFY OEMBED)
+    // 100% CORS-FREE VIA JSONP WITH STRICT CANDIDATE MATCH SCORING TO PREVENT RANDOM SONGS!
+
+    function normalizeSongString(str) {
+      if (!str) return '';
+      return str.toLowerCase()
+        .replace(/\(.*?\)|\[.*?\]/g, '')
+        .replace(/\s*-\s*.*$/, '')
+        .replace(/\s+(?:feat|ft)\.?\s+.*$/i, '')
+        .replace(/[^a-z0-9äöüß]/gi, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function scoreCandidateMatch(candTitle, candArtist, targetTitle, targetArtist) {
+      const normCandT = normalizeSongString(candTitle);
+      const normCandA = normalizeSongString(candArtist);
+      const normTargT = normalizeSongString(targetTitle);
+      const normTargA = normalizeSongString(targetArtist);
+
+      if (!normCandT || !normTargT) return 0;
+
+      // Title match check
+      let titleScore = 0;
+      if (normCandT === normTargT) {
+        titleScore = 60;
+      } else if (normCandT.includes(normTargT) || normTargT.includes(normCandT)) {
+        titleScore = 40;
+      } else {
+        const wordsT = normTargT.split(' ').filter(w => w.length > 2);
+        const wordsC = normCandT.split(' ').filter(w => w.length > 2);
+        const matched = wordsT.filter(w => wordsC.includes(w));
+        if (wordsT.length > 0 && matched.length / wordsT.length >= 0.5) {
+          titleScore = 30;
+        }
+      }
+      if (titleScore === 0) return 0; // Title must match!
+
+      // Artist match check
+      let artistScore = 0;
+      if (normCandA === normTargA) {
+        artistScore = 40;
+      } else if (normCandA.includes(normTargA) || normTargA.includes(normCandA)) {
+        artistScore = 30;
+      } else {
+        const wordsA = normTargA.split(' ').filter(w => w.length > 2);
+        const wordsC = normCandA.split(' ').filter(w => w.length > 2);
+        const matched = wordsA.filter(w => wordsC.includes(w));
+        if (matched.length > 0) {
+          artistScore = 20;
+        }
+      }
+      if (artistScore === 0) return 0; // Artist must match!
+
+      return titleScore + artistScore;
+    }
+
+    function searchDeezerJsonp(query) {
       return new Promise((resolve) => {
-        const cbName = 'itunes_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+        const cbName = 'dz_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
         const script = document.createElement('script');
         
         const timeout = setTimeout(() => {
           delete window[cbName];
           if (script.parentNode) script.parentNode.removeChild(script);
           resolve(null);
-        }, 2800);
+        }, 3200);
+
+        window[cbName] = function(data) {
+          clearTimeout(timeout);
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          if (data && data.data && data.data.length > 0) {
+            resolve(data.data);
+          } else {
+            resolve(null);
+          }
+        };
+
+        script.src = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=10&output=jsonp&callback=${cbName}`;
+        document.body.appendChild(script);
+      });
+    }
+
+    function searchItunesJsonp(query) {
+      return new Promise((resolve) => {
+        const cbName = 'it_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+        const script = document.createElement('script');
+        
+        const timeout = setTimeout(() => {
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          resolve(null);
+        }, 3200);
 
         window[cbName] = function(data) {
           clearTimeout(timeout);
           delete window[cbName];
           if (script.parentNode) script.parentNode.removeChild(script);
           if (data && data.results && data.results.length > 0) {
-            const it = data.results[0];
-            const previewUrl = it.previewUrl || null;
-            let artworkUrl = it.artworkUrl100 || null;
-            if (artworkUrl) artworkUrl = artworkUrl.replace('100x100bb.jpg', '600x600bb.jpg');
-            resolve({ previewUrl, artworkUrl });
+            resolve(data.results);
           } else {
             resolve(null);
           }
         };
 
-        script.src = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=1&callback=${cbName}`;
+        script.src = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=10&country=DE&callback=${cbName}`;
         document.body.appendChild(script);
       });
     }
 
-    async function fetchRobustClientAudioAndArtwork(artist, title) {
-      function clean(s) {
-        if (!s) return '';
-        return s.replace(/\(.*?\)|\[.*?\]/g, '')
-                .replace(/\s*-\s*.*$/, '')
-                .replace(/\s+(?:feat|ft)\.?\s+.*$/i, '')
-                .trim();
-      }
-
-      const q1 = `${clean(artist)} ${clean(title)}`.trim();
-      const q2 = `${(artist || '').split(',')[0].split('&')[0].trim()} ${clean(title)}`.trim();
-      const q3 = `${clean(title)}`.trim();
-      const q4 = `${clean(artist)}`.trim();
-
-      const queries = [q1, q2, q3, q4];
-
-      for (const q of queries) {
-        if (!q) continue;
-        const res = await searchItunesJsonpSingle(q);
-        if (res && res.previewUrl) {
-          return res;
+    async function fetchSpotifyOembedCover(trackId) {
+      if (!trackId) return null;
+      try {
+        const resp = await fetch(`https://open.spotify.com/oembed?url=https://open.spotify.com/track/${encodeURIComponent(trackId)}`);
+        if (!resp.ok) return null;
+        const data = await resp.json();
+        if (data && data.thumbnail_url) {
+          return data.thumbnail_url.replace('/ab67616d00001e02', '/ab67616d0000b273');
         }
+      } catch (e) {}
+      return null;
+    }
+
+    async function fetchRobustClientAudioAndArtwork(trackId, artist, title) {
+      const cleanA = normalizeSongString(artist);
+      const cleanT = normalizeSongString(title);
+      const query = `${cleanA} ${cleanT}`.trim();
+
+      // Parallelize: Spotify official cover + Deezer search
+      const [spotifyCover, deezerItems] = await Promise.all([
+        fetchSpotifyOembedCover(trackId),
+        searchDeezerJsonp(query)
+      ]);
+
+      // 1. Evaluate Deezer candidates with strict validation
+      if (deezerItems && deezerItems.length > 0) {
+        let best = null;
+        let bestScore = 0;
+        for (const item of deezerItems) {
+          if (!item.preview) continue;
+          const s = scoreCandidateMatch(item.title, item.artist ? item.artist.name : '', title, artist);
+          if (s > bestScore && s >= 50) {
+            bestScore = s;
+            best = {
+              previewUrl: item.preview,
+              artworkUrl: spotifyCover || (item.album ? (item.album.cover_xl || item.album.cover_big) : null)
+            };
+          }
+        }
+        if (best) return best;
       }
-      return { previewUrl: null, artworkUrl: null };
+
+      // 2. Fallback to iTunes DE with strict validation
+      const itunesItems = await searchItunesJsonp(query);
+      if (itunesItems && itunesItems.length > 0) {
+        let best = null;
+        let bestScore = 0;
+        for (const item of itunesItems) {
+          if (!item.previewUrl) continue;
+          const s = scoreCandidateMatch(item.trackName, item.artistName, title, artist);
+          if (s > bestScore && s >= 50) {
+            bestScore = s;
+            let art = item.artworkUrl100 || null;
+            if (art) art = art.replace('100x100bb.jpg', '600x600bb.jpg');
+            best = {
+              previewUrl: item.previewUrl,
+              artworkUrl: spotifyCover || art
+            };
+          }
+        }
+        if (best) return best;
+      }
+
+      // 3. Fallback if no audio preview safely matches: DO NOT play random song!
+      return {
+        previewUrl: null,
+        artworkUrl: spotifyCover || null
+      };
     }
 
     async function handleAppQrRecognized(qrData) {
@@ -2710,7 +2833,7 @@
       playerScreen.classList.add('active');
 
       // Resolve audio & cover in background via robust multi-tier resolver
-      const media = await fetchRobustClientAudioAndArtwork(song.artist, song.title);
+      const media = await fetchRobustClientAudioAndArtwork(song.id, song.artist, song.title);
       song.previewUrl = media.previewUrl;
       song.artworkUrl = media.artworkUrl;
 
@@ -2728,7 +2851,7 @@
         startAppAudioPlayback();
       } else {
         document.getElementById('app-status-title').textContent = "🎵 Song bereit zum Raten";
-        document.getElementById('app-status-sub').textContent = "Tippe auf Play zum Anhören!";
+        document.getElementById('app-status-sub').textContent = "Keine 30s-Vorschau verfügbar – ratet blind nach Titel!";
         startAppTimer(30);
       }
     }

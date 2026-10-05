@@ -63,21 +63,92 @@ def extract_playlist_id(url_or_uri):
         return m.group(1)
     return None
 
+def normalize_for_match(s):
+    if not s:
+        return ''
+    s = s.lower()
+    s = re.sub(r'\(.*?\)|\[.*?\]', '', s)
+    s = re.sub(r'\s*-\s*.*$', '', s)
+    s = re.sub(r'\s+(?:feat|ft)\.?\s+.*$', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'[^a-z0-9äöüß]', ' ', s)
+    return re.sub(r'\s+', ' ', s).strip()
+
+def score_match(cand_t, cand_a, targ_t, targ_a):
+    ct = normalize_for_match(cand_t)
+    ca = normalize_for_match(cand_a)
+    tt = normalize_for_match(targ_t)
+    ta = normalize_for_match(targ_a)
+    if not ct or not tt:
+        return 0
+    
+    t_score = 0
+    if ct == tt:
+        t_score = 60
+    elif ct in tt or tt in ct:
+        t_score = 40
+    else:
+        words_t = [w for w in tt.split() if len(w) > 2]
+        words_c = [w for w in ct.split() if len(w) > 2]
+        matched = [w for w in words_t if w in words_c]
+        if words_t and len(matched) / len(words_t) >= 0.5:
+            t_score = 30
+    if t_score == 0:
+        return 0
+
+    a_score = 0
+    if ca == ta:
+        a_score = 40
+    elif ca in ta or ta in ca:
+        a_score = 30
+    else:
+        words_a = [w for w in ta.split() if len(w) > 2]
+        words_c = [w for w in ca.split() if len(w) > 2]
+        matched = [w for w in words_a if w in words_c]
+        if matched:
+            a_score = 20
+    if a_score == 0:
+        return 0
+
+    return t_score + a_score
+
 def fetch_itunes_preview(artist, title):
-    """Fetches a free 30s audio preview URL (.m4a) from Apple Music/iTunes search API."""
+    """Fetches a free 30s audio preview URL (.mp3/.m4a) from Deezer or Apple Music with strict validation."""
+    clean_t = normalize_for_match(title)
+    clean_a = normalize_for_match(artist)
+    q = f"{clean_a} {clean_t}".strip()
+
+    # 1. Deezer
     try:
-        clean_t = re.sub(r'\(.*?\)|\[.*?\]', '', title).strip()
-        main_artist = artist.split(',')[0].split('&')[0].strip()
-        query = urllib.parse.quote(f"{main_artist} {clean_t}".strip())
-        url = f"https://itunes.apple.com/search?term={query}&entity=song&limit=1"
+        url = f"https://api.deezer.com/search?q={urllib.parse.quote(q)}&limit=10"
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(req, timeout=3) as resp:
             data = json.loads(resp.read().decode('utf-8'))
-            results = data.get('results', [])
-            if results:
-                return results[0].get('previewUrl')
+            for item in data.get('data', []):
+                prev = item.get('preview')
+                if not prev:
+                    continue
+                score = score_match(item.get('title', ''), item.get('artist', {}).get('name', ''), title, artist)
+                if score >= 50:
+                    return prev
     except Exception:
         pass
+
+    # 2. iTunes DE
+    try:
+        url = f"https://itunes.apple.com/search?term={urllib.parse.quote(q)}&entity=song&limit=10&country=DE"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=3) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            for item in data.get('results', []):
+                prev = item.get('previewUrl')
+                if not prev:
+                    continue
+                score = score_match(item.get('trackName', ''), item.get('artistName', ''), title, artist)
+                if score >= 50:
+                    return prev
+    except Exception:
+        pass
+
     return None
 
 def fetch_single_track_year(track_item, clean_titles=True):
@@ -90,6 +161,7 @@ def fetch_single_track_year(track_item, clean_titles=True):
     title = clean_song_title(raw_title) if clean_titles else raw_title
     year = 2000
     preview_url = None
+    cover_url = None
 
     if track_id:
         embed_track_url = f"https://open.spotify.com/embed/track/{track_id}"
@@ -107,11 +179,22 @@ def fetch_single_track_year(track_item, clean_titles=True):
                             year = int(rdate[:4])
                         except ValueError:
                             pass
+                    
+                    # Direct Spotify audio preview
+                    sp_audio = entity.get('audioPreview', {}).get('url')
+                    if sp_audio:
+                        preview_url = sp_audio
+
+                    # Direct Spotify cover art
+                    images = entity.get('visualIdentity', {}).get('image', [])
+                    if images:
+                        cover_url = images[-1].get('url')
         except Exception:
             pass
 
-    # Fetch 30-sec preview URL
-    preview_url = fetch_itunes_preview(artist, title)
+    # Fetch 30-sec preview URL if not already found in Spotify embed
+    if not preview_url:
+        preview_url = fetch_itunes_preview(artist, title)
 
     return {
         "id": track_id,
@@ -119,7 +202,8 @@ def fetch_single_track_year(track_item, clean_titles=True):
         "artist": artist,
         "year": year,
         "url": track_url,
-        "previewUrl": preview_url
+        "previewUrl": preview_url,
+        "coverUrl": cover_url
     }
 
 def fetch_spotify_playlist(playlist_id, clean_titles=True):
