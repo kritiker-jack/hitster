@@ -7,6 +7,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#0a0b12">
   <title>Hitster Studio & Mobile App</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="apple-touch-icon" href="logo.svg">
   
   <script src="qrcode.min.js"></script>
   <script src="jsQR.js"></script>
@@ -97,11 +99,11 @@
       cursor: pointer;
     }
 
-    .brand-logo {
+    .brand-logo, .brand-logo-img {
       width: 38px;
       height: 38px;
       border-radius: 11px;
-      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+      object-fit: cover;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -109,6 +111,11 @@
       font-size: 1.25rem;
       box-shadow: 0 4px 16px rgba(255, 42, 122, 0.45);
       color: #fff;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .brand:hover .brand-logo-img {
+      transform: scale(1.06);
     }
 
     .brand-title h1 {
@@ -1542,7 +1549,7 @@
   <!-- STUDIO HEADER WITH APPLE DROPDOWN MENU -->
   <header>
     <div class="brand" onclick="switchTab('editor')">
-      <div class="brand-logo">H</div>
+      <img src="logo.svg" alt="Hitster Logo" class="brand-logo-img">
       <div class="brand-title">
         <h1>HITSTER</h1>
       </div>
@@ -1562,6 +1569,14 @@
   <!-- DROPDOWN MENU OVERLAY (APPLE GLASS DRAWER) -->
   <div id="dropdown-overlay" class="dropdown-menu-overlay" onclick="closeDropdownMenu()">
     <div class="dropdown-menu-sheet" onclick="event.stopPropagation()">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.9rem; padding: 4px 6px;">
+        <img src="logo.svg" alt="Hitster Logo" style="width: 32px; height: 32px; border-radius: 9px; box-shadow: 0 2px 10px rgba(255, 42, 122, 0.4);">
+        <div>
+          <div style="font-weight: 800; font-size: 1rem; color: #fff; letter-spacing: -0.3px;">HITSTER STUDIO</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted);">Deutschrap, Tekk & Party Edition</div>
+        </div>
+      </div>
+
       <div class="menu-section-title">Navigation</div>
       
       <button class="menu-item-btn hero-highlight" onclick="menuNavigateTo('scanner')">
@@ -1599,6 +1614,13 @@
       <div class="menu-divider"></div>
       <div class="menu-section-title">Karten-Verwaltung</div>
 
+      <button class="menu-item-btn" onclick="loadMainDeck(); closeDropdownMenu();">
+        <div class="menu-item-left">
+          <span style="font-size: 1.15rem;">🔥</span>
+          <span>450 Deutschrap & Tekk Hits laden</span>
+        </div>
+      </button>
+
       <button class="menu-item-btn" onclick="exportDeckJson(); closeDropdownMenu();">
         <div class="menu-item-left">
           <span style="font-size: 1.15rem;">💾</span>
@@ -1627,13 +1649,6 @@
           <span>Deck aus Repo löschen (GitHub)</span>
         </div>
       </a>
-
-      <button class="menu-item-btn" onclick="loadSampleSongs(); closeDropdownMenu();">
-        <div class="menu-item-left">
-          <span style="font-size: 1.15rem;">✨</span>
-          <span>18 Beispiel-Hits laden</span>
-        </div>
-      </button>
 
       <button class="menu-item-btn" style="color: #ff6b6b;" onclick="clearAllSongs(); closeDropdownMenu();">
         <div class="menu-item-left">
@@ -1809,7 +1824,8 @@
         </button>
 
         <div class="scanner-title-pill">
-          <span>💿</span> HITSTER SCANNER
+          <img src="logo.svg" alt="Hitster" style="width: 20px; height: 20px; border-radius: 5px; vertical-align: middle;">
+          <span>HITSTER SCANNER</span>
         </div>
 
         <button class="scanner-nav-btn" onclick="switchCameraFacing()">
@@ -1935,47 +1951,50 @@
   <audio id="app-game-audio" preload="auto"></audio>
 
   <script>
-    const sampleHits = [
-      { title: "Bohemian Rhapsody", artist: "Queen", year: 1975, url: "https://open.spotify.com/track/7tFiyTwD0nx5a1eklYtX2J" },
-      { title: "Stayin' Alive", artist: "Bee Gees", year: 1977, url: "https://open.spotify.com/track/3LmpQiJNgTyNVFsVIwiRp8" },
-      { title: "Billie Jean", artist: "Michael Jackson", year: 1982, url: "https://open.spotify.com/track/5ChkMS8Otdzsq2hnF4RuxC" },
-      { title: "Take On Me", artist: "a-ha", year: 1985, url: "https://open.spotify.com/track/2WfaOiMkCvy7Z5vo2YVzi8" },
-      { title: "Never Gonna Give You Up", artist: "Rick Astley", year: 1987, url: "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT" },
-      { title: "Smells Like Teen Spirit", artist: "Nirvana", year: 1991, url: "https://open.spotify.com/track/5ghIJDhubRg0bRttJW114J" },
-      { title: "Wonderwall", artist: "Oasis", year: 1995, url: "https://open.spotify.com/track/7ygpR2QIM59agSt2W4Zm6z" },
-      { title: "...Baby One More Time", artist: "Britney Spears", year: 1998, url: "https://open.spotify.com/track/3MjUtNVVq3C8Fn0MP3zhXa" },
-      { title: "In The End", artist: "Linkin Park", year: 2000, url: "https://open.spotify.com/track/60a0Rd6pj0xtZHEx2bx3JG" },
-      { title: "Seven Nation Army", artist: "The White Stripes", year: 2003, url: "https://open.spotify.com/track/3dPQuX8Gs42Y7b454ybpMR" },
-      { title: "Poker Face", artist: "Lady Gaga", year: 2008, url: "https://open.spotify.com/track/1QV6tiMFM6xDsmK06V61Jq" },
-      { title: "Rolling in the Deep", artist: "Adele", year: 2010, url: "https://open.spotify.com/track/1CkvWZme3rp42wm4Lyu5Ky" },
-      { title: "Get Lucky", artist: "Daft Punk ft. Pharrell", year: 2013, url: "https://open.spotify.com/track/69FtXdgffhU758623789" },
-      { title: "Shape of You", artist: "Ed Sheeran", year: 2017, url: "https://open.spotify.com/track/7qiZfU4dY1lWllzX7mPBI3" },
-      { title: "Blinding Lights", artist: "The Weeknd", year: 2019, url: "https://open.spotify.com/track/0VjIjW4GlUZAMYd2vXMi3b" },
-      { title: "Bad Guy", artist: "Billie Eilish", year: 2019, url: "https://open.spotify.com/track/2Fxmhks0bxGSBdJ92vM42m" },
-      { title: "As It Was", artist: "Harry Styles", year: 2022, url: "https://open.spotify.com/track/4Dvkj6JhhA12EX05QKi79Z" },
-      { title: "Flowers", artist: "Miley Cyrus", year: 2023, url: "https://open.spotify.com/track/0yLdt7Ag09g5qn89m4EkOV" }
-    ];
-
     let songs = [];
     let lanHostUrl = window.location.origin;
 
-    function init() {
+    async function init() {
       const stored = localStorage.getItem('hitster_custom_songs');
+      let loaded = false;
       if (stored) {
         try {
-          songs = JSON.parse(stored);
-        } catch (e) {
-          songs = [...sampleHits];
-        }
-      } else {
-        songs = [...sampleHits];
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            songs = parsed;
+            loaded = true;
+          }
+        } catch (e) {}
       }
-      renderAll();
+
+      if (!loaded) {
+        await loadMainDeck(false);
+      } else {
+        renderAll();
+      }
+
       initSystemInfo();
       loadDecksCatalog();
 
       if (window.location.hash === '#scanner') {
         enterScannerMode();
+      }
+    }
+
+    async function loadMainDeck(showAlert = true) {
+      try {
+        const resp = await fetch('decks/deutschrap_tekk_party.json?_t=' + Date.now());
+        if (!resp.ok) throw new Error("Deck konnte nicht geladen werden.");
+        const data = await resp.json();
+        if (Array.isArray(data) && data.length > 0) {
+          songs = data;
+          saveSongs();
+          if (showAlert) {
+            alert(`🎉 Erfolgreich ${data.length} Deutschrap-, Tekk- & Party-Hits geladen!`);
+          }
+        }
+      } catch (err) {
+        console.warn("Konnte Hauptdeck nicht laden:", err);
       }
     }
 
@@ -2205,8 +2224,7 @@
     }
 
     function loadSampleSongs() {
-      songs = [...sampleHits];
-      saveSongs();
+      loadMainDeck(true);
     }
 
     function exportDeckJson() {

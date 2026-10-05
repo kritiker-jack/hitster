@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#090d16" />
+    </linearGradient>
+
+    <!-- Neon Accent Gradient (Pink to Purple to Cyan) -->
+    <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff2a7a" />
+      <stop offset="50%" stop-color="#9333ea" />
+      <stop offset="100%" stop-color="#00f2fe" />
+    </linearGradient>
+
+    <linearGradient id="ringGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff2a7a" stop-opacity="0.85" />
+      <stop offset="50%" stop-color="#7928ca" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#00f2fe" stop-opacity="0.85" />
+    </linearGradient>
+
+    <!-- Vinyl Disc Gradient -->
+    <radialGradient id="vinylGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e2238" />
+      <stop offset="35%" stop-color="#111424" />
+      <stop offset="70%" stop-color="#181c30" />
+      <stop offset="95%" stop-color="#0b0e1b" />
+      <stop offset="100%" stop-color="#070913" />
+    </radialGradient>
+
+    <!-- Center Badge Gradient -->
+    <linearGradient id="centerBadge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff2a7a" />
+      <stop offset="100%" stop-color="#7928ca" />
+    </linearGradient>
+
+    <!-- Soft Glow Filter -->
+    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur1" />
+      <feGaussianBlur stdDeviation="24" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000" flood-opacity="0.6" />
+    </filter>
+  </defs>
+
+  <!-- App Squircle Outer Frame -->
+  <rect x="16" y="16" width="480" height="480" rx="112" ry="112" fill="url(#bgGrad)" stroke="rgba(255, 255, 255, 0.12)" stroke-width="3" filter="url(#subtleShadow)" />
+
+  <!-- Subtle Inner Specular Rim -->
+  <rect x="18" y="18" width="476" height="238" rx="110" ry="110" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="2" />
+
+  <!-- Ambient Glow Behind Disc -->
+  <circle cx="256" cy="256" r="170" fill="url(#neonGrad)" opacity="0.22" filter="url(#neonGlow)" />
+
+  <!-- Vinyl Disc Outer Body -->
+  <circle cx="256" cy="256" r="180" fill="url(#vinylGrad)" stroke="url(#ringGrad)" stroke-width="4.5" />
+
+  <!-- Vinyl Grooves (Reflective concentric audio rings) -->
+  <circle cx="256" cy="256" r="162" fill="none" stroke="rgba(255, 255, 255, 0.06)" stroke-width="1.2" />
+  <circle cx="256" cy="256" r="148" fill="none" stroke="rgba(255, 255, 255, 0.04)" stroke-width="1.8" />
+  <circle cx="256" cy="256" r="134" fill="none" stroke="rgba(255, 255, 255, 0.07)" stroke-width="1.2" />
+  <circle cx="256" cy="256" r="120" fill="none" stroke="rgba(255, 255, 255, 0.04)" stroke-width="1.5" />
+  <circle cx="256" cy="256" r="106" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.2" />
+  <circle cx="256" cy="256" r="92" fill="none" stroke="rgba(255, 255, 256, 0.05)" stroke-width="1.5" />
+
+  <!-- Dynamic Soundwave Frequency Bars (Radial) -->
+  <g stroke="url(#neonGrad)" stroke-width="4" stroke-linecap="round" opacity="0.9">
+    <!-- Top-Right Waves -->
+    <line x1="330" y1="182" x2="350" y2="162" stroke-width="4.5" />
+    <line x1="344" y1="202" x2="372" y2="182" stroke-width="5" />
+    <line x1="352" y1="228" x2="388" y2="216" stroke-width="4" />
+    <line x1="356" y1="256" x2="396" y2="256" stroke-width="5" />
+    <line x1="352" y1="284" x2="388" y2="296" stroke-width="4" />
+    <line x1="344" y1="310" x2="372" y2="330" stroke-width="5" />
+    <line x1="330" y1="330" x2="350" y2="350" stroke-width="4.5" />
+
+    <!-- Bottom-Left Waves -->
+    <line x1="182" y1="330" x2="162" y2="350" stroke-width="4.5" />
+    <line x1="168" y1="310" x2="140" y2="330" stroke-width="5" />
+    <line x1="160" y1="284" x2="124" y2="296" stroke-width="4" />
+    <line x1="156" y1="256" x2="116" y2="256" stroke-width="5" />
+    <line x1="160" y1="228" x2="124" y2="216" stroke-width="4" />
+    <line x1="168" y1="202" x2="140" y2="182" stroke-width="5" />
+    <line x1="182" y1="182" x2="162" y2="162" stroke-width="4.5" />
+  </g>
+
+  <!-- Center Label Disc -->
+  <circle cx="256" cy="256" r="76" fill="url(#centerBadge)" stroke="#ffffff" stroke-width="2.5" filter="url(#subtleShadow)" />
+  <circle cx="256" cy="256" r="68" fill="none" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5" />
+
+  <!-- Center Spindle Hole -->
+  <circle cx="256" cy="256" r="14" fill="#070913" stroke="rgba(255, 255, 255, 0.4)" stroke-width="2" />
+
+  <!-- Geometric "H" Monogram Overlay in Center Label -->
+  <g fill="#ffffff">
+    <!-- Left Pillar -->
+    <rect x="224" y="218" width="13" height="76" rx="6.5" />
+    <!-- Right Pillar -->
+    <rect x="275" y="218" width="13" height="76" rx="6.5" />
+    <!-- Crossbar -->
+    <rect x="224" y="249.5" width="64" height="13" rx="6.5" />
+    <!-- Dynamic Accent Dot -->
+    <circle cx="256" cy="214" r="5" fill="#00f2fe" filter="url(#neonGlow)" />
+  </g>
+
+  <!-- Tiny Sparks / Stars in Corner -->
+  <path d="M 400 80 Q 400 95 415 95 Q 400 95 400 110 Q 400 95 385 95 Q 400 95 400 80 Z" fill="#00f2fe" opacity="0.8" />
+  <path d="M 100 400 Q 100 412 112 412 Q 100 412 100 424 Q 100 412 88 412 Q 100 412 100 400 Z" fill="#ff2a7a" opacity="0.8" />
+</svg>
