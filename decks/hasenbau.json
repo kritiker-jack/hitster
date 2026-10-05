@@ -450,15 +450,6 @@
     "coverUrl": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273694c5dadc98848f7eea6df7e"
   },
   {
-    "id": "2wRN0iIapzOP6fhxvvvUkl",
-    "title": "Anders",
-    "artist": "102 Boyz, Chapo102, Stacks102, Skoob102",
-    "year": 2021,
-    "url": "https://open.spotify.com/track/2wRN0iIapzOP6fhxvvvUkl",
-    "previewUrl": null,
-    "coverUrl": null
-  },
-  {
     "id": "1lqcZN0Gmlg8XeWpp996Xl",
     "title": "Meer fahren",
     "artist": "Longus Mongus, Monk, BHZ",
@@ -574,15 +565,6 @@
     "url": "https://open.spotify.com/track/6hiJLCDFyMSWk1mmNZQWQo",
     "previewUrl": "https://p.scdn.co/mp3-preview/6fe7e537a96f67b0f062e584124cd719d477368a",
     "coverUrl": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273d777911fff2753b3e26bb5ab"
-  },
-  {
-    "id": "3vQAf9SBOmypaWuediYPD3",
-    "title": "Cola Korn",
-    "artist": "102 Boyz, Chapo102, Kkuba102, Addikt102, Skoob102, Stacks102",
-    "year": 2022,
-    "url": "https://open.spotify.com/track/3vQAf9SBOmypaWuediYPD3",
-    "previewUrl": null,
-    "coverUrl": null
   },
   {
     "id": "4VXIryQMWpIdGgYR4TrjT1",
@@ -889,14 +871,5 @@
     "url": "https://open.spotify.com/track/74wkLpjBmobpmaBnTB0PJc",
     "previewUrl": "https://p.scdn.co/mp3-preview/e98718895374ae3ebb651f0914e71f4a82c4189e",
     "coverUrl": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273afde81e0372399a4cb674749"
-  },
-  {
-    "id": "1uQjlr9lqcJKZ7Ay0ao8uD",
-    "title": "Outro",
-    "artist": "bennetgriffin",
-    "year": 2021,
-    "url": "https://open.spotify.com/track/1uQjlr9lqcJKZ7Ay0ao8uD",
-    "previewUrl": null,
-    "coverUrl": null
   }
 ]
