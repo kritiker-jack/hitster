@@ -1,0 +1,50 @@
+name: 🎵 Spotify Playlist in Deck umwandeln
+
+on:
+  workflow_dispatch:
+    inputs:
+      playlist_url:
+        description: 'Spotify Playlist Link (URL)'
+        required: true
+        type: string
+      deck_name:
+        description: 'Name für das Deck (optional)'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  import-deck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: 🐍 Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: ⚡ Playlist herunterladen & Deck generieren
+        run: |
+          if [ -n "${{ github.event.inputs.deck_name }}" ]; then
+            python cli_import.py --url "${{ github.event.inputs.playlist_url }}" --name "${{ github.event.inputs.deck_name }}"
+          else
+            python cli_import.py --url "${{ github.event.inputs.playlist_url }}"
+          fi
+
+      - name: 🚀 Neues Deck in GitHub speichern & veröffentlichen
+        run: |
+          git config --global user.name "Hitster Deck Bot"
+          git config --global user.email "bot@hitster.app"
+          git add decks/
+          if git diff --staged --quiet; then
+            echo "Keine Änderungen gefunden."
+          else
+            git commit -m "Add/Update deck via GitHub Actions: ${{ github.event.inputs.deck_name || 'Spotify Playlist' }}"
+            git push origin main
+          fi

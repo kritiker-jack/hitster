@@ -1,0 +1,16 @@
+[
+  {
+    "id": "sample_hits",
+    "slug": "sample_hits",
+    "name": "🌟 18 Welthits & Klassiker",
+    "count": 18,
+    "file": "decks/sample_hits.json"
+  },
+  {
+    "id": "german_hits",
+    "slug": "german_hits",
+    "name": "🇩🇪 Deutsche Hits & Party-Klassiker",
+    "count": 14,
+    "file": "decks/german_hits.json"
+  }
+]

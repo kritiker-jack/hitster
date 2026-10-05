@@ -27,10 +27,31 @@ Eine moderne, web-basierte Hitster-App im minimalistischen Apple-Design zur Gene
 
 ---
 
+## ☁️ Karten & Decks direkt online erstellen (Ohne PC & ohne .bat)
+
+Du musst **keine .bat-Datei** mehr am PC starten, um neue Decks zu erstellen! Es gibt 3 einfache Wege direkt im Browser:
+
+### 1. 🚀 Über GitHub Actions (Automatisch aus Spotify-Playlist)
+1. Öffne auf deinem Smartphone oder PC die [GitHub Actions in deinem Repo](https://github.com/kritiker-jack/hitster/actions/workflows/import_deck.yml).
+2. Tippe rechts auf **„Run workflow“**.
+3. Füge deinen **Spotify Playlist-Link** ein (optional einen Deck-Namen vergeben) und klicke auf den grünen Button.
+4. GitHub lädt die Songs & Erscheinungsjahre in der Cloud herunter und speichert sie direkt im Repository.
+5. Nach ca. 30–45 Sekunden erscheint dein neues Kartendeck auf der Website im Dropdown **„Decks aus dem Repository laden“**!
+
+### 2. 📂 Fertige Decks direkt aus dem Git-Repository laden
+* Auf [kritiker-jack.github.io/hitster](https://kritiker-jack.github.io/hitster/) findest du im Editor ganz oben das Menü **„Karten-Decks aus dem Repository laden“**.
+* Wähle einfach ein vorkonfiguriertes Deck (z. B. *18 Welthits* oder *Deutsche Hits*) aus und tippe auf **Deck laden**.
+
+### 3. 📝 Text-Massenimport (Direkt im Browser)
+* Klappe im Editor **„📝 Songliste als Text einfügen“** auf.
+* Kopiere einfach Songs zeilenweise hinein (`Songtitel - Interpret - Jahr`) und klicke auf **Importieren**.
+
+---
+
 ## 🖨️ Karten drucken & überallhin mitnehmen
 
-1. Öffne das Studio am PC (über `start.bat` oder direkt im Browser).
-2. Playlist-Link einfügen und importieren.
+1. Öffne das Studio im Browser oder am PC.
+2. Wähle dein gewünschtes Deck aus (oder importiere neue Songs).
 3. Als QR-Code-Ziel ist standardmäßig **🌐 GitHub Pages** aktiv.
 4. Drucke die Karten über den Tab **„🖨️ A4 Druck“** beidseitig aus (*„An langer Kante spiegeln“*).
 5. **Der Vorteil:** Jeder QR-Code verlinkt direkt auf deine Online-App. Du kannst die Karten überallhin mitnehmen (zu Freunden, auf Partys, in den Urlaub) – **es ist kein PC und kein lokales WLAN nötig!**

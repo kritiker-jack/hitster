@@ -1609,9 +1609,17 @@
       <button class="menu-item-btn" onclick="document.getElementById('import-deck-file').click(); closeDropdownMenu();">
         <div class="menu-item-left">
           <span style="font-size: 1.15rem;">📂</span>
-          <span>Deck laden (JSON)</span>
+          <span>Deck-Datei laden (JSON)</span>
         </div>
       </button>
+
+      <a href="https://github.com/kritiker-jack/hitster/actions/workflows/import_deck.yml" target="_blank" class="menu-item-btn" onclick="closeDropdownMenu();" style="text-decoration: none; color: inherit;">
+        <div class="menu-item-left">
+          <span style="font-size: 1.15rem;">☁️</span>
+          <span>Online Deck erstellen (GitHub)</span>
+        </div>
+        <span style="font-size: 0.72rem; background: var(--accent-purple); color: #fff; padding: 2px 7px; border-radius: var(--radius-pill); font-weight: 700;">CLOUD</span>
+      </a>
 
       <button class="menu-item-btn" onclick="loadSampleSongs(); closeDropdownMenu();">
         <div class="menu-item-left">
@@ -1635,6 +1643,25 @@
   <main>
     <!-- TAB 1: SONG EDITOR & PLAYLIST IMPORT -->
     <div id="tab-editor" class="tab-content active">
+
+      <!-- GIT REPOSITORY DECKS CATALOG -->
+      <div class="glass-panel" id="git-decks-panel" style="margin-bottom: 1.5rem;">
+        <div class="panel-header-row">
+          <span class="spotify-pill-badge" style="background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); color: #fff;">Decks aus GitHub</span>
+          <h2>Karten-Decks aus dem Repository laden</h2>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.9rem;">
+          Wähle ein vorkonfiguriertes Kartendeck oder ein per GitHub Actions erstelltes Deck direkt aus:
+        </p>
+        <div class="import-input-row">
+          <select id="select-git-deck" class="input-apple" style="cursor: pointer; font-size: 0.95rem;">
+            <option value="">Lade Decks aus dem Repository...</option>
+          </select>
+          <button class="btn-apple-green" onclick="loadSelectedGitDeck()" style="background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); box-shadow: 0 4px 15px rgba(121, 40, 202, 0.4);">
+            <span>📂</span> Deck laden
+          </button>
+        </div>
+      </div>
 
       <!-- SPOTIFY IMPORT GLASS PANEL -->
       <div class="glass-panel">
@@ -1666,6 +1693,24 @@
           </label>
         </div>
 
+        <!-- GITHUB ACTIONS ONLINE IMPORT NOTICE -->
+        <div style="background: rgba(121, 40, 202, 0.14); border: 1px solid rgba(121, 40, 202, 0.35); border-radius: var(--radius-md); padding: 14px 16px; margin-top: 1.2rem; font-size: 0.88rem;">
+          <div style="font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <span style="font-size: 1.15rem;">☁️</span> Playlist direkt online über GitHub erstellen (ohne PC / ohne .bat):
+          </div>
+          <p style="color: var(--text-muted); margin-bottom: 8px; font-size: 0.84rem; line-height: 1.45;">
+            Über <strong>GitHub Actions</strong> kannst du jede Spotify-Playlist völlig kostenlos & ohne lokale Dateien direkt in der Cloud in ein Kartendeck umwandeln:
+          </p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px;">
+            <a href="https://github.com/kritiker-jack/hitster/actions/workflows/import_deck.yml" target="_blank" class="btn-apple-green" style="padding: 8px 14px; font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent-purple), #4a148c); box-shadow: 0 4px 15px rgba(121, 40, 202, 0.4);">
+              <span>⚡</span> GitHub Action öffnen & Playlist einfügen
+            </a>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--accent-yellow);">
+            ✨ Nach ~30 Sekunden ist dein Deck automatisch im Repository gespeichert und kann oben im Dropdown sofort ausgewählt werden!
+          </div>
+        </div>
+
         <!-- QR DESTINATION SETTINGS -->
         <div class="qr-destination-card">
           <div class="qr-destination-header">
@@ -1689,6 +1734,24 @@
 
         <div id="import-status" class="status-toast"></div>
       </div>
+
+      <!-- COLLAPSIBLE TEXT BULK IMPORT -->
+      <details class="collapsible-glass" style="margin-bottom: 1.2rem;">
+        <summary>
+          <span>📝 Songliste als Text einfügen (Schnell-Import)</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Direkt im Browser</span>
+        </summary>
+        <div style="padding: 1rem 0;">
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.8rem;">
+            Füge mehrere Songs zeilenweise ein (z. B. aus Notizen, WhatsApp oder Excel).<br>
+            Format: <code>Songtitel - Interpret - Jahr</code>
+          </p>
+          <textarea id="text-import-area" class="input-apple" style="height: 120px; font-family: monospace; font-size: 0.85rem; resize: vertical; margin-bottom: 0.8rem;" placeholder="Bohemian Rhapsody - Queen - 1975&#10;Take On Me - a-ha - 1985&#10;Roller - Apache 207 - 2019"></textarea>
+          <button class="btn-apple-green" onclick="importTextSongList()" style="width: 100%; justify-content: center;">
+            <span>➕</span> Songs aus Text importieren
+          </button>
+        </div>
+      </details>
 
       <!-- COLLAPSIBLE MANUAL ENTRY -->
       <details class="collapsible-glass">
@@ -1962,9 +2025,95 @@
       }
       renderAll();
       initSystemInfo();
+      loadDecksCatalog();
 
       if (window.location.hash === '#scanner') {
         enterScannerMode();
+      }
+    }
+
+    async function loadDecksCatalog() {
+      try {
+        const resp = await fetch('decks/index.json');
+        if (!resp.ok) return;
+        const catalog = await resp.json();
+        const select = document.getElementById('select-git-deck');
+        if (!select) return;
+        select.innerHTML = '<option value="">-- Wähle ein Deck aus dem Repository --</option>';
+        catalog.forEach(d => {
+          const opt = document.createElement('option');
+          opt.value = d.file;
+          opt.textContent = `${d.name} (${d.count} Karten)`;
+          select.appendChild(opt);
+        });
+      } catch (e) {
+        console.warn('No git decks catalog found:', e);
+      }
+    }
+
+    async function loadSelectedGitDeck() {
+      const select = document.getElementById('select-git-deck');
+      const file = select ? select.value : '';
+      if (!file) {
+        alert("Bitte wähle zuerst ein Deck aus der Liste aus.");
+        return;
+      }
+      try {
+        const resp = await fetch(file);
+        if (!resp.ok) throw new Error("Deck-Datei konnte nicht geladen werden.");
+        const data = await resp.json();
+        if (Array.isArray(data) && data.length > 0) {
+          const mode = document.querySelector('input[name="import-mode"]:checked')?.value || 'replace';
+          if (mode === 'replace') songs = data;
+          else songs = [...songs, ...data];
+          saveSongs();
+          alert(`Erfolgreich ${data.length} Karten geladen!`);
+        } else {
+          alert("Das ausgewählte Deck enthält keine Songs.");
+        }
+      } catch (err) {
+        alert("Fehler beim Laden des Decks: " + err.message);
+      }
+    }
+
+    function importTextSongList() {
+      const text = document.getElementById('text-import-area').value.trim();
+      if (!text) {
+        alert("Bitte gib zuerst ein paar Songs in das Textfeld ein.");
+        return;
+      }
+      const lines = text.split('\n');
+      const imported = [];
+      for (const line of lines) {
+        const l = line.trim();
+        if (!l) continue;
+        let parts = l.split(/\s*[-–—|;,]\s*/);
+        if (parts.length >= 3) {
+          const title = parts[0].trim();
+          const artist = parts[1].trim();
+          const year = parseInt(parts[2].trim(), 10);
+          if (title && artist && !isNaN(year)) {
+            imported.push({ title, artist, year, url: `https://open.spotify.com/search/${encodeURIComponent(artist + ' ' + title)}` });
+            continue;
+          }
+        }
+        if (parts.length === 2) {
+          const title = parts[0].trim();
+          const artist = parts[1].trim();
+          if (title && artist) {
+            imported.push({ title, artist, year: 2000, url: `https://open.spotify.com/search/${encodeURIComponent(artist + ' ' + title)}` });
+          }
+        }
+      }
+      if (imported.length > 0) {
+        const mode = document.querySelector('input[name="import-mode"]:checked')?.value || 'replace';
+        if (mode === 'replace') songs = imported;
+        else songs = [...songs, ...imported];
+        saveSongs();
+        alert(`${imported.length} Songs erfolgreich aus Text importiert!`);
+        document.getElementById('text-import-area').value = '';
+      } else {
+        alert("Keine gültigen Songs im Text erkannt. Format pro Zeile: Songtitel - Interpret - Jahr");
       }
     }
 
