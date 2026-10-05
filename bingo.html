@@ -30,8 +30,8 @@
       --bg-glass-input: rgba(28, 34, 58, 0.85);
 
       /* The 5 Official Hitster Bingo Category Colors (High Contrast) */
-      --cat-green: #10b981;   /* Grün: Band / Solo (Easy) | Songtitel (Pro) */
-      --cat-pink: #ec4899;    /* Rosa: Vor/Nach 2000 (Easy) | Genaues Jahr (Pro) */
+      --cat-green: #10b981;   /* Grün: Name Künstler/Band (Easy) | Songtitel (Pro) */
+      --cat-pink: #ec4899;    /* Rosa: Vor/Nach 2015 (Easy) | Genaues Jahr (Pro) */
       --cat-yellow: #f59e0b;  /* Gelb: Jahr ±4J (Easy) | Künstler/Band (Pro) */
       --cat-purple: #8b5cf6;  /* Lila: Welches Jahrzehnt? (Easy & Pro) */
       --cat-blue: #0284c7;    /* Blau: Jahr ±2J (Easy) | Jahr ±3J (Pro) */
@@ -608,12 +608,12 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; font-size: 0.82rem;">
           <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid var(--cat-green); border-radius: 12px; padding: 10px; color: #ffffff;">
             <strong style="color: #6ee7b7; font-size: 0.9rem;">🟢 Grün</strong><br>
-            A: Band oder Solo?<br>
+            A: Name Künstler/Band<br>
             B: Songtitel
           </div>
           <div style="background: rgba(236, 72, 153, 0.2); border: 1px solid var(--cat-pink); border-radius: 12px; padding: 10px; color: #ffffff;">
             <strong style="color: #f472b6; font-size: 0.9rem;">🌸 Rosa</strong><br>
-            A: Vor / Nach 2000?<br>
+            A: Vor / Nach 2015?<br>
             B: Genaues Jahr
           </div>
           <div style="background: rgba(245, 158, 11, 0.2); border: 1px solid var(--cat-yellow); border-radius: 12px; padding: 10px; color: #ffffff;">
@@ -1017,24 +1017,23 @@
     // SEITE A: EINSTEIGER / ANFÄNGER
     const CATEGORIES_A = [
       {
-        id: 'gruen_artist_type',
-        name: '🟢 Band oder Solokünstler?',
+        id: 'gruen_artist_name',
+        name: '🟢 Name der Band oder des Künstlers/der Künstlerin',
         color: 'gruen',
-        type: 'choice',
-        choices: ['👤 Solokünstler/in', '👥 Gruppe / Band / Duo'],
-        eval: (song) => {
+        type: 'text',
+        evalText: (song, ans) => {
           const a = (song.artist || '').toLowerCase();
-          const isGroup = a.includes('&') || a.includes('feat') || a.includes('band') || a.includes('k.i.z') || a.includes('die ') || a.includes('fettes brot') || a.includes('beginner') || a.includes('scooter') || a.includes('01099') || a.includes('seeed') || a.includes('atzen');
-          return isGroup ? '👥 Gruppe / Band / Duo' : '👤 Solokünstler/in';
+          const g = (ans || '').toLowerCase().trim();
+          return a.includes(g) || g.includes(a);
         }
       },
       {
-        id: 'pink_epoch_2000',
-        name: '🌸 Vor oder nach 2000?',
+        id: 'pink_epoch_2015',
+        name: '🌸 Vor oder nach 2015?',
         color: 'pink',
         type: 'choice',
-        choices: ['⏮️ Vor 2000', '⏭️ 2000 oder neuer'],
-        eval: (song) => song.year < 2000 ? '⏮️ Vor 2000' : '⏭️ 2000 oder neuer'
+        choices: ['⏮️ Vor 2015', '⏭️ 2015 oder neuer'],
+        eval: (song) => song.year < 2015 ? '⏮️ Vor 2015' : '⏭️ 2015 oder neuer'
       },
       {
         id: 'gelb_year_pm4',
@@ -1172,8 +1171,8 @@
       colors.sort(() => Math.random() - 0.5);
 
       const labelsA = {
-        'gruen': 'Band / Solo',
-        'pink': 'Vor/Nach 2000',
+        'gruen': 'Künstler / Band',
+        'pink': 'Vor/Nach 2015',
         'gelb': 'Jahr ±4J',
         'lila': 'Jahrzehnt',
         'blau': 'Jahr ±2J'
